@@ -2,17 +2,18 @@ import React from 'react'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {tabBarOptions } from './tabOptions'
+import {tabBarOptions,tabOptions } from './tabOptions'
 // import CoffeeHomeScreen from '../screens/CoffeeHome/CoffeeHomeScreen'
 // import ProfileHomeScreen from '../screens/ProfileHome/ProfileHomeScreen'
 // import PayHomeScreen from '../screens/PayHome/PayHomeScreen'
 // import BeanHomeScreen from '../screens/BeanHome/BeanHomeScreen'
 // import StoreHomeScreen from '../screens/StoreHome/StoreHomeScreen'
 // import MyTabBar from '../components/MyTabBar'
-// import NavigationTheme from '../constants/NavigationTheme'
+import NavigationTheme from '../constants/NavigationTheme'
 // import CoffeeHome from '../screens/CoffeeHome'
 // import CoffeeTopTab from './CoffeeTopTab'
 import OrderHomeScreen from '../screens/Orders/OrderHomeScreen'
+import OrderHistoryScreen from '../screens/OrderHistory/OrderHistoryHomeScreen'
 const BottomTab = createBottomTabNavigator()
 // TODO add Auth Stack Container
 
@@ -22,12 +23,17 @@ const BottomTabNavigator = ({ }) => {
       <BottomTab.Navigator
         initialRouteName='OrderHomeScreen'
         // tabBar={(props) => <MyTabBar {...props} />}
-        // tabBarOptions={tabBarOptions()}
+        tabBarOptions={tabBarOptions()}
       >
         <BottomTab.Screen
           name='OrderHomeScreen'
           component={OrderHomeScreen}
-          // options={tabOptions('coffee', 'Coffee', 'MaterialCommunityIcons')}
+          options={tabOptions('shopping-cart', 'Orders', 'Feather')}
+        />
+        <BottomTab.Screen
+          name='OrderHistoryScreen'
+          component={OrderHistoryScreen}
+          options={tabOptions('history', 'OrderHistory', 'MaterialCommunityIcons')}
         />
         {/* <BottomTab.Screen
           name='BeanHomeScreen'

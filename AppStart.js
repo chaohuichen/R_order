@@ -49,7 +49,7 @@ const AppStart = props => {
     return (
       <>
         <StatusBar barStyle={styleStatusBar} />
-        <OrderHomeScreen />
+        <BottomTabNavigator />
       </>
     )
   }
