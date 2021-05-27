@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import {
   MyScreenOption,
   HeaderTitleOnly,
+  HeaderShownNone,
 } from './HeaderOptions'
 // CoffeeHome
 import OrderPage from '../screens/Orders/OrderHomePage'
@@ -17,18 +18,20 @@ export default ({ navigation, tabName }) => {
 
   return (
     <Stack.Navigator screenOptions={MyScreenOption}>
-   
-        {tabName === 'OrderHome' && <Stack.Screen
-          name='OrderPage'
+      {tabName === 'OrderHome' && (
+        <Stack.Screen
+          name="OrderPage"
           component={OrderPage}
-          options={HeaderTitleOnly(headerTitle)}
-        />}
-          {tabName === 'OrderHistoryPage' && <Stack.Screen
-          name='OrderHistoryPage'
+          options={HeaderShownNone()}
+        />
+      )}
+      {tabName === 'OrderHistoryPage' && (
+        <Stack.Screen
+          name="OrderHistoryPage"
           component={OrderHistoryPage}
-          options={HeaderTitleOnly(headerTitle)}
-        />}
-      
+          options={HeaderShownNone()}
+        />
+      )}
     </Stack.Navigator>
   )
 }
