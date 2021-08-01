@@ -6,7 +6,7 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
 import { Appearance, StatusBar } from 'react-native'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
 import AppLoading from 'expo-app-loading'
-import OrderHomeScreen from './screens/Orders/OrderHomeScreen'
+import { NativeBaseProvider } from 'native-base'
 
 const AppStart = (props) => {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
@@ -47,10 +47,10 @@ const AppStart = (props) => {
     )
   } else {
     return (
-      <>
+      <NativeBaseProvider>
         <StatusBar barStyle={styleStatusBar} />
         <BottomTabNavigator />
-      </>
+      </NativeBaseProvider>
     )
   }
 }
