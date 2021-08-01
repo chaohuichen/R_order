@@ -6,14 +6,15 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
 import { Appearance, StatusBar } from 'react-native'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
 import AppLoading from 'expo-app-loading'
-import OrderHomeScreen from './screens/Orders/OrderHomeScreen'
-const AppStart = props => {
+import { NativeBaseProvider } from 'native-base'
+
+const AppStart = (props) => {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
   const [styleStatusBar, setStyleStatusBar] = useState('default')
 
   // Load any resources or data that we need prior to rendering the app
   // React.useEffect(() => {
-  async function loadResourcesAndDataAsync () {
+  async function loadResourcesAndDataAsync() {
     // Load fonts
     await Promise.all([
       Font.loadAsync({
@@ -23,7 +24,7 @@ const AppStart = props => {
         // 'inter-regular': require('./assets/fonts/Inter-Regular.otf'),
         // 'inter-italic': require('./assets/fonts/Inter-Italic.otf'),
         // 'inter-bold': require('./assets/fonts/Inter-Bold.ttf')
-      })
+      }),
     ])
 
     const colorScheme = Appearance.getColorScheme()
@@ -33,7 +34,6 @@ const AppStart = props => {
     }
   }
 
-
   if (!isLoadingComplete) {
     return (
       <AppLoading
@@ -42,15 +42,15 @@ const AppStart = props => {
           setLoadingComplete(true)
           //  SplashScreen.hideAsync()
         }}
-        onError={error => HandleError(error)}
+        onError={(error) => HandleError(error)}
       />
     )
   } else {
     return (
-      <>
+      <NativeBaseProvider>
         <StatusBar barStyle={styleStatusBar} />
         <BottomTabNavigator />
-      </>
+      </NativeBaseProvider>
     )
   }
 }

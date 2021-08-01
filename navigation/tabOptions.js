@@ -2,7 +2,7 @@ import React from 'react'
 import { Icon, Text } from 'native-base'
 import MainColors from '../constants/MainColors'
 // import PayIcon from '../components/PayIcon'
-
+import AppIcons from '../components/AppIcons'
 export const tabOptions = (iconName, tabName, iconType = 'FontAwesome') => {
   return {
     tabBarLabel: ({ focused }) => (
@@ -16,9 +16,11 @@ export const tabOptions = (iconName, tabName, iconType = 'FontAwesome') => {
       </Text>
     ),
     tabBarIcon: ({ focused }) => (
-      <Icon
+      <AppIcons
         name={iconName}
-        style={[{ color: focused ? MainColors.primary : '#A1A1A1', fontSize: 25 }]}
+        style={[
+          { color: focused ? MainColors.primary : '#A1A1A1', fontSize: 25 },
+        ]}
         type={iconType}
       />
     ),
@@ -29,7 +31,12 @@ export const paymentTabOptions = () => {
   return {
     tabBarLabel: ({ focused }) => {},
     tabBarIcon: ({ focused }) => (
-      <PayIcon style={{ marginBottom: 10 }} width={55} height={55} fill={focused ? MainColors.primary : '#A1A1A1'} />
+      <PayIcon
+        style={{ marginBottom: 10 }}
+        width={55}
+        height={55}
+        fill={focused ? MainColors.primary : '#A1A1A1'}
+      />
     ),
     tabBarBadgeStyle: { position: 'absolute', top: 0 },
   }

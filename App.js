@@ -1,10 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import AppStart from './AppStart'
 
-export default function App() {  
-  return <AppStart/>
+export default () => {
+  return <AppStart />
 }
 
 const styles = StyleSheet.create({
@@ -14,4 +14,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+})
