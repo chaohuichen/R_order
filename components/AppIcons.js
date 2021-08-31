@@ -25,7 +25,7 @@ const AppIcons = (props) => {
     case 'Feather':
       return <Feather {...props} />
     default:
-      return <MaterialCommunityIcons {...props} />
+      return null
   }
 }
 

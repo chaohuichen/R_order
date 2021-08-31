@@ -17,7 +17,7 @@ const BottomTabNavigator = ({}) => {
       <BottomTab.Navigator
         initialRouteName="OrderHomeScreen"
         // tabBar={(props) => <MyTabBar {...props} />}
-        tabBarOptions={tabBarOptions()}
+        screenOptions={tabBarOptions()}
       >
         <BottomTab.Screen
           name="OrderHomeScreen"

@@ -47,6 +47,7 @@ export const tabBarOptions = () => {
     style: {
       borderTopWidth: 0,
       backgroundColor: 'rgba(255,255,255,1)',
+      height: 100,
       // position absolute for bottom tab is breaking the pages but is needed for rgba background color
     },
   }

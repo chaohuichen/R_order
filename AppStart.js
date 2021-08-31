@@ -7,6 +7,7 @@ import { Appearance, StatusBar } from 'react-native'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
 import AppLoading from 'expo-app-loading'
 import { NativeBaseProvider } from 'native-base'
+import TopTabNavigator from './navigation/TopTabNavigator'
 
 const AppStart = (props) => {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
@@ -49,7 +50,8 @@ const AppStart = (props) => {
     return (
       <NativeBaseProvider>
         <StatusBar barStyle={styleStatusBar} />
-        <BottomTabNavigator />
+        {/* <BottomTabNavigator /> */}
+        <TopTabNavigator />
       </NativeBaseProvider>
     )
   }
