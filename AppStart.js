@@ -1,18 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 // import * as SplashScreen from 'expo-splash-screen'
-import * as Font from 'expo-font'
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
+import * as Font from "expo-font";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 // import { HandleError } from './components'
-import { Appearance, StatusBar } from 'react-native'
-import BottomTabNavigator from './navigation/BottomTabNavigator'
-import AppLoading from 'expo-app-loading'
-import { NativeBaseProvider } from 'native-base'
-import TopTabNavigator from './navigation/TopTabNavigator'
+import { Appearance, StatusBar } from "react-native";
+import BottomTabNavigator from "./navigation/BottomTabNavigator";
+import AppLoading from "expo-app-loading";
+import { NativeBaseProvider } from "native-base";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import NavigationTheme from "./constants/NavigationTheme";
+import { HeaderShownNone, MyScreenOption } from "./navigation/HeaderOptions";
+import HomePage from "./screens/Home/HomePage";
+import { connect } from "react-redux";
+const Stack = createStackNavigator();
 
 const AppStart = (props) => {
-  const [isLoadingComplete, setLoadingComplete] = useState(false)
-  const [styleStatusBar, setStyleStatusBar] = useState('default')
-
+  const [isLoadingComplete, setLoadingComplete] = useState(false);
+  const [styleStatusBar, setStyleStatusBar] = useState("default");
+  const { user } = props;
   // Load any resources or data that we need prior to rendering the app
   // React.useEffect(() => {
   async function loadResourcesAndDataAsync() {
@@ -26,12 +32,12 @@ const AppStart = (props) => {
         // 'inter-italic': require('./assets/fonts/Inter-Italic.otf'),
         // 'inter-bold': require('./assets/fonts/Inter-Bold.ttf')
       }),
-    ])
+    ]);
 
-    const colorScheme = Appearance.getColorScheme()
+    const colorScheme = Appearance.getColorScheme();
 
-    if (colorScheme === 'dark') {
-      setStyleStatusBar('dark-content')
+    if (colorScheme === "dark") {
+      setStyleStatusBar("dark-content");
     }
   }
 
@@ -40,21 +46,44 @@ const AppStart = (props) => {
       <AppLoading
         startAsync={loadResourcesAndDataAsync}
         onFinish={() => {
-          setLoadingComplete(true)
+          setLoadingComplete(true);
           //  SplashScreen.hideAsync()
         }}
         onError={(error) => HandleError(error)}
       />
-    )
+    );
   } else {
     return (
       <NativeBaseProvider>
         <StatusBar barStyle={styleStatusBar} />
-        <BottomTabNavigator />
-        {/* <TopTabNavigator /> */}
+        <NavigationContainer theme={NavigationTheme}>
+          <Stack.Navigator screenOptions={MyScreenOption}>
+            {user.userId ? (
+              <>
+                <Stack.Screen
+                  name="BottomTabNavigator"
+                  component={BottomTabNavigator}
+                  options={HeaderShownNone()}
+                />
+              </>
+            ) : (
+              <Stack.Screen
+                name="HomePage"
+                component={HomePage}
+                options={HeaderShownNone()}
+              />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
       </NativeBaseProvider>
-    )
+    );
   }
-}
+};
 
-export default AppStart
+const mapState = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapState, null)(AppStart);
