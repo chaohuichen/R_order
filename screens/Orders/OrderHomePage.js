@@ -1,14 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 
-export default ()=> {
+export default () => {
   return (
     <View style={styles.container}>
-      <Text>Order</Text>
-      <StatusBar style="auto" />
+      <Text style={{ fontWeight: 'bold', fontSize: 35 }}>Fillup Supply </Text>
+      <Text>Coming Soon</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+})

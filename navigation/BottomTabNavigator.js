@@ -17,14 +17,16 @@ const BottomTabNavigator = ({}) => {
       <BottomTab.Navigator
         initialRouteName="OrderHomeScreen"
         // tabBar={(props) => <MyTabBar {...props} />}
-        screenOptions={tabBarOptions()}
+        screenOptions={{
+          headerShown: false,
+        }}
       >
         <BottomTab.Screen
           name="OrderHomeScreen"
           component={OrderHomeScreen}
           options={tabOptions('shopping-cart', 'Orders', 'Feather')}
         />
-        <BottomTab.Screen
+        {/* <BottomTab.Screen
           name="OrderHistoryScreen"
           component={OrderHistoryScreen}
           options={tabOptions(
@@ -32,7 +34,7 @@ const BottomTabNavigator = ({}) => {
             'OrderHistory',
             'MaterialCommunityIcons'
           )}
-        />
+        /> */}
       </BottomTab.Navigator>
     </NavigationContainer>
   )
