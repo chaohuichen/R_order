@@ -50,8 +50,8 @@ const AppStart = (props) => {
     return (
       <NativeBaseProvider>
         <StatusBar barStyle={styleStatusBar} />
-        {/* <BottomTabNavigator /> */}
-        <TopTabNavigator />
+        <BottomTabNavigator />
+        {/* <TopTabNavigator /> */}
       </NativeBaseProvider>
     )
   }

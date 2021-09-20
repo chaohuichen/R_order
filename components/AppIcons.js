@@ -7,7 +7,7 @@ import {
 } from '@expo/vector-icons'
 import React, { useState, useEffect } from 'react'
 const AppIcons = (props) => {
-  const [iconType, setIconType] = useState('MaterialCommunityIcons')
+  const [iconType, setIconType] = useState(null)
   useEffect(() => {
     if (props.type) {
       setIconType(props.type)
