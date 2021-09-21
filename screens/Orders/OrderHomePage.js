@@ -6,17 +6,25 @@ import { connect } from "react-redux";
 import Item from "../../components/Item";
 import { ScrollView } from "native-base";
 const OrderHomePage = (props) => {
-  const coffeeData = {};
+  const coffeeData = [
+    "Bean 1",
+    "Bean 2",
+    "Bean 3",
+    "Bean 4",
+    "Bean 5",
+    "Bean 6",
+    "Bean 7",
+  ];
 
   const removeReduxUser = () => {
     props.removeUserData();
   };
   return (
     <ScrollView style={styles.container}>
-      <Item />
-      <Item />
-      <Item />
-      <Item />
+      {coffeeData.map((ele, index) => (
+        <Item name={ele} key={index} />
+      ))}
+
       <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
         <TouchableOpacity style={styles.loginButton} onPress={removeReduxUser}>
           <Text style={{ color: "white", textAlign: "center", fontSize: 12 }}>
