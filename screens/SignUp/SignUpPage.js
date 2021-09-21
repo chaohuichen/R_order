@@ -16,6 +16,8 @@ import { getUser } from "../../redux";
 import ExpoFastImage from "expo-fast-image";
 import DismissKeyboard from "../../components/DismissKeyboard";
 import AppIcons from "../../components/AppIcons";
+// import TextInputMask from "react-native-text-input-mask";
+
 export default function SignUpPage(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const handleOnSignUp = () => {
@@ -33,28 +35,28 @@ export default function SignUpPage(props) {
         onPress={() => props.navigation.pop()}
       />
       <DismissKeyboard>
-        <KeyboardAvoidingView
-          style={{ flex: 1, justifyContent: "center" }}
-          behavior="position"
-        >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
           <Image
             source={require("../../assets/upblack.png")}
             style={{
-              height: 180,
+              height: 150,
               resizeMode: "contain",
-              marginBottom: 30,
-              alignSelf: "center",
+              marginBottom: 10,
             }}
             alt="app logo"
           />
-
+          <Text
+            style={{ fontSize: 30, fontWeight: "600", textAlign: "center" }}
+          >
+            Sign Up
+          </Text>
           <TextInput
             style={{ width: 300, alignSelf: "center" }}
             theme={{
               colors: { underlineColor: "transparent", primary: "black" },
             }}
             mode="outlined"
-            label="Mobile"
+            label="Mobile number"
             autoCapitalize="none"
             keyboardType="phone-pad"
             onChangeText={(number) => setPhoneNumber(number)}
@@ -94,7 +96,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "#f3f3f3",
   },
   loginButton: {

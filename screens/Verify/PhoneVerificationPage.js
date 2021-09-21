@@ -20,27 +20,28 @@ function PhoneVerificationPage(props) {
   const [verificationCode, setVerificationCode] = useState("123456");
   const [verificationId, setVerificationId] = useState(null);
   const { phoneNumber } = props.route.params;
-  console.log(props);
+
+  const userPhoneNumber = 1 + phoneNumber;
   const recaptchaVerifier = useRef(null);
   const handleOnSubmit = () => {
     confirmCode();
   };
-  // useEffect(() => {
-  //   const sendVerification = async () => {
-  //     try {
-  //       const phoneProvider = new firebase.auth.PhoneAuthProvider();
-  //       const verificationId = await phoneProvider.verifyPhoneNumber(
-  //         phoneNumber,
-  //         recaptchaVerifier.current
-  //       );
-  //       setVerificationId(verificationId);
-  //     } catch (err) {
-  //       console.log("error message " + err);
-  //     }
-  //   };
-  //   sendVerification();
-  //   return () => {};
-  // }, []);
+  useEffect(() => {
+    const sendVerification = async () => {
+      try {
+        const phoneProvider = new firebase.auth.PhoneAuthProvider();
+        const verificationId = await phoneProvider.verifyPhoneNumber(
+          userPhoneNumber,
+          recaptchaVerifier.current
+        );
+        setVerificationId(verificationId);
+      } catch (err) {
+        console.log("error message " + err);
+      }
+    };
+    sendVerification();
+    return () => {};
+  }, []);
 
   const confirmCode = async () => {
     try {
@@ -66,7 +67,7 @@ function PhoneVerificationPage(props) {
       <AppIcons
         type="Ionicons"
         name="chevron-back"
-        style={{ alignSelf: "left", margin: 10 }}
+        style={{ justifyContent: "flex-start", margin: 10 }}
         size={30}
         onPress={() => props.navigation.pop()}
       />
@@ -75,8 +76,11 @@ function PhoneVerificationPage(props) {
           style={{ flex: 1, justifyContent: "center" }}
           behavior="position"
         >
+          <Text style={{ fontSize: 22, fontWeight: "500" }}>
+            Verify phone number
+          </Text>
           <Text style={{ letterSpacing: 0.5, fontSize: 12 }}>
-            Please enter the code sent to {phoneNumber}
+            Please enter the code sent to +{userPhoneNumber}
           </Text>
           <TextInput
             style={{ width: 300, alignSelf: "center" }}
@@ -84,7 +88,7 @@ function PhoneVerificationPage(props) {
               colors: { underlineColor: "transparent", primary: "black" },
             }}
             mode="outlined"
-            label="Mobile"
+            label="Comfirmation Code"
             autoCapitalize="none"
             keyboardType="phone-pad"
             onChangeText={(code) => setCode(code)}

@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import { getUser } from "../../redux";
 import ExpoFastImage from "expo-fast-image";
 import DismissKeyboard from "../../components/DismissKeyboard";
+// import TextInputMask from "react-native-text-input-mask";
+
 const SignInPage = (props) => {
   console.log("props ", props);
   const [phoneNumber, setPhoneNumber] = useState();
@@ -30,30 +32,33 @@ const SignInPage = (props) => {
         <KeyboardAvoidingView
           style={{
             flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
+            marginTop: 55,
           }}
           behavior="position"
         >
           <Image
             source={require("../../assets/upblack.png")}
             style={{
-              height: 180,
+              height: 150,
               resizeMode: "contain",
               marginBottom: 10,
               alignSelf: "center",
-              marginBottom: 30,
+              marginBottom: 10,
             }}
             alt="app logo"
           />
-
+          <Text
+            style={{ fontSize: 30, fontWeight: "600", textAlign: "center" }}
+          >
+            Sign in
+          </Text>
           <TextInput
             style={{ width: 300, alignSelf: "center" }}
             theme={{
               colors: { underlineColor: "transparent", primary: "black" },
             }}
             mode="outlined"
-            label="Mobile"
+            label="Mobile number"
             autoCapitalize="none"
             keyboardType="phone-pad"
             onChangeText={(number) => setPhoneNumber(number)}
@@ -94,8 +99,6 @@ const SignInPage = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "#f3f3f3",
   },
   loginButton: {
