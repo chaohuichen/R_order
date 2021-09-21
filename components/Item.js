@@ -18,7 +18,8 @@ export default function Item(props) {
           style={{
             textAlign: "center",
             width: 50,
-            backgroundColor: "#ddd",
+            backgroundColor: "#f1f1f1",
+            borderWidth: 0,
             padding: 0,
           }}
           mx={1}

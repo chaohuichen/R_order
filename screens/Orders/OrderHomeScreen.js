@@ -1,4 +1,6 @@
-import React from 'react'
-import TabPages from '../../navigation/TagPages'
+import React from "react";
+import TabPages from "../../navigation/TabPages";
 
-export default ({ navigation }) => <TabPages tabName='OrderHome' navigation={navigation} />
+export default ({ navigation }) => (
+  <TabPages tabName="OrderHome" navigation={navigation} />
+);

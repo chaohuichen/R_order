@@ -15,24 +15,26 @@ import { connect } from "react-redux";
 import { getUser } from "../../redux";
 import ExpoFastImage from "expo-fast-image";
 import DismissKeyboard from "../../components/DismissKeyboard";
-const SignInPage = (props) => {
-  console.log("props ", props);
-  const [phoneNumber, setPhoneNumber] = useState();
-  const handleOnLogin = () => {
-    const user = {
-      userId: 1,
-    };
-    props.fetchData(user);
+import AppIcons from "../../components/AppIcons";
+export default function SignUpPage(props) {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const handleOnSignUp = () => {
+    props.navigation.navigate("PhoneVerificationPage", {
+      phoneNumber,
+    });
   };
   return (
     <SafeAreaView style={styles.container}>
+      <AppIcons
+        type="Ionicons"
+        name="chevron-back"
+        style={{ alignSelf: "left", margin: 10 }}
+        size={30}
+        onPress={() => props.navigation.pop()}
+      />
       <DismissKeyboard>
         <KeyboardAvoidingView
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={{ flex: 1, justifyContent: "center" }}
           behavior="position"
         >
           <Image
@@ -40,9 +42,8 @@ const SignInPage = (props) => {
             style={{
               height: 180,
               resizeMode: "contain",
-              marginBottom: 10,
-              alignSelf: "center",
               marginBottom: 30,
+              alignSelf: "center",
             }}
             alt="app logo"
           />
@@ -59,8 +60,8 @@ const SignInPage = (props) => {
             onChangeText={(number) => setPhoneNumber(number)}
           />
 
-          <TouchableOpacity style={styles.loginButton} onPress={handleOnLogin}>
-            <Text style={styles.loginText}>Sign In</Text>
+          <TouchableOpacity style={styles.loginButton} onPress={handleOnSignUp}>
+            <Text style={styles.loginText}>Sign up</Text>
           </TouchableOpacity>
           <View
             style={{
@@ -70,18 +71,16 @@ const SignInPage = (props) => {
             }}
           >
             <Text style={{ fontSize: 12, alignSelf: "center" }}>
-              Don't have an account?
+              Already have an account?
             </Text>
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate("SignUpPage")}
-            >
+            <TouchableOpacity onPress={() => props.navigation.pop()}>
               <Text
                 style={{
                   textDecorationLine: "underline",
                   fontSize: 12,
                 }}
               >
-                Sign up
+                Sign in
               </Text>
             </TouchableOpacity>
           </View>
@@ -89,7 +88,7 @@ const SignInPage = (props) => {
       </DismissKeyboard>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -116,11 +115,3 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
-
-const mapDispatch = (dispatch) => {
-  return {
-    fetchData: (user) => dispatch(getUser(user)),
-  };
-};
-
-export default connect(null, mapDispatch)(SignInPage);

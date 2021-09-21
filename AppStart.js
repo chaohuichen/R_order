@@ -13,6 +13,8 @@ import NavigationTheme from "./constants/NavigationTheme";
 import { HeaderShownNone, MyScreenOption } from "./navigation/HeaderOptions";
 import HomePage from "./screens/Home/HomePage";
 import { connect } from "react-redux";
+import SignUpPage from "./screens/SignUp/SignUpPage";
+import PhoneVerificationPage from "./screens/Verify/PhoneVerificationPage";
 const Stack = createStackNavigator();
 
 const AppStart = (props) => {
@@ -73,6 +75,16 @@ const AppStart = (props) => {
                 options={HeaderShownNone()}
               />
             )}
+            <Stack.Screen
+              name="SignUpPage"
+              component={SignUpPage}
+              options={HeaderShownNone()}
+            />
+            <Stack.Screen
+              name="PhoneVerificationPage"
+              component={PhoneVerificationPage}
+              options={HeaderShownNone()}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </NativeBaseProvider>
