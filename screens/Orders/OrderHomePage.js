@@ -1,29 +1,44 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { removeUser } from "../../redux";
 import { connect } from "react-redux";
 import Item from "../../components/Item";
 import { ScrollView } from "native-base";
 const OrderHomePage = (props) => {
-  const coffeeData = {};
+  const [count, setCount] = useState([]);
+  const coffeeData = [
+    "Bean 1",
+    "Bean 2",
+    "Bean 3",
+    "Bean 4",
+    "Bean 5",
+    "Bean 6",
+    "Bean 7",
+  ];
 
   const removeReduxUser = () => {
     props.removeUserData();
   };
+  const comfirmOrder = () => {};
   return (
     <ScrollView style={styles.container}>
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+      {coffeeData.map((ele, index) => (
+        <Item name={ele} key={index} />
+      ))}
+
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+        }}
+      >
         <TouchableOpacity style={styles.loginButton} onPress={removeReduxUser}>
           <Text style={{ color: "white", textAlign: "center", fontSize: 12 }}>
             Remove user
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButton} onPress={removeReduxUser}>
+        <TouchableOpacity style={styles.loginButton} onPress={comfirmOrder}>
           <Text style={{ color: "white", textAlign: "center", fontSize: 12 }}>
             Comfirm Order
           </Text>
