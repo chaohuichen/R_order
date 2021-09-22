@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -18,8 +17,9 @@ import DismissKeyboard from "../../components/DismissKeyboard";
 import AppIcons from "../../components/AppIcons";
 // import TextInputMask from "react-native-text-input-mask";
 
-export default function SignUpPage(props) {
+function SignUpPage(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [error, setError] = useState("");
   const handleOnSignUp = () => {
     props.navigation.navigate("PhoneVerificationPage", {
       phoneNumber,
@@ -27,13 +27,15 @@ export default function SignUpPage(props) {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <AppIcons
-        type="Ionicons"
-        name="chevron-back"
-        style={{ alignSelf: "left", margin: 10 }}
-        size={30}
-        onPress={() => props.navigation.pop()}
-      />
+      <View style={{ alignSelf: "left", margin: 10 }}>
+        <AppIcons
+          type="Ionicons"
+          name="chevron-back"
+          size={30}
+          onPress={() => props.navigation.pop()}
+        />
+      </View>
+
       <DismissKeyboard>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
           <Image
@@ -116,3 +118,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+const mapState = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapState, null)(SignUpPage);

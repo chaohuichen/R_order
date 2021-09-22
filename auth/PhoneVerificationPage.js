@@ -9,11 +9,11 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import firebase from "../../API/FirebaseDatabase";
-import { getUser } from "../../redux";
+import firebase from "../API/FirebaseDatabase";
+import { getUser } from "../redux";
 import { connect } from "react-redux";
-import DismissKeyboard from "../../components/DismissKeyboard";
-import AppIcons from "../../components/AppIcons";
+import DismissKeyboard from "../components/DismissKeyboard";
+import AppIcons from "../components/AppIcons";
 function PhoneVerificationPage(props) {
   const [code, setCode] = useState("");
   // const [phoneNumber, setPhoneNumber] = useState("+16469223851");

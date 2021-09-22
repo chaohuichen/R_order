@@ -25,6 +25,7 @@ export default function Item(props) {
           mx={1}
           placeholder="0"
         />
+        <Text></Text>
         <Button
           size="xs"
           styles={styles.button}

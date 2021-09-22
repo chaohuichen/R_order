@@ -11,7 +11,6 @@ import HomePage from "../screens/Home/HomePage";
 import OrderHistoryPage from "../screens/OrdersHistory/OrderHistoryPage";
 import OrderInvoicePage from "../screens/Invoice/OrderInvoicePage";
 import SignInPage from "../screens/SignIn/SignInPage";
-import SignUpPage from "../screens/SignUp/SignUpPage";
 const Stack = createStackNavigator();
 
 export default ({ navigation, tabName }) => {
