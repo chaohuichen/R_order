@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,22 +9,77 @@ import {
   ScrollView,
   SafeAreaView,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { connect } from "react-redux";
 import { getUser } from "../../redux";
-import ExpoFastImage from "expo-fast-image";
 import DismissKeyboard from "../../components/DismissKeyboard";
 // import TextInputMask from "react-native-text-input-mask";
-
+import firebase from "../../API/FirebaseDatabase";
+import { checkPhoneMap } from "../../API/databaseCall";
 const SignInPage = (props) => {
   console.log("props ", props);
-  const [phoneNumber, setPhoneNumber] = useState();
-  const handleOnLogin = () => {
-    const user = {
-      userId: 1,
-    };
-    props.fetchData(user);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [comfirm, setComfirm] = useState(false);
+  const recaptchaVerifier = useRef(null);
+  const [error, setError] = useState();
+  const [verificationCode, setVerificationCode] = useState("123456");
+  const [verificationId, setVerificationId] = useState(null);
+  const userPhoneNumber = 1 + phoneNumber;
+  useEffect(() => {
+    if (userPhoneNumber.length < 11) {
+      setError("please enter correct phone number");
+    } else {
+      setError("");
+    }
+    return () => {};
+  }, []);
+  const handleOnLogin = async () => {
+    const check = await checkPhoneMap(userPhoneNumber);
+    if (check === true && error !== "") {
+      //login
+      sendVerification();
+    } else {
+      //user not register go register page
+      Alert.alert("User not register", "navigate to sign up page", [
+        { text: "OK", onPress: () => props.navigation.navigate("SignUpPage") },
+      ]);
+    }
+    // const user = {
+    //   userId: 1,
+    // };
+    // props.fetchData(user);
+  };
+  const sendVerification = async () => {
+    try {
+      const phoneProvider = new firebase.auth.PhoneAuthProvider();
+      const verificationId = await phoneProvider.verifyPhoneNumber(
+        userPhoneNumber,
+        recaptchaVerifier.current
+      );
+      setVerificationId(verificationId);
+    } catch (err) {
+      console.log("error message " + err);
+    }
+  };
+  const confirmCode = async () => {
+    try {
+      const credential = await firebase.auth.PhoneAuthProvider.credential(
+        verificationId,
+        verificationCode
+      );
+
+      firebase
+        .auth()
+        .signInWithCredential(credential)
+        .then((res) => {
+          props.fetchData(res.user.uid);
+        })
+        .catch((err) => console.log(err));
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -52,21 +107,56 @@ const SignInPage = (props) => {
           >
             Sign in
           </Text>
-          <TextInput
-            style={{ width: 300, alignSelf: "center" }}
-            theme={{
-              colors: { underlineColor: "transparent", primary: "black" },
-            }}
-            mode="outlined"
-            label="Mobile number"
-            autoCapitalize="none"
-            keyboardType="phone-pad"
-            onChangeText={(number) => setPhoneNumber(number)}
-          />
+          {comfirm ? (
+            <>
+              <Text>Enter code sent to +1{phoneNumber}</Text>
 
-          <TouchableOpacity style={styles.loginButton} onPress={handleOnLogin}>
-            <Text style={styles.loginText}>Sign In</Text>
-          </TouchableOpacity>
+              <TextInput
+                style={{ width: 300, alignSelf: "center" }}
+                theme={{
+                  colors: { underlineColor: "transparent", primary: "black" },
+                }}
+                mode="outlined"
+                label="Code"
+                autoCapitalize="none"
+                keyboardType="phone-pad"
+                onChangeText={(code) => setVerificationCode(code)}
+              />
+
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={() => confirmCode()}
+              >
+                <Text style={styles.loginText}>Comfirm</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <Text
+                style={{ color: "red", fontSize: "10", letterSpacing: 0.5 }}
+              >
+                {error}
+              </Text>
+              <TextInput
+                style={{ width: 300, alignSelf: "center" }}
+                theme={{
+                  colors: { underlineColor: "transparent", primary: "black" },
+                }}
+                mode="outlined"
+                label="Mobile number"
+                autoCapitalize="none"
+                keyboardType="phone-pad"
+                onChangeText={(number) => setPhoneNumber(number)}
+              />
+
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={() => handleOnLogin()}
+              >
+                <Text style={styles.loginText}>Sign In</Text>
+              </TouchableOpacity>
+            </>
+          )}
           <View
             style={{
               flexDirection: "row",
@@ -100,6 +190,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f3f3f3",
+    margin: 10,
   },
   loginButton: {
     justifyContent: "center",

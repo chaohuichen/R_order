@@ -1,5 +1,10 @@
 import produce from "immer";
-import { GET_ORDER, REMOVE_ORDER } from "./orderActionTypes";
+import {
+  GET_ORDER,
+  REMOVE_ORDER,
+  ADD_ORDER,
+  CLEAR_ORDER,
+} from "./orderActionTypes";
 
 /**
  * INITIAL STATE
@@ -15,6 +20,8 @@ const orderReducer = produce((draft, action) => {
       return action.order;
     case REMOVE_ORDER:
       draft = defaultOrder;
+      return draft;
+    case ADD_ORDER:
       return draft;
     case CLEAR_ORDER:
       draft = defaultOrder;
