@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   StyleSheet,
   View,
@@ -9,49 +9,59 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { removeUser } from '../../redux'
+import { getOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { Row, ScrollView, Text } from 'native-base'
 import { fontWeight, right, style } from 'styled-system'
 const OrderHomePage = (props) => {
-  const [count, setCount] = useState([])
   const { order } = props
-  //
-  // console.log(order.data)
   const coffeeData = [
     {
-      name: 'Bean 1',
+      name: 'Bean 0',
       size: '3oz',
+      count: 0,
+    },
+    {
+      name: 'Bean 1',
+      size: '5oz',
+      count: 0,
     },
     {
       name: 'Bean 2',
-      size: '5oz',
+      size: '3oz',
+      count: 0,
     },
     {
       name: 'Bean 3',
       size: '3oz',
+      count: 0,
     },
     {
       name: 'Bean 4',
-      size: '3oz',
+      size: '7oz',
+      count: 0,
     },
     {
       name: 'Bean 5',
-      size: '7oz',
+      size: '9oz',
+      count: 0,
     },
     {
       name: 'Bean 6',
-      size: '9oz',
+      size: '2oz',
+      count: 0,
     },
     {
       name: 'Bean 7',
-      size: '2oz',
-    },
-    {
-      name: 'Bean 8',
       size: '8oz',
+      count: 0,
     },
   ]
+  useEffect(() => {
+    props.fetchData(coffeeData)
+    return () => {}
+  }, [])
 
   const removeReduxUser = () => {
     props.removeUserData()
@@ -136,7 +146,7 @@ const styles = StyleSheet.create({
 })
 const mapDispatch = (dispatch) => {
   return {
-    removeUserData: () => dispatch(removeUser()),
+    fetchData: (order) => dispatch(getOrder(order)),
   }
 }
 const mapState = (state) => {

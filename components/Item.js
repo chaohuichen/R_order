@@ -1,21 +1,13 @@
 import React, { useState } from 'react'
 import { Text, Box, View, Button, Input } from 'native-base'
-import { ProgressViewIOSComponent, StyleSheet, TextInput } from 'react-native'
+import { StyleSheet, TextInput } from 'react-native'
 import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 const Item = (props) => {
   const [itemCount, setItemCount] = useState(0)
   const { name, index } = props
-  const addItem = (name, orderIndex) => {
-    console.log('add ', name, ' ', orderIndex)
-    // const index = orderIndex + ''
-  }
-  const removeItem = (name, orderIndex) => {
-    //remove order from
-    // const index = orderIndex + ''
-    console.log('remove ', name, ' ', orderIndex)
-  }
+
   return (
     <Box style={styles.box}>
       <Text fontSize="xl">
