@@ -6,7 +6,12 @@ export default function Item(props) {
   const [itemCount, setItemCount] = useState(0);
   return (
     <Box style={styles.box}>
-      <Text> {props.name}</Text>
+      <Text fontSize="xl">
+        {props.name}
+        {"\n"}
+        <Text sub={true}>{props.size}</Text>
+      </Text>
+
       <View style={styles.actionBox}>
         <Button size="xs" onPress={() => setItemCount(itemCount - 1)}>
           <Text style={{ fontSize: 20, fontWeight: "600" }}> - </Text>
@@ -49,9 +54,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 80,
   },
+
   actionBox: {
     flexDirection: "row",
   },
+
   button: {
     padding: 0,
     margin: 0,
