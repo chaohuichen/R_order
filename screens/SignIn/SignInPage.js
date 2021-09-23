@@ -133,7 +133,7 @@ const SignInPage = (props) => {
           ) : (
             <>
               <Text
-                style={{ color: "red", fontSize: "10", letterSpacing: 0.5 }}
+                style={{ color: "red", fontSize: 10, letterSpacing: 0.5 }}
               >
                 {error}
               </Text>
