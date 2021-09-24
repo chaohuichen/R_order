@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
-import { Text, Box, View, Button, Input } from 'native-base'
-import { StyleSheet, TextInput } from 'react-native'
+import React from 'react'
+import { Text, Box, View } from 'native-base'
+import { StyleSheet } from 'react-native'
 import AppIcons from '../components/AppIcons'
-export default function Item(props) {
-  const [itemCount, setItemCount] = useState(0)
+import { connect } from 'react-redux'
+import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
+const Item = (props) => {
+  const { name, index, count } = props
+
   return (
     <Box style={styles.box}>
       <Text fontSize="xl">
@@ -14,16 +17,16 @@ export default function Item(props) {
 
       <View style={styles.actionBox}>
         <AppIcons
-          onPress={() => setItemCount(itemCount - 1)}
+          onPress={() => props.removeOnOrder(name, index)}
           type="AntDesign"
           name="minus"
           size={25}
           color="black"
         />
 
-        <Text bold>{itemCount}</Text>
+        <Text bold>{count}</Text>
         <AppIcons
-          onPress={() => setItemCount(itemCount + 1)}
+          onPress={() => props.addToOrder(name, index)}
           type="AntDesign"
           name="plus"
           size={25}
@@ -57,3 +60,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 })
+const mapState = (state) => {
+  return {
+    order: state.order,
+  }
+}
+const mapDispatch = (dispatch) => {
+  return {
+    addToOrder: (name, orderIndex) => dispatch(addOrder(name, orderIndex)),
+    removeOnOrder: (name, orderIndex) =>
+      dispatch(removeOrder(name, orderIndex)),
+  }
+}
+export default connect(mapState, mapDispatch)(Item)
