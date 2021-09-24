@@ -29,7 +29,7 @@ const SignInPage = (props) => {
   const userPhoneNumber = 1 + phoneNumber
   useEffect(() => {
     if (userPhoneNumber.length < 11) {
-      setError('please enter correct phone number')
+      // setError('please enter correct phone number')
     } else {
       setError('')
     }
