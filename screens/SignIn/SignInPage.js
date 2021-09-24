@@ -84,7 +84,7 @@ const SignInPage = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <DismissKeyboard>
-        <KeyboardAvoidingView
+        <ScrollView
           style={{
             flex: 1,
             marginTop: 55,
@@ -96,7 +96,6 @@ const SignInPage = (props) => {
             style={{
               height: 150,
               resizeMode: 'contain',
-              marginBottom: 10,
               alignSelf: 'center',
               marginBottom: 10,
             }}
@@ -178,7 +177,7 @@ const SignInPage = (props) => {
               </Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
+        </ScrollView>
       </DismissKeyboard>
     </SafeAreaView>
   )
