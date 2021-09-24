@@ -11,7 +11,7 @@ const AppIcons = (props) => {
   const [iconType, setIconType] = useState(null)
   useEffect(() => {
     if (props.type) {
-      console.log(props.type)
+      // console.log(props.type)
       setIconType(props.type)
     }
   }, [])

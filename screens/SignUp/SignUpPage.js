@@ -12,6 +12,7 @@ import {
 import { TextInput, Button } from "react-native-paper";
 import { connect } from "react-redux";
 import { getUser } from "../../redux";
+import { checkPhoneMap } from "../../API/databaseCall";
 import ExpoFastImage from "expo-fast-image";
 import DismissKeyboard from "../../components/DismissKeyboard";
 import AppIcons from "../../components/AppIcons";
@@ -20,10 +21,19 @@ import AppIcons from "../../components/AppIcons";
 function SignUpPage(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
-  const handleOnSignUp = () => {
-    props.navigation.navigate("PhoneVerificationPage", {
-      phoneNumber,
-    });
+  const userPhoneNumber = 1 + phoneNumber;
+  const handleOnSignUp = async () => {
+    const check = await checkPhoneMap(userPhoneNumber);
+    if (check) {
+      // user already register go login
+      Alert.alert("User already register", "navigate to sign in page", [
+        { text: "OK", onPress: () => props.navigation.pop() },
+      ]);
+    } else {
+      props.navigation.navigate("PhoneVerificationPage", {
+        phoneNumber,
+      });
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
