@@ -1,34 +1,59 @@
+import React, { useState } from 'react'
 import { View } from 'native-base'
-import React from 'react'
 import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
   Modal,
+  KeyboardAvoidingView,
 } from 'react-native'
 import { Text } from 'native-base'
 import { connect } from 'react-redux'
+import { TextInput } from 'react-native-paper'
+import AppIcons from '../../components/AppIcons'
+
 const ConfirmationPage = (props) => {
   const { order } = props
   const [isPlacedOrder, setIsPlacedOrder] = useState(false)
   const filteredOrder = order.filter((item) => item.count !== 0)
-
-  const handleOrderSubmit = () => {
-    //submit order send pdf send email
+  const [email, setEmail] = useState('')
+  const handlePlaceOrder = () => {
+    //submit order send pdf send email send sms
+    setIsPlacedOrder(true)
+  }
+  const onPaySubmition = () => {
+    // payment
+  }
+  const viewPDF = () => {
+    props.navigation.navigate('PDFpage')
   }
   return (
     <SafeAreaView style={styles.container}>
+      <View
+        style={{
+          alignSelf: 'left',
+          paddingTop: '2%',
+        }}
+      >
+        <AppIcons
+          type="Ionicons"
+          name="chevron-back"
+          size={30}
+          onPress={() => props.navigation.pop()}
+        />
+      </View>
       <ScrollView>
         <View
           style={{
             width: '100%',
             alignItems: 'center',
             borderBottomWidth: 1,
+            padding: 10,
             borderBottomColor: 'rgba(211,211,211,0.5)',
           }}
         >
-          <Text>Invoice</Text>
+          <Text style={{ fontSize: 20, fontWeight: '500' }}>Invoice</Text>
         </View>
         {filteredOrder.map((item, index) => (
           <View
@@ -52,14 +77,16 @@ const ConfirmationPage = (props) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => handleOnLogin()}
+        onPress={() => handlePlaceOrder()}
       >
         <Text style={styles.loginText}>Place Order</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.loginButton} onPress={() => viewPDF()}>
+        <Text style={styles.loginText}>View</Text>
       </TouchableOpacity>
       {isPlacedOrder && (
         <Modal
           animationType="slide"
-          //   transparent={true}
           visible={props.visible}
           onRequestClose={() => {
             Alert.alert('Modal has been closed.')
@@ -67,52 +94,43 @@ const ConfirmationPage = (props) => {
           }}
           presentationStyle={'pageSheet'}
         >
-          <View style={styles.container}>
-            <Text
-              style={[
-                textStyle,
-                { color: 'black', fontWeight: '600', fontSize: 28 },
-              ]}
-            >
-              Enter Access code
-            </Text>
-            <TextInput
-              mode="outlined"
-              label="Code"
-              onChangeText={(code) => setAccessCode(code)}
-              theme={{
-                colors: { primary: 'black', underlineColor: 'transparent' },
-              }}
+          <ScrollView>
+            <View style={{ alignSelf: 'left', padding: '2%' }}>
+              <AppIcons
+                type="Ionicons"
+                name="close"
+                size={30}
+                onPress={() => setIsPlacedOrder(false)}
+              />
+            </View>
+            <View
               style={{
-                width: 311,
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-            />
-            <Button
-              style={[
-                buttonViewStyle,
-                {
-                  alignSelf: 'center',
-                  backgroundColor: MainColors.primary,
-                },
-              ]}
             >
-              <Text style={textStyle}>Access Code</Text>
-            </Button>
-            <Button
-              onPress={() => {
-                props.setIsVisible(!props.visible)
-              }}
-              style={[
-                buttonViewStyle,
-                {
-                  alignSelf: 'center',
-                  backgroundColor: MainColors.primary,
-                },
-              ]}
-            >
-              <Text style={textStyle}>Go back</Text>
-            </Button>
-          </View>
+              <Text style={{ color: 'black', fontWeight: '600', fontSize: 28 }}>
+                Enter email address
+              </Text>
+              <TextInput
+                mode="outlined"
+                label="Email"
+                onChangeText={(email) => setEmail(email)}
+                style={{ width: 300, alignSelf: 'center' }}
+                theme={{
+                  colors: { underlineColor: 'transparent', primary: 'black' },
+                }}
+              />
+
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={() => onPaySubmition()}
+              >
+                <Text style={styles.loginText}>Pay</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </Modal>
       )}
     </SafeAreaView>
