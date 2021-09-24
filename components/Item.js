@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import { Text, Box, View, Button, Input } from 'native-base'
-import { StyleSheet, TextInput } from 'react-native'
+import React from 'react'
+import { Text, Box, View } from 'native-base'
+import { StyleSheet } from 'react-native'
 import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 const Item = (props) => {
-  const [itemCount, setItemCount] = useState(0)
   const { name, index, count } = props
-  console.log('count ', props)
+
   return (
     <Box style={styles.box}>
       <Text fontSize="xl">
@@ -62,10 +61,8 @@ const styles = StyleSheet.create({
   },
 })
 const mapState = (state) => {
-  console.log('state jsdlkfjsdklfj', state.order.count)
   return {
     order: state.order,
-    count: state.order.count,
   }
 }
 const mapDispatch = (dispatch) => {

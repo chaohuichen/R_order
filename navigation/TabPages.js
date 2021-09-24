@@ -1,38 +1,39 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
 import {
   MyScreenOption,
   HeaderTitleOnly,
   HeaderShownNone,
-} from "./HeaderOptions";
+} from './HeaderOptions'
 // CoffeeHome
-import OrderPage from "../screens/Orders/OrderHomePage";
-import HomePage from "../screens/Home/HomePage";
-import OrderHistoryPage from "../screens/OrdersHistory/OrderHistoryPage";
-import OrderInvoicePage from "../screens/Invoice/OrderInvoicePage";
-import SignInPage from "../screens/SignIn/SignInPage";
-const Stack = createStackNavigator();
+import OrderPage from '../screens/Orders/OrderHomePage'
+import HomePage from '../screens/Home/HomePage'
+import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
+import OrderInvoicePage from '../screens/Invoice/OrderInvoicePage'
+import SignInPage from '../screens/SignIn/SignInPage'
+import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
+const Stack = createStackNavigator()
 
 export default ({ navigation, tabName }) => {
-  const headerTitle = "Fillup Coffee";
+  const headerTitle = 'Fillup Coffee'
   // if (!useIsFocused()) {
   //   return <></>;
   // }
 
   return (
     <Stack.Navigator screenOptions={MyScreenOption}>
-      {tabName === "OrderHome" && (
+      {tabName === 'OrderHome' && (
         <Stack.Screen
           name="OrderPage"
           component={OrderPage}
-          options={HeaderTitleOnly("Fillup Supply")}
+          options={HeaderTitleOnly('Fillup Supply')}
         />
       )}
-      {tabName === "OrderHistoryPage" && (
+      {tabName === 'OrderHistoryPage' && (
         <Stack.Screen
           name="OrderHistoryPage"
           component={OrderHistoryPage}
-          options={HeaderTitleOnly("Fillup Supply")}
+          options={HeaderTitleOnly('Fillup Supply')}
         />
       )}
       <Stack.Screen
@@ -50,6 +51,11 @@ export default ({ navigation, tabName }) => {
         component={OrderInvoicePage}
         options={HeaderShownNone()}
       />
+      <Stack.Screen
+        name="ConfirmationPage"
+        component={ConfirmationPage}
+        options={HeaderShownNone()}
+      />
     </Stack.Navigator>
-  );
-};
+  )
+}

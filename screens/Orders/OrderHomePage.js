@@ -65,17 +65,25 @@ const OrderHomePage = (props) => {
   const removeReduxUser = () => {
     props.removeUserData()
   }
-  const comfirmOrder = () => {}
+  const confirmOrder = () => {
+    props.navigation.navigate('ConfirmationPage')
+  }
   const renderItem = ({ item, index }) => {
     return (
-      <Item name={item.name} size={item.size} key={index} index={index}></Item>
+      <Item
+        name={item.name}
+        size={item.size}
+        key={index}
+        index={index}
+        count={item.count}
+      />
     )
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={coffeeData}
+        data={order}
         numColumns={1}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
@@ -93,7 +101,7 @@ const OrderHomePage = (props) => {
         <TouchableOpacity style={styles.loginButton} onPress={removeReduxUser}>
           <Text style={styles.loginButtonText}>Remove user</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButton} onPress={comfirmOrder}>
+        <TouchableOpacity style={styles.loginButton} onPress={confirmOrder}>
           <Text style={styles.loginButtonText}>Comfirm Order</Text>
         </TouchableOpacity>
       </View>
@@ -144,7 +152,6 @@ const mapDispatch = (dispatch) => {
   }
 }
 const mapState = (state) => {
-  console.log('state jsdlkfjsdklfj', state.order.count)
   return {
     order: state.order,
     count: state.order.count,
