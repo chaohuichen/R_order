@@ -72,14 +72,9 @@ function PhoneVerificationPage(props) {
         onPress={() => props.navigation.pop()}
       />
       <DismissKeyboard>
-        <KeyboardAvoidingView
-          style={{ flex: 1, justifyContent: "center" }}
-          behavior="position"
-        >
-          <Text style={{ fontSize: 22, fontWeight: "500" }}>
-            Verify phone number
-          </Text>
-          <Text style={{ letterSpacing: 0.5, fontSize: 12 }}>
+        <KeyboardAvoidingView style={styles.keyBoard} behavior="position">
+          <Text style={styles.header}>Verify phone number</Text>
+          <Text style={styles.subHeader}>
             Please enter the code sent to +{userPhoneNumber}
           </Text>
           <TextInput
@@ -109,6 +104,20 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 15,
     justifyContent: "center",
+  },
+  keyBoard: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  header: {
+    fontSize: 22,
+    fontWeight: "500",
+    paddingHorizontal: "7%",
+  },
+  subHeader: {
+    letterSpacing: 0.5,
+    fontSize: 12,
+    paddingHorizontal: "7%",
   },
   comfirmButton: {
     justifyContent: "center",
