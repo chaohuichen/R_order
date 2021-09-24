@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 20,
-    paddingRight: 45,
+    paddingRight: '10%',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(211,211,211,0.5)',
   },
@@ -126,6 +126,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+
+  // productDetailsQuantity: {
+  //   marginLeft: 40,
+  //   fontWeight: "bold",
+  // },
 
   buttonView: {
     flexDirection: 'row',

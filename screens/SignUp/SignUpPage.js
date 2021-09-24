@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -8,36 +8,42 @@ import {
   ScrollView,
   SafeAreaView,
   KeyboardAvoidingView,
-} from "react-native";
-import { TextInput, Button } from "react-native-paper";
-import { connect } from "react-redux";
-import { getUser } from "../../redux";
-import { checkPhoneMap } from "../../API/databaseCall";
-import ExpoFastImage from "expo-fast-image";
-import DismissKeyboard from "../../components/DismissKeyboard";
-import AppIcons from "../../components/AppIcons";
+} from 'react-native'
+import { TextInput, Button } from 'react-native-paper'
+import { connect } from 'react-redux'
+import { getUser } from '../../redux'
+import { checkPhoneMap } from '../../API/databaseCall'
+import ExpoFastImage from 'expo-fast-image'
+import DismissKeyboard from '../../components/DismissKeyboard'
+import AppIcons from '../../components/AppIcons'
+import { background, backgroundColor } from 'styled-system'
 // import TextInputMask from "react-native-text-input-mask";
 
 function SignUpPage(props) {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [error, setError] = useState("");
-  const userPhoneNumber = 1 + phoneNumber;
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [error, setError] = useState('')
+  const userPhoneNumber = 1 + phoneNumber
   const handleOnSignUp = async () => {
-    const check = await checkPhoneMap(userPhoneNumber);
+    const check = await checkPhoneMap(userPhoneNumber)
     if (check) {
       // user already register go login
-      Alert.alert("User already register", "navigate to sign in page", [
-        { text: "OK", onPress: () => props.navigation.pop() },
-      ]);
+      Alert.alert('User already register', 'navigate to sign in page', [
+        { text: 'OK', onPress: () => props.navigation.pop() },
+      ])
     } else {
-      props.navigation.navigate("PhoneVerificationPage", {
+      props.navigation.navigate('PhoneVerificationPage', {
         phoneNumber,
-      });
+      })
     }
-  };
+  }
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ alignSelf: "left", margin: 10 }}>
+      <View
+        style={{
+          alignSelf: 'left',
+          paddingTop: '2%',
+        }}
+      >
         <AppIcons
           type="Ionicons"
           name="chevron-back"
@@ -47,25 +53,31 @@ function SignUpPage(props) {
       </View>
 
       <DismissKeyboard>
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
+        <ScrollView
+          style={{
+            flex: 1,
+            marginTop: 25,
+          }}
+        >
           <Image
-            source={require("../../assets/upblack.png")}
+            source={require('../../assets/upblack.png')}
             style={{
               height: 150,
-              resizeMode: "contain",
+              resizeMode: 'contain',
+              alignSelf: 'center',
               marginBottom: 10,
             }}
             alt="app logo"
           />
           <Text
-            style={{ fontSize: 30, fontWeight: "600", textAlign: "center" }}
+            style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
           >
             Sign Up
           </Text>
           <TextInput
-            style={{ width: 300, alignSelf: "center" }}
+            style={{ width: 300, alignSelf: 'center' }}
             theme={{
-              colors: { underlineColor: "transparent", primary: "black" },
+              colors: { underlineColor: 'transparent', primary: 'black' },
             }}
             mode="outlined"
             label="Mobile number"
@@ -79,18 +91,18 @@ function SignUpPage(props) {
           </TouchableOpacity>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
+              flexDirection: 'row',
+              justifyContent: 'center',
               marginTop: 5,
             }}
           >
-            <Text style={{ fontSize: 12, alignSelf: "center" }}>
+            <Text style={{ fontSize: 12, alignSelf: 'center' }}>
               Already have an account?
             </Text>
             <TouchableOpacity onPress={() => props.navigation.pop()}>
               <Text
                 style={{
-                  textDecorationLine: "underline",
+                  textDecorationLine: 'underline',
                   fontSize: 12,
                 }}
               >
@@ -98,41 +110,41 @@ function SignUpPage(props) {
               </Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
+        </ScrollView>
       </DismissKeyboard>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "#f3f3f3",
+    backgroundColor: '#f3f3f3',
+    margin: 10,
   },
   loginButton: {
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 5,
-    backgroundColor: "black",
+    backgroundColor: 'black',
     opacity: 0.8,
     width: 300,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: 10,
   },
   loginText: {
-    color: "white",
-    justifyContent: "center",
-    textAlign: "center",
+    color: 'white',
+    justifyContent: 'center',
+    textAlign: 'center',
     fontSize: 20,
   },
-});
+})
 
 const mapState = (state) => {
   return {
     user: state.user,
-  };
-};
+  }
+}
 
-export default connect(mapState, null)(SignUpPage);
+export default connect(mapState, null)(SignUpPage)
