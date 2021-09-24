@@ -69,16 +69,16 @@ const AppStart = (props) => {
                 />
               </>
             ) : (
+              // <Stack.Screen
+              //   name="HomePage"
+              //   component={HomePage}
+              //   options={HeaderShownNone()}
+              // />
               <Stack.Screen
-                name="HomePage"
-                component={HomePage}
+                name="BottomTabNavigator"
+                component={BottomTabNavigator}
                 options={HeaderShownNone()}
               />
-              //  <Stack.Screen
-              //     name="BottomTabNavigator"
-              //     component={BottomTabNavigator}
-              //     options={HeaderShownNone()}
-              //   />
             )}
             <Stack.Screen
               name="SignUpPage"

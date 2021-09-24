@@ -19,7 +19,6 @@ import DismissKeyboard from '../../components/DismissKeyboard'
 import firebase from '../../API/FirebaseDatabase'
 import { checkPhoneMap } from '../../API/databaseCall'
 const SignInPage = (props) => {
-  console.log('props ', props)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [comfirm, setComfirm] = useState(false)
   const recaptchaVerifier = useRef(null)
