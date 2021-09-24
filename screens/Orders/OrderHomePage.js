@@ -12,8 +12,7 @@ import { removeUser } from '../../redux'
 import { getOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
-import { Row, ScrollView, Text } from 'native-base'
-import { fontWeight, right, style } from 'styled-system'
+import { Text } from 'native-base'
 const OrderHomePage = (props) => {
   const { order } = props
   const coffeeData = [
@@ -83,12 +82,8 @@ const OrderHomePage = (props) => {
         ListHeaderComponent={() => {
           return (
             <View style={styles.titleContainer}>
-              <TouchableOpacity>
-                <Text style={styles.productDetails}>Product</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={styles.productDetails}>Quanitity</Text>
-              </TouchableOpacity>
+              <Text style={styles.productDetails}>Product</Text>
+              <Text style={styles.productDetails}>Quanitity</Text>
             </View>
           )
         }}
@@ -109,7 +104,6 @@ const OrderHomePage = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: '#fff',
   },
   titleContainer: {
@@ -150,8 +144,10 @@ const mapDispatch = (dispatch) => {
   }
 }
 const mapState = (state) => {
+  console.log('state jsdlkfjsdklfj', state.order.count)
   return {
     order: state.order,
+    count: state.order.count,
   }
 }
 export default connect(mapState, mapDispatch)(OrderHomePage)

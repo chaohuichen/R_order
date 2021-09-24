@@ -6,8 +6,8 @@ import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 const Item = (props) => {
   const [itemCount, setItemCount] = useState(0)
-  const { name, index } = props
-
+  const { name, index, count } = props
+  console.log('count ', props)
   return (
     <Box style={styles.box}>
       <Text fontSize="xl">
@@ -17,31 +17,22 @@ const Item = (props) => {
       </Text>
 
       <View style={styles.actionBox}>
-        <Button size="xs" onPress={() => props.removeOnOrder(name, index)}>
-          <Text style={{ fontSize: 20, fontWeight: '600' }}> - </Text>
-        </Button>
-        <Input
-          variant="outline"
-          size="xs"
-          value={itemCount + ''}
-          style={{
-            textAlign: 'center',
-            width: 50,
-            backgroundColor: '#f1f1f1',
-            borderWidth: 0,
-            padding: 0,
-          }}
-          mx={1}
-          placeholder="0"
+        <AppIcons
+          onPress={() => props.removeOnOrder(name, index)}
+          type="AntDesign"
+          name="minus"
+          size={25}
+          color="black"
         />
-        <Text></Text>
-        <Button
-          size="xs"
-          styles={styles.button}
+
+        <Text bold>{count}</Text>
+        <AppIcons
           onPress={() => props.addToOrder(name, index)}
-        >
-          <Text style={{ fontSize: 20, fontWeight: '600' }}> + </Text>
-        </Button>
+          type="AntDesign"
+          name="plus"
+          size={25}
+          color="black"
+        />
       </View>
     </Box>
   )
@@ -52,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderBottomColor: 'rgba(211,211,211,0.5)',
     padding: 20,
     width: '100%',
@@ -60,15 +51,23 @@ const styles = StyleSheet.create({
   },
 
   actionBox: {
+    width: '35%',
     flexDirection: 'row',
-  },
-
-  button: {
-    padding: 0,
-    margin: 0,
+    paddingVertical: 5,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 2,
+    borderRadius: 5,
   },
 })
-
+const mapState = (state) => {
+  console.log('state jsdlkfjsdklfj', state.order.count)
+  return {
+    order: state.order,
+    count: state.order.count,
+  }
+}
 const mapDispatch = (dispatch) => {
   return {
     addToOrder: (name, orderIndex) => dispatch(addOrder(name, orderIndex)),
@@ -76,5 +75,4 @@ const mapDispatch = (dispatch) => {
       dispatch(removeOrder(name, orderIndex)),
   }
 }
-
-export default connect(null, mapDispatch)(Item)
+export default connect(mapState, mapDispatch)(Item)

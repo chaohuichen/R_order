@@ -10,7 +10,7 @@ import {
  * INITIAL STATE
  */
 const defaultOrder = {
-  orderData: [],
+  order: [],
 }
 /**
  * REDUCER
@@ -21,7 +21,7 @@ const orderReducer = produce((draft, action) => {
       // draft = action.user
       return action.order
     case REMOVE_ORDER:
-      console.log('draft 1 ', draft[action.orderIndex])
+      console.log('draft 1 ', draft)
       // console.log('1 draft ', draft)
       // console.log('action ', action.order, ' index ', action.orderIndex)
       // draft.map((item, index) => {
@@ -38,15 +38,12 @@ const orderReducer = produce((draft, action) => {
         draft[action.orderIndex].count -= 1
       }
 
-      console.log('draft 2 ', draft[action.orderIndex])
+      console.log('draft 2 ', draft)
       // console.log('2 draft ', draft)
       // console.log(' action ', action)
 
       return draft
     case ADD_ORDER:
-      console.log('redux add order')
-      console.log(' action ', action)
-      console.log('action ', action.order, ' index ', action.orderIndex)
       if (draft[action.orderIndex].count >= 20) {
       } else {
         draft[action.orderIndex].count += 1
