@@ -1,32 +1,71 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, Box, View } from 'native-base'
 import { StyleSheet } from 'react-native'
 import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 const Item = (props) => {
-  const { name, index, count } = props
+  const { name, count, description, size, allOrder } = props
+  const [curCount, setCurCount] = useState(0)
+  const order = {
+    name,
+    count,
+    description,
+    size,
+  }
+  const remove = () => {
+    props.removeOnOrder(order)
+    console.log('remove')
+  }
+  const add = () => {
+    props.addToOrder(order)
+    console.log('add')
+  }
+
+  useEffect(() => {
+    if (allOrder.order && allOrder.order.length > 0) {
+      console.log(allOrder)
+      const isOrderFound = allOrder.order.find(
+        (myOrder) => myOrder.name === name
+      )
+      if (isOrderFound) {
+        const orderFound = allOrder.order.map((myOrder) => {
+          if (myOrder.name === name) {
+            const orderCopy = { ...myOrder }
+            setCurCount(orderCopy.count)
+            return orderCopy
+          }
+          return orderFound
+        })
+      } else {
+        setCurCount(0)
+      }
+    } else {
+      setCurCount(0)
+    }
+    return () => {}
+  }, [allOrder.order])
 
   return (
     <Box style={styles.box}>
       <Text fontSize="xl">
-        {props.name}
+        {name}
         {'\n'}
-        <Text sub={true}>{props.size}</Text>
+        <Text sub={true}>{description}</Text>
       </Text>
 
       <View style={styles.actionBox}>
         <AppIcons
-          onPress={() => props.removeOnOrder(name, index)}
+          onPress={() => remove()}
           type="AntDesign"
           name="minus"
           size={25}
           color="black"
         />
 
-        <Text bold>{count}</Text>
+        <Text bold>{curCount}</Text>
         <AppIcons
-          onPress={() => props.addToOrder(name, index)}
+          onPress={() => add()}
           type="AntDesign"
           name="plus"
           size={25}
@@ -62,7 +101,8 @@ const styles = StyleSheet.create({
 })
 const mapState = (state) => {
   return {
-    order: state.order,
+    allOrder: state.order,
+    itemCount: state.order.count,
   }
 }
 const mapDispatch = (dispatch) => {

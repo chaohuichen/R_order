@@ -37,16 +37,7 @@ export default ({ navigation, tabName }) => {
           options={HeaderTitleOnly('Fillup Supply')}
         />
       )}
-      <Stack.Screen
-        name="SignInPage"
-        component={SignInPage}
-        options={HeaderShownNone()}
-      />
-      <Stack.Screen
-        name="HomePage"
-        component={HomePage}
-        options={HeaderShownNone()}
-      />
+
       <Stack.Screen
         name="OrderInvoicePage"
         component={OrderInvoicePage}

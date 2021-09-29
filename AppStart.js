@@ -61,13 +61,11 @@ const AppStart = (props) => {
         <NavigationContainer theme={NavigationTheme}>
           <Stack.Navigator screenOptions={MyScreenOption}>
             {user.userId ? (
-              <>
-                <Stack.Screen
-                  name="BottomTabNavigator"
-                  component={BottomTabNavigator}
-                  options={HeaderShownNone()}
-                />
-              </>
+              <Stack.Screen
+                name="BottomTabNavigator"
+                component={BottomTabNavigator}
+                options={HeaderShownNone()}
+              />
             ) : (
               // <Stack.Screen
               //   name="HomePage"

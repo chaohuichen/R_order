@@ -14,9 +14,9 @@ import { TextInput } from 'react-native-paper'
 import AppIcons from '../../components/AppIcons'
 
 const ConfirmationPage = (props) => {
-  const { order } = props
+  const { allOrder } = props
+
   const [isPlacedOrder, setIsPlacedOrder] = useState(false)
-  const filteredOrder = order.filter((item) => item.count !== 0)
   const [email, setEmail] = useState('')
   const handlePlaceOrder = () => {
     //submit order send pdf send email send sms
@@ -55,7 +55,7 @@ const ConfirmationPage = (props) => {
         >
           <Text style={{ fontSize: 20, fontWeight: '500' }}>Invoice</Text>
         </View>
-        {filteredOrder.map((item, index) => (
+        {allOrder.order.map((item, index) => (
           <View
             key={index}
             style={{
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
 })
 const mapState = (state) => {
   return {
-    order: state.order,
+    allOrder: state.order,
   }
 }
 

@@ -21,20 +21,65 @@ const orderReducer = produce((draft, action) => {
       // draft = action.user
       return action.order
     case REMOVE_ORDER:
-      if (draft[action.orderIndex].count <= 0) {
+      const isOrder = draft.order.find(
+        (order) => order.name === action.order.name
+      )
+      // if (action.order.count - 1 === 0) {
+      //   return (draft = draft.order.filter(
+      //     (order) => order.name !== action.order.name
+      //   ))
+      // }
+      if (isOrder) {
+        const orderFound = draft.order.map((singleOrder) => {
+          if (singleOrder.name === action.order.name) {
+            const copySingleOrder = { ...singleOrder }
+            copySingleOrder.count--
+            if (copySingleOrder.count > 0) {
+              return copySingleOrder
+            }
+            // if (action.order.count - 1 === 0) {
+            //   return (draft = draft.order.filter(
+            //     (order) => order.name !== action.order.name
+            //   ))
+            // }
+          }
+          return singleOrder
+        })
+
+        // console.log('- ', draft)
+        draft.order = orderFound
+        console.log('order..... ', orderFound)
+
+        return draft
       } else {
-        draft[action.orderIndex].count -= 1
+        return draft
       }
-      return draft
     case ADD_ORDER:
-      if (draft[action.orderIndex].count >= 20) {
+      const isOrderFound = draft.order.find(
+        (order) => order.name === action.order.name
+      )
+      if (isOrderFound) {
+        const orderFound = draft.order.map((singleOrder) => {
+          if (singleOrder.name === action.order.name) {
+            const copySingleOrder = { ...singleOrder }
+            if (copySingleOrder.count < 21) {
+              copySingleOrder.count++
+            }
+            return copySingleOrder
+          }
+          return singleOrder
+        })
+        draft.order = orderFound
+        console.log('order ', orderFound)
+        return draft
       } else {
-        draft[action.orderIndex].count += 1
+        // console.log('count ', action.order.count + 1)
+        action.order.count += 1
+        draft.order.push(action.order)
+        return draft
       }
-      // console.log('action ', action.name, ' ', action.index)
-      return draft
     case CLEAR_ORDER:
-      draft = defaultOrder
+      return defaultOrder
     default: {
       return draft
     }
