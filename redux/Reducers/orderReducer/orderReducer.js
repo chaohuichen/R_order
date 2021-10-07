@@ -24,36 +24,31 @@ const orderReducer = produce((draft, action) => {
       const isOrder = draft.order.find(
         (order) => order.name === action.order.name
       )
-      // if (action.order.count - 1 === 0) {
-      //   return (draft = draft.order.filter(
-      //     (order) => order.name !== action.order.name
-      //   ))
-      // }
+      let count = 0
       if (isOrder) {
-        const orderFound = draft.order.map((singleOrder) => {
+        const orderFound = draft.order.map((singleOrder, index) => {
           if (singleOrder.name === action.order.name) {
             const copySingleOrder = { ...singleOrder }
             copySingleOrder.count--
+            count = copySingleOrder.count
             if (copySingleOrder.count > 0) {
               return copySingleOrder
             }
-            // if (action.order.count - 1 === 0) {
-            //   return (draft = draft.order.filter(
-            //     (order) => order.name !== action.order.name
-            //   ))
-            // }
           }
           return singleOrder
         })
-
-        // console.log('- ', draft)
-        draft.order = orderFound
-        console.log('order..... ', orderFound)
-
-        return draft
-      } else {
-        return draft
+        if (count === 0) {
+          draft.order = draft.order.filter(
+            (myOrder) => myOrder.name !== action.order.name
+          )
+          return draft
+        } else {
+          draft.order = orderFound
+          return draft
+        }
       }
+      return draft
+
     case ADD_ORDER:
       const isOrderFound = draft.order.find(
         (order) => order.name === action.order.name
@@ -70,10 +65,8 @@ const orderReducer = produce((draft, action) => {
           return singleOrder
         })
         draft.order = orderFound
-        console.log('order ', orderFound)
         return draft
       } else {
-        // console.log('count ', action.order.count + 1)
         action.order.count += 1
         draft.order.push(action.order)
         return draft

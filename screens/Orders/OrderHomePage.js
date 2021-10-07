@@ -56,7 +56,6 @@ const OrderHomePage = (props) => {
   }
   const resetData = () => {
     props.resetOrder()
-    console.log(props.order)
   }
 
   return (

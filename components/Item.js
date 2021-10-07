@@ -15,16 +15,13 @@ const Item = (props) => {
   }
   const remove = () => {
     props.removeOnOrder(order)
-    console.log('remove')
   }
   const add = () => {
     props.addToOrder(order)
-    console.log('add')
   }
-
+  // find order name base on name pass in from order home page and update order count
   useEffect(() => {
     if (allOrder.order && allOrder.order.length > 0) {
-      console.log(allOrder)
       const isOrderFound = allOrder.order.find(
         (myOrder) => myOrder.name === name
       )
@@ -33,12 +30,9 @@ const Item = (props) => {
           if (myOrder.name === name) {
             const orderCopy = { ...myOrder }
             setCurCount(orderCopy.count)
-            return orderCopy
           }
           return orderFound
         })
-      } else {
-        setCurCount(0)
       }
     } else {
       setCurCount(0)
