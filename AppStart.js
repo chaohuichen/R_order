@@ -10,11 +10,17 @@ import { NativeBaseProvider } from 'native-base'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import NavigationTheme from './constants/NavigationTheme'
-import { HeaderShownNone, MyScreenOption } from './navigation/HeaderOptions'
+import {
+  HeaderShownNone,
+  MyScreenOption,
+  HeaderTitleOnly,
+  HeaderShownTrue,
+} from './navigation/HeaderOptions'
 import HomePage from './screens/Home/HomePage'
 import { connect } from 'react-redux'
 import SignUpPage from './screens/SignUp/SignUpPage'
 import PhoneVerificationPage from './auth/PhoneVerificationPage'
+import SignInPage from './screens/SignIn/SignInPage'
 const Stack = createStackNavigator()
 
 const AppStart = (props) => {
@@ -68,8 +74,8 @@ const AppStart = (props) => {
               />
             ) : (
               // <Stack.Screen
-              //   name="HomePage"
-              //   component={HomePage}
+              //   name="SignInPage"
+              //   component={SignInPage}
               //   options={HeaderShownNone()}
               // />
               <Stack.Screen
@@ -78,15 +84,16 @@ const AppStart = (props) => {
                 options={HeaderShownNone()}
               />
             )}
+
             <Stack.Screen
               name="SignUpPage"
               component={SignUpPage}
-              options={HeaderShownNone()}
+              options={HeaderShownTrue('')}
             />
             <Stack.Screen
               name="PhoneVerificationPage"
               component={PhoneVerificationPage}
-              options={HeaderShownNone()}
+              options={HeaderShownTrue('')}
             />
           </Stack.Navigator>
         </NavigationContainer>

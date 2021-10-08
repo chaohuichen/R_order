@@ -103,12 +103,12 @@ const OrderHomePage = (props) => {
         }}
       />
       <View style={styles.buttonView}>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.loginButton}
           onPress={() => removeReduxUser()}
         >
           <Text style={styles.loginButtonText}>Remove user</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => confirmOrder()}
@@ -161,6 +161,7 @@ const mapDispatch = (dispatch) => {
   return {
     fetchData: (order) => dispatch(getOrder(order)),
     resetOrder: () => dispatch(clearOrder()),
+    removeUserData: () => dispatch(removeUser()),
   }
 }
 const mapState = (state) => {

@@ -39,6 +39,15 @@ export const HeaderShownNone = () => {
     headerShown: false,
   }
 }
+export const HeaderShownTrue = () => {
+  return {
+    title: '',
+    headerBackTitleVisible: false,
+    headerTransparent: true,
+    // headerStyle: { backgroundColor: 'transparent', position: 'absolute' },
+    headerTintColor: 'black',
+  }
+}
 
 export const slideUpHeader = (title = '') => {
   return {

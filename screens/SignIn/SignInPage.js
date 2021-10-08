@@ -84,9 +84,10 @@ const SignInPage = (props) => {
     <SafeAreaView style={styles.container}>
       <DismissKeyboard>
         <ScrollView
-          style={{
+          contentContainerStyle={{
             flex: 1,
-            marginTop: 55,
+            marginTop: 100,
+            alignItems: 'center',
           }}
           behavior="position"
         >
