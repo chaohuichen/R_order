@@ -7,17 +7,22 @@ import {
   TouchableOpacity,
   Modal,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  SectionList,
 } from 'react-native'
 import { Text } from 'native-base'
 import { connect } from 'react-redux'
 import { TextInput } from 'react-native-paper'
 import AppIcons from '../../components/AppIcons'
-
+import ComfirmationPicker from './ComfirmationPicker'
+import Item from '../../components/Item'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
 
   const [isPlacedOrder, setIsPlacedOrder] = useState(false)
   const [email, setEmail] = useState('')
+  console.log('all order ', allOrder)
+  console.log('all order order ', allOrder.order)
   const handlePlaceOrder = () => {
     //submit order send pdf send email send sms
     setIsPlacedOrder(true)
@@ -25,36 +30,73 @@ const ConfirmationPage = (props) => {
   const onPaySubmition = () => {
     // payment
   }
-  const viewPDF = () => {
-    props.navigation.navigate('PDFpage')
-  }
-  return (
-    <SafeAreaView style={styles.container}>
+  const renderItem = ({ item, index }) => {
+    return (
       <View
+        key={index}
         style={{
-          alignSelf: 'left',
-          paddingTop: '2%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          padding: 20,
+          borderBottomWidth: 1,
+          borderBottomColor: 'rgba(211,211,211,0.5)',
         }}
       >
-        <AppIcons
-          type="Ionicons"
-          name="chevron-back"
-          size={30}
-          onPress={() => props.navigation.pop()}
-        />
+        <Text>
+          {item.name}
+          {'\n'}
+          <Text sub={true}>{item.size}</Text>
+        </Text>
+        <Text>{item.count}</Text>
       </View>
-      <ScrollView>
+    )
+  }
+  return (
+    <SectionList
+      style={{ flex: 1 }}
+      sections={[]}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => item + index}
+      renderSectionHeader={() => (
         <View
           style={{
-            width: '100%',
-            alignItems: 'center',
+            padding: 20,
+            borderBottomColor: 'rgba(221,221,221,0.5)',
             borderBottomWidth: 1,
-            padding: 10,
-            borderBottomColor: 'rgba(211,211,211,0.5)',
+            flex: 1,
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: '500' }}>Invoice</Text>
+          <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
+          <TouchableOpacity
+            style={{
+              width: 50,
+              height: 30,
+              backgroundColor: 'black',
+              borderRadius: 3,
+              justifyContent: 'center',
+            }}
+            onPress={() => resetData()}
+          >
+            <Text style={styles.loginButtonText}>Clear </Text>
+          </TouchableOpacity>
         </View>
+      )}
+      ListHeaderComponent={() => {
+        return (
+          <>
+            <ComfirmationPicker />
+          </>
+        )
+      }}
+    >
+      <View style={{ flex: 3 }}>
+        <Text style={{ marginLeft: 20, fontWeight: '600', fontSize: 30 }}>
+          Items
+        </Text>
+
         {allOrder.order.map((item, index) => (
           <View
             key={index}
@@ -74,16 +116,17 @@ const ConfirmationPage = (props) => {
             <Text>{item.count}</Text>
           </View>
         ))}
-      </ScrollView>
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => handlePlaceOrder()}
-      >
-        <Text style={styles.loginText}>Place Order</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.loginButton} onPress={() => viewPDF()}>
-        <Text style={styles.loginText}>View</Text>
-      </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => handlePlaceOrder()}
+        >
+          <Text style={styles.loginText}>Place Order</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.loginButton} onPress={() => viewPDF()}>
+          <Text style={styles.loginText}>View</Text>
+        </TouchableOpacity>
+      </View>
       {isPlacedOrder && (
         <Modal
           animationType="slide"
@@ -133,7 +176,7 @@ const ConfirmationPage = (props) => {
           </ScrollView>
         </Modal>
       )}
-    </SafeAreaView>
+    </SectionList>
   )
 }
 const styles = StyleSheet.create({
