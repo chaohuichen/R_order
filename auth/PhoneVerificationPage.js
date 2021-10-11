@@ -64,19 +64,6 @@ function PhoneVerificationPage(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          alignSelf: 'left',
-          paddingTop: '2%',
-        }}
-      >
-        <AppIcons
-          type="Ionicons"
-          name="chevron-back"
-          size={30}
-          onPress={() => props.navigation.pop()}
-        />
-      </View>
       <DismissKeyboard>
         <ScrollView contentContainerStyle={styles.keyBoard} behavior="position">
           <Text style={styles.header}>Verify phone number</Text>

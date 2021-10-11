@@ -4,61 +4,35 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  FlatList,
   SectionList,
-  SafeAreaView,
+  Button,
 } from 'react-native'
 import { removeUser } from '../../redux'
-import { getOrder } from '../../redux/Reducers/orderReducer'
+import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { Text } from 'native-base'
+import { db } from '../../API/FirebaseDatabase'
 const OrderHomePage = (props) => {
-  const { order } = props
-  const coffeeData = [
-    {
-      name: 'Bean 0',
-      size: '3oz',
-      count: 0,
-    },
-    {
-      name: 'Bean 1',
-      size: '5oz',
-      count: 0,
-    },
-    {
-      name: 'Bean 2',
-      size: '3oz',
-      count: 0,
-    },
-    {
-      name: 'Bean 3',
-      size: '3oz',
-      count: 0,
-    },
-    {
-      name: 'Bean 4',
-      size: '7oz',
-      count: 0,
-    },
-    {
-      name: 'Bean 5',
-      size: '9oz',
-      count: 0,
-    },
-    {
-      name: 'Bean 6',
-      size: '2oz',
-      count: 0,
-    },
-    {
-      name: 'Bean 7',
-      size: '8oz',
-      count: 0,
-    },
-  ]
+  const [data, setData] = useState()
   useEffect(() => {
-    props.fetchData(coffeeData)
+    db.ref('/productData').once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        let productsData = []
+        for (let key in snapshot.val()) {
+          let title = key
+          let data = Object.values(snapshot.val()[`${title}`])
+          if (title && data) {
+            let payload = {
+              title,
+              data,
+            }
+            productsData.push(payload)
+          }
+        }
+        setData(productsData)
+      }
+    })
     return () => {}
   }, [])
 
@@ -72,21 +46,53 @@ const OrderHomePage = (props) => {
     return (
       <Item
         name={item.name}
-        size={item.size}
         key={index}
         index={index}
         count={item.count}
+        description={item.description}
+        size={item.size}
       />
     )
   }
+  const resetData = () => {
+    props.resetOrder()
+  }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={order}
-        numColumns={1}
-        keyExtractor={(item, index) => index.toString()}
+    <View style={styles.container}>
+      <SectionList
+        style={{ flex: 1 }}
+        sections={data}
+        keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
+        renderSectionHeader={({ section: { title } }) => (
+          <View
+            style={{
+              padding: 20,
+              borderBottomColor: 'rgba(221,221,221,0.5)',
+              borderBottomWidth: 1,
+              flex: 1,
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
+            <TouchableOpacity
+              style={{
+                width: 50,
+                height: 30,
+                backgroundColor: 'black',
+                borderRadius: 3,
+                justifyContent: 'center',
+              }}
+              onPress={() => resetData()}
+            >
+              <Text style={styles.loginButtonText}>Clear </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        stickySectionHeadersEnabled={false}
         ListHeaderComponent={() => {
           return (
             <View style={styles.titleContainer}>
@@ -96,22 +102,27 @@ const OrderHomePage = (props) => {
           )
         }}
       />
-
       <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.loginButton} onPress={removeReduxUser}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => removeReduxUser()}
+        >
           <Text style={styles.loginButtonText}>Remove user</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButton} onPress={confirmOrder}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => confirmOrder()}
+        >
           <Text style={styles.loginButtonText}>Comfirm Order</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#fff',
   },
   titleContainer: {
@@ -126,14 +137,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-
-  // productDetailsQuantity: {
-  //   marginLeft: 40,
-  //   fontWeight: "bold",
-  // },
-
   buttonView: {
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   loginButton: {
     justifyContent: 'center',
@@ -154,6 +160,8 @@ const styles = StyleSheet.create({
 const mapDispatch = (dispatch) => {
   return {
     fetchData: (order) => dispatch(getOrder(order)),
+    resetOrder: () => dispatch(clearOrder()),
+    removeUserData: () => dispatch(removeUser()),
   }
 }
 const mapState = (state) => {

@@ -19,7 +19,6 @@ import DismissKeyboard from '../../components/DismissKeyboard'
 import firebase from '../../API/FirebaseDatabase'
 import { checkPhoneMap } from '../../API/databaseCall'
 const SignInPage = (props) => {
-  console.log('props ', props)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [comfirm, setComfirm] = useState(false)
   const recaptchaVerifier = useRef(null)
@@ -85,9 +84,10 @@ const SignInPage = (props) => {
     <SafeAreaView style={styles.container}>
       <DismissKeyboard>
         <ScrollView
-          style={{
+          contentContainerStyle={{
             flex: 1,
-            marginTop: 55,
+            marginTop: 100,
+            alignItems: 'center',
           }}
           behavior="position"
         >

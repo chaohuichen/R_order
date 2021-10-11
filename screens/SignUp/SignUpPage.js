@@ -38,25 +38,12 @@ function SignUpPage(props) {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          alignSelf: 'left',
-          paddingTop: '2%',
-        }}
-      >
-        <AppIcons
-          type="Ionicons"
-          name="chevron-back"
-          size={30}
-          onPress={() => props.navigation.pop()}
-        />
-      </View>
-
       <DismissKeyboard>
         <ScrollView
-          style={{
+          contentContainerStyle={{
             flex: 1,
-            marginTop: 25,
+            marginTop: 100,
+            alignItems: 'center',
           }}
         >
           <Image

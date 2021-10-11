@@ -21,20 +21,58 @@ const orderReducer = produce((draft, action) => {
       // draft = action.user
       return action.order
     case REMOVE_ORDER:
-      if (draft[action.orderIndex].count <= 0) {
-      } else {
-        draft[action.orderIndex].count -= 1
+      const isOrder = draft.order.find(
+        (order) => order.name === action.order.name
+      )
+      let count = 0
+      if (isOrder) {
+        const orderFound = draft.order.map((singleOrder, index) => {
+          if (singleOrder.name === action.order.name) {
+            const copySingleOrder = { ...singleOrder }
+            copySingleOrder.count--
+            count = copySingleOrder.count
+            if (copySingleOrder.count > 0) {
+              return copySingleOrder
+            }
+          }
+          return singleOrder
+        })
+        if (count === 0) {
+          draft.order = draft.order.filter(
+            (myOrder) => myOrder.name !== action.order.name
+          )
+          return draft
+        } else {
+          draft.order = orderFound
+          return draft
+        }
       }
       return draft
+
     case ADD_ORDER:
-      if (draft[action.orderIndex].count >= 20) {
+      const isOrderFound = draft.order.find(
+        (order) => order.name === action.order.name
+      )
+      if (isOrderFound) {
+        const orderFound = draft.order.map((singleOrder) => {
+          if (singleOrder.name === action.order.name) {
+            const copySingleOrder = { ...singleOrder }
+            if (copySingleOrder.count < 21) {
+              copySingleOrder.count++
+            }
+            return copySingleOrder
+          }
+          return singleOrder
+        })
+        draft.order = orderFound
+        return draft
       } else {
-        draft[action.orderIndex].count += 1
+        action.order.count += 1
+        draft.order.push(action.order)
+        return draft
       }
-      // console.log('action ', action.name, ' ', action.index)
-      return draft
     case CLEAR_ORDER:
-      draft = defaultOrder
+      return defaultOrder
     default: {
       return draft
     }

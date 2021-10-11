@@ -12,6 +12,7 @@ import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import OrderInvoicePage from '../screens/Invoice/OrderInvoicePage'
 import SignInPage from '../screens/SignIn/SignInPage'
 import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
+import PDFpage from '../screens/PDF/PDFpage'
 const Stack = createStackNavigator()
 
 export default ({ navigation, tabName }) => {
@@ -36,16 +37,7 @@ export default ({ navigation, tabName }) => {
           options={HeaderTitleOnly('Fillup Supply')}
         />
       )}
-      <Stack.Screen
-        name="SignInPage"
-        component={SignInPage}
-        options={HeaderShownNone()}
-      />
-      <Stack.Screen
-        name="HomePage"
-        component={HomePage}
-        options={HeaderShownNone()}
-      />
+
       <Stack.Screen
         name="OrderInvoicePage"
         component={OrderInvoicePage}
@@ -54,6 +46,11 @@ export default ({ navigation, tabName }) => {
       <Stack.Screen
         name="ConfirmationPage"
         component={ConfirmationPage}
+        options={HeaderShownNone()}
+      />
+      <Stack.Screen
+        name="PDFpage"
+        component={PDFpage}
         options={HeaderShownNone()}
       />
     </Stack.Navigator>
