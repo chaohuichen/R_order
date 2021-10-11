@@ -5,7 +5,7 @@ import {
   ADD_ORDER,
   CLEAR_ORDER,
 } from './orderActionTypes'
-
+import { db } from '../../../API/FirebaseDatabase'
 /**
  * INITIAL STATE
  */
@@ -54,7 +54,16 @@ const orderReducer = produce((draft, action) => {
       return copyOrder
     }
     case CLEAR_ORDER:
-      return defaultOrder
+      const data = draft.map((singleOrder) => {
+        return {
+          data: singleOrder.data.map((singleItem) => {
+            return { ...singleItem, count: 0 }
+          }),
+          title: singleOrder.title,
+        }
+      })
+      console.log(data)
+      return data
     default: {
       return draft
     }

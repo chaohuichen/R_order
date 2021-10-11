@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect } from 'react'
 import {
   StyleSheet,
@@ -5,14 +6,13 @@ import {
   TouchableOpacity,
   SectionList,
   Button,
+  Text,
 } from 'react-native'
 import { removeUser } from '../../redux'
 import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
-import { Text } from 'native-base'
 import { db } from '../../API/FirebaseDatabase'
-
 const OrderHomePage = (props) => {
   useEffect(() => {
     db.ref('/productData').once('value', (snapshot) => {
@@ -52,9 +52,6 @@ const OrderHomePage = (props) => {
       />
     )
   }
-  const resetData = () => {
-    props.resetOrder()
-  }
 
   return (
     <View style={styles.container}>
@@ -76,18 +73,6 @@ const OrderHomePage = (props) => {
             }}
           >
             <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
-            <TouchableOpacity
-              style={{
-                width: 50,
-                height: 30,
-                backgroundColor: 'black',
-                borderRadius: 3,
-                justifyContent: 'center',
-              }}
-              onPress={() => resetData()}
-            >
-              <Text style={styles.loginButtonText}>Clear </Text>
-            </TouchableOpacity>
           </View>
         )}
         stickySectionHeadersEnabled={false}

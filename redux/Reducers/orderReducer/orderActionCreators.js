@@ -21,4 +21,6 @@ export const addOrder = (order, orderIdx, sectionTitle) => ({
   orderIdx,
   sectionTitle,
 })
-export const clearOrder = () => ({ type: CLEAR_ORDER })
+export const clearOrder = () => ({
+  type: CLEAR_ORDER,
+})
