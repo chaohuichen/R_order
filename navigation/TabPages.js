@@ -7,10 +7,7 @@ import {
 } from './HeaderOptions'
 // CoffeeHome
 import OrderPage from '../screens/Orders/OrderHomePage'
-import HomePage from '../screens/Home/HomePage'
 import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
-import OrderInvoicePage from '../screens/Invoice/OrderInvoicePage'
-import SignInPage from '../screens/SignIn/SignInPage'
 import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
 import PDFpage from '../screens/PDF/PDFpage'
 const Stack = createStackNavigator()
@@ -39,14 +36,9 @@ export default ({ navigation, tabName }) => {
       )}
 
       <Stack.Screen
-        name="OrderInvoicePage"
-        component={OrderInvoicePage}
-        options={HeaderShownNone()}
-      />
-      <Stack.Screen
         name="ConfirmationPage"
         component={ConfirmationPage}
-        options={HeaderShownNone()}
+        options={HeaderTitleOnly('Invoice')}
       />
       <Stack.Screen
         name="PDFpage"
