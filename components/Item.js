@@ -6,47 +6,21 @@ import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 const Item = (props) => {
-  const { name, count, description, size, allOrder } = props
-  const [curCount, setCurCount] = useState(0)
-  const order = {
-    name,
-    count,
-    description,
-    size,
-  }
+  const { sectionTitle, order, index } = props
+
   const remove = () => {
-    props.removeOnOrder(order)
+    props.removeOnOrder(order, index, sectionTitle)
   }
   const add = () => {
-    props.addToOrder(order)
+    props.addToOrder(order, index, sectionTitle)
   }
-  // find order name base on name pass in from order home page and update order count
-  useEffect(() => {
-    if (allOrder.order && allOrder.order.length > 0) {
-      const isOrderFound = allOrder.order.find(
-        (myOrder) => myOrder.name === name
-      )
-      if (isOrderFound) {
-        const orderFound = allOrder.order.map((myOrder) => {
-          if (myOrder.name === name) {
-            const orderCopy = { ...myOrder }
-            setCurCount(orderCopy.count)
-          }
-          return orderFound
-        })
-      }
-    } else {
-      setCurCount(0)
-    }
-    return () => {}
-  }, [allOrder.order])
 
   return (
     <Box style={styles.box}>
       <Text fontSize="xl">
-        {name}
+        {order.name}
         {'\n'}
-        <Text sub={true}>{description}</Text>
+        <Text sub={true}>{order.description}</Text>
       </Text>
 
       <View style={styles.actionBox}>
@@ -54,9 +28,9 @@ const Item = (props) => {
           onPress={() => remove()}
           style={{
             backgroundColor: '#ddd',
-            borderRadius: 50,
-            width: 40,
-            height: 40,
+            borderRadius: 50 / 2,
+            width: 50,
+            height: 50,
             justifyContent: 'center',
           }}
         >
@@ -69,14 +43,16 @@ const Item = (props) => {
           />
         </TouchableOpacity>
 
-        <Text bold>{curCount}</Text>
+        <Text bold style={{ marginHorizontal: 10 }}>
+          {order.count}
+        </Text>
         <TouchableOpacity
           onPress={() => add()}
           style={{
             backgroundColor: '#ddd',
-            borderRadius: 50,
-            width: 40,
-            height: 40,
+            borderRadius: 50 / 2,
+            width: 50,
+            height: 50,
             justifyContent: 'center',
           }}
         >
@@ -109,7 +85,6 @@ const styles = StyleSheet.create({
     width: '45%',
     flexDirection: 'row',
     paddingVertical: 5,
-    marginHorizontal: 10,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
@@ -122,9 +97,10 @@ const mapState = (state) => {
 }
 const mapDispatch = (dispatch) => {
   return {
-    addToOrder: (name, orderIndex) => dispatch(addOrder(name, orderIndex)),
-    removeOnOrder: (name, orderIndex) =>
-      dispatch(removeOrder(name, orderIndex)),
+    addToOrder: (name, index, sectionTitle) =>
+      dispatch(addOrder(name, index, sectionTitle)),
+    removeOnOrder: (name, index, orderIndex) =>
+      dispatch(removeOrder(name, index, orderIndex)),
   }
 }
 export default connect(mapState, mapDispatch)(Item)
