@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Text, Box, View } from 'native-base'
+import { Text, Box, View, Button } from 'native-base'
 import { StyleSheet } from 'react-native'
 import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 const Item = (props) => {
   const { name, count, description, size, allOrder } = props
   const [curCount, setCurCount] = useState(0)
@@ -49,22 +50,44 @@ const Item = (props) => {
       </Text>
 
       <View style={styles.actionBox}>
-        <AppIcons
+        <TouchableOpacity
           onPress={() => remove()}
-          type="AntDesign"
-          name="minus"
-          size={25}
-          color="black"
-        />
+          style={{
+            backgroundColor: '#ddd',
+            borderRadius: 50,
+            width: 40,
+            height: 40,
+            justifyContent: 'center',
+          }}
+        >
+          <AppIcons
+            type="AntDesign"
+            name="minus"
+            size={25}
+            color="black"
+            style={{ alignSelf: 'center' }}
+          />
+        </TouchableOpacity>
 
         <Text bold>{curCount}</Text>
-        <AppIcons
+        <TouchableOpacity
           onPress={() => add()}
-          type="AntDesign"
-          name="plus"
-          size={25}
-          color="black"
-        />
+          style={{
+            backgroundColor: '#ddd',
+            borderRadius: 50,
+            width: 40,
+            height: 40,
+            justifyContent: 'center',
+          }}
+        >
+          <AppIcons
+            type="AntDesign"
+            name="plus"
+            size={25}
+            color="black"
+            style={{ alignSelf: 'center' }}
+          />
+        </TouchableOpacity>
       </View>
     </Box>
   )
@@ -83,14 +106,12 @@ const styles = StyleSheet.create({
   },
 
   actionBox: {
-    width: '35%',
+    width: '45%',
     flexDirection: 'row',
     paddingVertical: 5,
+    marginHorizontal: 10,
     justifyContent: 'space-around',
     alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: 2,
-    borderRadius: 5,
   },
 })
 const mapState = (state) => {
