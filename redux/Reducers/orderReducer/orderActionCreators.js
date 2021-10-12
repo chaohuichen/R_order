@@ -9,12 +9,18 @@ import {
  * ACTION CREATORS
  */
 export const getOrder = (order) => ({ type: GET_ORDER, order })
-export const removeOrder = (order) => ({
+export const removeOrder = (order, orderIdx, sectionTitle) => ({
   type: REMOVE_ORDER,
   order,
+  orderIdx,
+  sectionTitle,
 })
-export const addOrder = (order) => ({
+export const addOrder = (order, orderIdx, sectionTitle) => ({
   type: ADD_ORDER,
   order,
+  orderIdx,
+  sectionTitle,
 })
-export const clearOrder = () => ({ type: CLEAR_ORDER })
+export const clearOrder = () => ({
+  type: CLEAR_ORDER,
+})

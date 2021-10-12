@@ -6,15 +6,14 @@ import {
   TouchableOpacity,
   SectionList,
   Button,
+  Text,
 } from 'react-native'
 import { removeUser } from '../../redux'
 import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
-import { Text } from 'native-base'
 import { db } from '../../API/FirebaseDatabase'
 const OrderHomePage = (props) => {
-  const [data, setData] = useState()
   useEffect(() => {
     db.ref('/productData').once('value', (snapshot) => {
       if (snapshot.exists()) {
@@ -30,7 +29,8 @@ const OrderHomePage = (props) => {
             productsData.push(payload)
           }
         }
-        setData(productsData)
+        // setData(productsData)
+        props.fetchData(productsData)
       }
     })
     return () => {}
@@ -42,27 +42,24 @@ const OrderHomePage = (props) => {
   const confirmOrder = () => {
     props.navigation.navigate('ConfirmationPage')
   }
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index, section }) => {
     return (
       <Item
-        name={item.name}
         key={index}
         index={index}
-        count={item.count}
-        description={item.description}
-        size={item.size}
+        order={item}
+        sectionTitle={section.title}
       />
     )
-  }
-  const resetData = () => {
-    props.resetOrder()
   }
 
   return (
     <View style={styles.container}>
       <SectionList
         style={{ flex: 1 }}
-        sections={data}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: '20%' }}
+        sections={[...props.order] || []}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
         renderSectionHeader={({ section: { title } }) => (
@@ -78,18 +75,6 @@ const OrderHomePage = (props) => {
             }}
           >
             <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
-            <TouchableOpacity
-              style={{
-                width: 50,
-                height: 30,
-                backgroundColor: 'black',
-                borderRadius: 3,
-                justifyContent: 'center',
-              }}
-              onPress={() => resetData()}
-            >
-              <Text style={styles.loginButtonText}>Clear </Text>
-            </TouchableOpacity>
           </View>
         )}
         stickySectionHeadersEnabled={false}
@@ -102,20 +87,19 @@ const OrderHomePage = (props) => {
           )
         }}
       />
-      <View style={styles.buttonView}>
-        <TouchableOpacity
+
+      {/* <TouchableOpacity
           style={styles.loginButton}
           onPress={() => removeReduxUser()}
         >
           <Text style={styles.loginButtonText}>Remove user</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => confirmOrder()}
-        >
-          <Text style={styles.loginButtonText}>Comfirm Order</Text>
-        </TouchableOpacity>
-      </View>
+        </TouchableOpacity> */}
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => confirmOrder()}
+      >
+        <Text style={styles.loginButtonText}>Comfirm Order</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -123,7 +107,7 @@ const OrderHomePage = (props) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   titleContainer: {
     flexDirection: 'row',
@@ -143,18 +127,18 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    height: 50,
+    width: 300,
     borderRadius: 5,
+    alignSelf: 'center',
     backgroundColor: 'black',
-    opacity: 0.8,
-    flex: 1 / 2,
-    marginTop: 20,
+    position: 'absolute',
+    bottom: 10,
   },
   loginButtonText: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 20,
   },
 })
 const mapDispatch = (dispatch) => {
@@ -167,7 +151,6 @@ const mapDispatch = (dispatch) => {
 const mapState = (state) => {
   return {
     order: state.order,
-    count: state.order.count,
   }
 }
 export default connect(mapState, mapDispatch)(OrderHomePage)

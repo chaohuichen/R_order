@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react'
 
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { tabOptions } from "./tabOptions";
-import OrderHomeScreen from "../screens/Orders/OrderHomeScreen";
-import OrderHistoryPage from "../screens/OrdersHistory/OrderHistoryPage";
-const BottomTab = createBottomTabNavigator();
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { tabOptions } from './tabOptions'
+import OrderHomeScreen from '../screens/Orders/OrderHomeScreen'
+import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
+const BottomTab = createBottomTabNavigator()
 // TODO add Auth Stack Container
 
 const BottomTabNavigator = ({}) => {
@@ -19,9 +19,9 @@ const BottomTabNavigator = ({}) => {
       <BottomTab.Screen
         name="OrderHomeScreen"
         component={OrderHomeScreen}
-        options={tabOptions("shopping-cart", "Orders", "Feather")}
+        options={tabOptions('shopping-cart', 'Orders', 'Feather')}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="OrderHistoryPage"
         component={OrderHistoryPage}
         options={tabOptions(
@@ -29,9 +29,9 @@ const BottomTabNavigator = ({}) => {
           "Order History",
           "MaterialCommunityIcons"
         )}
-      />
+      /> */}
     </BottomTab.Navigator>
-  );
-};
+  )
+}
 
-export default BottomTabNavigator;
+export default BottomTabNavigator
