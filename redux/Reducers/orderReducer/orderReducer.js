@@ -40,7 +40,10 @@ const orderReducer = produce((draft, action) => {
       const copyOrder = draft.map((singleData) => {
         if (singleData.title === action.sectionTitle) {
           const copySingleData = singleData.data.map((singleOrder) => {
-            if (singleOrder.name === action.order.name) {
+            if (
+              singleOrder.name === action.order.name &&
+              singleOrder.count < 21
+            ) {
               return { ...singleOrder, count: singleOrder.count + 1 }
             } else {
               return singleOrder

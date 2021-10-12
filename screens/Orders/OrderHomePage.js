@@ -57,6 +57,8 @@ const OrderHomePage = (props) => {
     <View style={styles.container}>
       <SectionList
         style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: '20%' }}
         sections={[...props.order] || []}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
@@ -85,20 +87,19 @@ const OrderHomePage = (props) => {
           )
         }}
       />
-      <View style={styles.buttonView}>
-        <TouchableOpacity
+
+      {/* <TouchableOpacity
           style={styles.loginButton}
           onPress={() => removeReduxUser()}
         >
           <Text style={styles.loginButtonText}>Remove user</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => confirmOrder()}
-        >
-          <Text style={styles.loginButtonText}>Comfirm Order</Text>
-        </TouchableOpacity>
-      </View>
+        </TouchableOpacity> */}
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => confirmOrder()}
+      >
+        <Text style={styles.loginButtonText}>Comfirm Order</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -126,18 +127,18 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    height: 50,
+    width: 300,
     borderRadius: 5,
+    alignSelf: 'center',
     backgroundColor: 'black',
-    opacity: 0.8,
-    flex: 1 / 2,
-    marginTop: 20,
+    position: 'absolute',
+    bottom: 10,
   },
   loginButtonText: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 20,
   },
 })
 const mapDispatch = (dispatch) => {

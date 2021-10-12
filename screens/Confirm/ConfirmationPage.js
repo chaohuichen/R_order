@@ -23,11 +23,11 @@ const ConfirmationPage = (props) => {
 
   const [isPlacedOrder, setIsPlacedOrder] = useState(false)
   const [email, setEmail] = useState('')
-  const [selectedToValue, setSelectedToValue] = useState('')
-  const [selectedFromValue, setSelectedFromValue] = useState('')
-  const [showToPicker, setShowToPicker] = useState(false)
-  const [showFromPicker, setShowFromPicker] = useState(false)
+  const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
+  const [selectedFromValue, setSelectedFromValue] = useState('fillup NY1')
   const pickerItems = ['fillup logistics', 'fillup mgt', 'fillup roaster']
+  const pickerStores = ['fillup NY1', 'fillup NY2', 'fillup NY3']
+  const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
 
   const [orders, setOrders] = useState([])
@@ -50,13 +50,24 @@ const ConfirmationPage = (props) => {
     })
     setOrders(copyData)
   }, [])
-
+  const openPickerStore = () => {
+    setIsPicker(true)
+    rbsheetRef.current.open()
+  }
+  const openPickerItem = () => {
+    setIsPicker(false)
+    rbsheetRef.current.open()
+  }
   const handlePlaceOrder = () => {
     //submit order send pdf send email send sms
     setIsPlacedOrder(true)
   }
-  const onPaySubmition = () => {
-    // payment
+  const updateSelectedValue = (value) => {
+    if (isPicker) {
+      setSelectedFromValue(value)
+    } else {
+      setSelectedToValue(value)
+    }
   }
   const renderItem = ({ item }) => {
     if (item.count > 0) {
@@ -100,17 +111,16 @@ const ConfirmationPage = (props) => {
       <View
         style={{
           alignItems: 'center',
-          flexGrow: 1 / 3,
         }}
       >
-        <TouchableWithoutFeedback onPress={() => rbsheetRef.current.open()}>
+        <TouchableWithoutFeedback onPress={() => openPickerItem()}>
           <View style={styles.selectionButtonView}>
-            <Text>To Selection</Text>
+            <Text>{selectedToValue ? selectedToValue : 'To'}</Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => openPickerStore()}>
           <View style={styles.selectionButtonView}>
-            <Text>From Selection</Text>
+            <Text>{selectedFromValue ? selectedFromValue : 'From'}</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -119,6 +129,7 @@ const ConfirmationPage = (props) => {
         sections={orders}
         renderItem={renderItem}
         keyExtractor={(item, index) => item + index}
+        stickySectionHeadersEnabled={false}
         renderSectionHeader={({ section: { title } }) => {
           return (
             <View
@@ -136,9 +147,6 @@ const ConfirmationPage = (props) => {
               <Text style={{ fontSize: 20, fontWeight: '500' }}>QTY</Text>
             </View>
           )
-        }}
-        ListHeaderComponent={() => {
-          return <ComfirmationPicker />
         }}
       >
         <View style={{ flex: 3 }}>
@@ -222,12 +230,33 @@ const ConfirmationPage = (props) => {
           },
         }}
       >
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+          onPress={() => rbsheetRef.current.close()}
+        >
+          <Text
+            style={{
+              flex: 1,
+              textAlign: 'left',
+              fontSize: 20,
+              marginLeft: 20,
+              color: '#006ee6',
+            }}
+          >
+            Done
+          </Text>
+        </TouchableOpacity>
+        {/** Need to Optimize to a better solution */}
         <ComfirmationPicker
-          selectedToValue={selectedToValue}
           selectedFromValue={selectedFromValue}
-          showToPicker={showToPicker}
-          showFromPicker={showFromPicker}
-          pickerItems={pickerItems}
+          setSelectedFromValue={updateSelectedValue}
+          selectedToValue={selectedToValue}
+          setSelectedToValue={updateSelectedValue}
+          isPicker={isPicker}
+          pickerItems={isPicker ? pickerStores : pickerItems}
         />
       </RBSheet>
     </SafeAreaView>
