@@ -18,14 +18,19 @@ import DismissKeyboard from '../../components/DismissKeyboard'
 // import TextInputMask from "react-native-text-input-mask";
 import firebase from '../../API/FirebaseDatabase'
 import { checkPhoneMap } from '../../API/databaseCall'
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
+
 const SignInPage = (props) => {
   const [phoneNumber, setPhoneNumber] = useState('')
-  const [comfirm, setComfirm] = useState(false)
-  const recaptchaVerifier = useRef(null)
+  const [confirm, setConfirm] = useState(false)
   const [error, setError] = useState()
-  const [verificationCode, setVerificationCode] = useState('123456')
+  const [verificationCode, setVerificationCode] = useState('')
   const [verificationId, setVerificationId] = useState(null)
-  const userPhoneNumber = 1 + phoneNumber
+  const userPhoneNumber = '+1' + phoneNumber
+  const firebaseConfig = firebase.apps.length
+    ? firebase.app().options
+    : undefined
+  const recaptchaVerifier = useRef(null)
   useEffect(() => {
     if (userPhoneNumber.length < 11) {
       // setError('please enter correct phone number')
@@ -45,10 +50,6 @@ const SignInPage = (props) => {
         { text: 'OK', onPress: () => props.navigation.navigate('SignUpPage') },
       ])
     }
-    // const user = {
-    //   userId: 1,
-    // };
-    // props.fetchData(user);
   }
   const sendVerification = async () => {
     try {
@@ -58,6 +59,8 @@ const SignInPage = (props) => {
         recaptchaVerifier.current
       )
       setVerificationId(verificationId)
+      setPhoneNumber('')
+      setConfirm(true)
     } catch (err) {
       console.log('error message ' + err)
     }
@@ -73,7 +76,12 @@ const SignInPage = (props) => {
         .auth()
         .signInWithCredential(credential)
         .then((res) => {
-          props.fetchData(res.user.uid)
+          const userPayLoad = {
+            userPhoneNumber,
+            uid: res.user.uid,
+          }
+
+          props.fetchData(userPayLoad)
         })
         .catch((err) => console.log(err))
     } catch (err) {
@@ -82,19 +90,24 @@ const SignInPage = (props) => {
   }
   return (
     <SafeAreaView style={styles.container}>
+      <FirebaseRecaptchaVerifierModal
+        ref={recaptchaVerifier}
+        firebaseConfig={firebaseConfig}
+        attemptInvisibleVerification={true}
+      />
       <DismissKeyboard>
         <ScrollView
           contentContainerStyle={{
             flex: 1,
-            marginTop: 100,
+            justifyContent: 'center',
             alignItems: 'center',
+            marginBottom: 100,
           }}
-          behavior="position"
         >
           <Image
             source={require('../../assets/upblack.png')}
             style={{
-              height: 150,
+              height: 180,
               resizeMode: 'contain',
               alignSelf: 'center',
               marginBottom: 10,
@@ -106,7 +119,7 @@ const SignInPage = (props) => {
           >
             Sign in
           </Text>
-          {comfirm ? (
+          {confirm ? (
             <>
               <Text>Enter code sent to +1{phoneNumber}</Text>
 
@@ -115,6 +128,7 @@ const SignInPage = (props) => {
                 theme={{
                   colors: { underlineColor: 'transparent', primary: 'black' },
                 }}
+                value={verificationCode}
                 mode="outlined"
                 label="Code"
                 autoCapitalize="none"
@@ -139,6 +153,7 @@ const SignInPage = (props) => {
                 theme={{
                   colors: { underlineColor: 'transparent', primary: 'black' },
                 }}
+                value={phoneNumber}
                 mode="outlined"
                 label="Mobile number"
                 autoCapitalize="none"
@@ -213,5 +228,10 @@ const mapDispatch = (dispatch) => {
     fetchData: (user) => dispatch(getUser(user)),
   }
 }
+const mapState = (state) => {
+  return {
+    user: state.user,
+  }
+}
 
-export default connect(null, mapDispatch)(SignInPage)
+export default connect(mapState, mapDispatch)(SignInPage)

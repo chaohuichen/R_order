@@ -17,12 +17,20 @@ const Item = (props) => {
 
   return (
     <Box style={styles.box}>
-      <Text fontSize="xl">
-        {order.name}
-        {'\n'}
-        <Text sub={true}>{order.description}</Text>
-      </Text>
-
+      <View
+        style={{
+          flex: 1.5,
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          paddingRight: 15,
+        }}
+      >
+        <Text fontSize="xl" style={{}}>
+          {order.name}
+          {'\n'}
+          <Text sub={true}>{order.description}</Text>
+        </Text>
+      </View>
       <View style={styles.actionBox}>
         <TouchableOpacity
           onPress={() => remove()}
@@ -43,7 +51,14 @@ const Item = (props) => {
           />
         </TouchableOpacity>
 
-        <Text bold style={{ marginHorizontal: 10 }}>
+        <Text
+          bold
+          style={{
+            marginHorizontal: 10,
+            width: 25,
+            textAlign: 'center',
+          }}
+        >
           {order.count}
         </Text>
         <TouchableOpacity
@@ -76,13 +91,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(211,211,211,0.5)',
-    padding: 20,
+    paddingLeft: 15,
     width: '100%',
-    height: 80,
+    height: 90,
   },
 
   actionBox: {
-    width: '45%',
+    marginRight: 10,
+    width: '40%',
     flexDirection: 'row',
     paddingVertical: 5,
     justifyContent: 'space-around',

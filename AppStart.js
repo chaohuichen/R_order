@@ -66,35 +66,31 @@ const AppStart = (props) => {
         <StatusBar barStyle={styleStatusBar} />
         <NavigationContainer theme={NavigationTheme}>
           <Stack.Navigator screenOptions={MyScreenOption}>
-            {user.userId ? (
+            {user.uid ? (
               <Stack.Screen
                 name="BottomTabNavigator"
                 component={BottomTabNavigator}
                 options={HeaderShownNone()}
               />
             ) : (
-              // <Stack.Screen
-              //   name="SignInPage"
-              //   component={SignInPage}
-              //   options={HeaderShownNone()}
-              // />
-              <Stack.Screen
-                name="BottomTabNavigator"
-                component={BottomTabNavigator}
-                options={HeaderShownNone()}
-              />
+              <>
+                <Stack.Screen
+                  name="SignInPage"
+                  component={SignInPage}
+                  options={HeaderShownNone()}
+                />
+                <Stack.Screen
+                  name="SignUpPage"
+                  component={SignUpPage}
+                  options={HeaderShownTrue('')}
+                />
+                <Stack.Screen
+                  name="PhoneVerificationPage"
+                  component={PhoneVerificationPage}
+                  options={HeaderShownTrue('')}
+                />
+              </>
             )}
-
-            <Stack.Screen
-              name="SignUpPage"
-              component={SignUpPage}
-              options={HeaderShownTrue('')}
-            />
-            <Stack.Screen
-              name="PhoneVerificationPage"
-              component={PhoneVerificationPage}
-              options={HeaderShownTrue('')}
-            />
           </Stack.Navigator>
         </NavigationContainer>
       </NativeBaseProvider>

@@ -88,18 +88,18 @@ const OrderHomePage = (props) => {
         }}
       />
 
-      {/* <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => removeReduxUser()}
-        >
-          <Text style={styles.loginButtonText}>Remove user</Text>
-        </TouchableOpacity> */}
       <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => removeReduxUser()}
+      >
+        <Text style={styles.loginButtonText}>Remove user</Text>
+      </TouchableOpacity>
+      {/* <TouchableOpacity
         style={styles.loginButton}
         onPress={() => confirmOrder()}
       >
         <Text style={styles.loginButtonText}>Comfirm Order</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   )
 }

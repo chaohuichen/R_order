@@ -1,4 +1,4 @@
-import { db } from "./FirebaseDatabase";
+import { db } from './FirebaseDatabase'
 
 /*
 param: userUid, phone number
@@ -8,23 +8,26 @@ return:nothing
 des:
 */
 export const setPhoneMap = async (phoneNumber, userUid) => {
-  await db.ref(`/phoneMap/${phoneNumber}/`).set(userUid);
-};
+  await db.ref(`/phoneMap/${phoneNumber}/`).set(userUid)
+}
 
 export const checkPhoneMap = async (userPhoneNumber) => {
-  let isExist = false;
+  // let isExist = false
   try {
-    await database()
-      .ref(`/phoneMap/${userPhoneNumber}`)
-      .once("value", (snapSnap) => {
-        if (snapSnap.exists()) {
-          isExist = true;
-        } else {
-          isExist = false;
-        }
-      });
+    await db.ref(`/phoneMap/${userPhoneNumber}`).once('value', (snapShot) => {
+      if (snapShot.exists()) {
+        isExist = true
+      } else {
+        isExist = false
+      }
+    })
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
-  return isExist;
-};
+  return isExist
+  // db.ref(`/phoneMap/`).once('value', async (snapshot) => {
+  //   if (snapshot.exists()) {
+  //     console.log('phonmap', snapshot.val())
+  //   }
+  // })
+}
