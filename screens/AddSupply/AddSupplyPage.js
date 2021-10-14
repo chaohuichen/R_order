@@ -26,7 +26,6 @@ const AddSupplyPage = () => {
         size: itemSize,
         count: 0,
       }
-      console.log('suuppluy ')
       setSupplyToDatabase(supplyPayload, selectedCategory)
       showAlert()
       setErrorMessage('')
@@ -57,7 +56,7 @@ const AddSupplyPage = () => {
           fontWeight: '500',
           position: 'absolute',
           flex: 1,
-          justifyContent: 'flex-start',
+          textAlign: 'left',
           width: '100%',
           paddingLeft: 45,
           paddingBottom: 20,

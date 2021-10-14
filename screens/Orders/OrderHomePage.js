@@ -65,7 +65,7 @@ const OrderHomePage = (props) => {
         renderSectionHeader={({ section: { title } }) => (
           <View
             style={{
-              padding: 20,
+              padding: 12,
               borderBottomColor: 'rgba(221,221,221,0.5)',
               borderBottomWidth: 1,
               flex: 1,

@@ -25,7 +25,7 @@ const Item = (props) => {
           paddingRight: 15,
         }}
       >
-        <Text fontSize="xl" style={{}}>
+        <Text>
           {order.name}
           {'\n'}
           <Text sub={true}>{order.description}</Text>

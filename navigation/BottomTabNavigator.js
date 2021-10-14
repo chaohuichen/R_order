@@ -25,7 +25,7 @@ const BottomTabNavigator = ({}) => {
       <BottomTab.Screen
         name="AddSupplyPageScreen"
         component={AddSupplyPageScreen}
-        options={tabOptions('add', 'Add Supply', 'FontAwesome')}
+        options={tabOptions('ios-add', 'Add Supply', 'Ionicons')}
       />
       {/* <BottomTab.Screen
         name="OrderHistoryPage"
