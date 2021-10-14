@@ -8,26 +8,20 @@ import {
   ScrollView,
   SafeAreaView,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
+import { TextInput } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { getUser } from '../../redux'
 import { checkPhoneMap } from '../../API/databaseCall'
-import ExpoFastImage from 'expo-fast-image'
 import DismissKeyboard from '../../components/DismissKeyboard'
-import AppIcons from '../../components/AppIcons'
-import { background, backgroundColor } from 'styled-system'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import firebase from '../../API/FirebaseDatabase'
-import { MaskedTextInput } from 'react-native-mask-text'
 
 function SignUpPage(props) {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [error, setError] = useState('')
   const userPhone = '+1' + phoneNumber
-  const [verificationCode, setVerificationCode] = useState('')
-  const [verificationId, setVerificationId] = useState(null)
-  console.log('sign up ', props.user)
 
   const firebaseConfig = firebase.apps.length
     ? firebase.app().options

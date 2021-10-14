@@ -5,6 +5,7 @@ import {
   MaterialIcons,
   Feather,
   AntDesign,
+  Entypo,
 } from '@expo/vector-icons'
 import React, { useState, useEffect } from 'react'
 const AppIcons = (props) => {
@@ -28,6 +29,8 @@ const AppIcons = (props) => {
       return <Feather {...props} />
     case 'AntDesign':
       return <AntDesign {...props} />
+    case 'AntDesign':
+      return <Entypo {...props} />
     default:
       return null
   }

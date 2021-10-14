@@ -8,7 +8,6 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  KeyboardAvoidingView,
   Alert,
 } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'

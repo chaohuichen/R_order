@@ -151,6 +151,7 @@ const mapDispatch = (dispatch) => {
 const mapState = (state) => {
   return {
     order: state.order,
+    user: state.user,
   }
 }
 export default connect(mapState, mapDispatch)(OrderHomePage)

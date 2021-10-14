@@ -10,13 +10,14 @@ import {
 } from 'react-native'
 import { TextInput } from 'react-native-paper'
 import firebase from '../API/FirebaseDatabase'
-import { setPhoneMap } from '../API/databaseCall'
+import { setPhoneMap, setUserData } from '../API/databaseCall'
 import { getUser } from '../redux'
 import { connect } from 'react-redux'
 import DismissKeyboard from '../components/DismissKeyboard'
 function PhoneVerificationPage(props) {
   const [verificationCode, setVerificationCode] = useState('')
   const { phoneNumber, verificationId } = props.route.params
+  let userType = 'user'
   const confirmCode = async () => {
     try {
       const credential = firebase.auth.PhoneAuthProvider.credential(
@@ -31,9 +32,11 @@ function PhoneVerificationPage(props) {
       const userPayLoad = {
         phoneNumber,
         uid: firebaseResponse.user.uid,
+        userType,
       }
       props.setUpUser(userPayLoad)
       setPhoneMap('+1' + phoneNumber, firebaseResponse.user.uid)
+      setUserData(userPayLoad)
     } catch (err) {
       console.log(err)
     }

@@ -7,6 +7,7 @@ phoneNumber:String
 return:nothing 
 des:
 */
+
 export const setPhoneMap = async (phoneNumber, userUid) => {
   await db.ref(`/phoneMap/${phoneNumber}/`).set(userUid)
 }
@@ -25,9 +26,28 @@ export const checkPhoneMap = async (userPhoneNumber) => {
     console.log(err)
   }
   return isExist
-  // db.ref(`/phoneMap/`).once('value', async (snapshot) => {
-  //   if (snapshot.exists()) {
-  //     console.log('phonmap', snapshot.val())
-  //   }
-  // })
+}
+
+export const setUserData = (payload) => {
+  try {
+    const userRef = db.ref('/users')
+    const userKey = userRef.push()
+
+    db.ref(`/users/${userKey.key}/userSharedData/`).set(payload)
+  } catch (err) {
+    console.log('user ', err)
+  }
+}
+
+export const setSupplyToDatabase = (payload, category) => {
+  switch (category) {
+    case 'Coffee Beans':
+      db.ref(`/productData/Coffee Beans/${payload.name}/`).set(payload)
+      break
+    case 'Cups':
+      db.ref(`/productData/Cups/${payload.name}/`).set(payload)
+      break
+    default:
+      break
+  }
 }
