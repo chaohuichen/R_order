@@ -58,7 +58,6 @@ const SignInPage = (props) => {
         recaptchaVerifier.current
       )
       setVerificationId(verificationId)
-      setPhoneNumber('')
       setConfirm(true)
     } catch (err) {
       console.log('error message ' + err)

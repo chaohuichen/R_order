@@ -3,6 +3,7 @@ import {
   REMOVE_ORDER,
   CLEAR_ORDER,
   ADD_ORDER,
+  FETCH_ORDER,
 } from './orderActionTypes'
 
 /**
@@ -23,4 +24,7 @@ export const addOrder = (order, orderIdx, sectionTitle) => ({
 })
 export const clearOrder = () => ({
   type: CLEAR_ORDER,
+})
+export const fetchOrder = () => ({
+  type: FETCH_ORDER,
 })

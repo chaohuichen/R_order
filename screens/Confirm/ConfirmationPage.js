@@ -69,6 +69,18 @@ const ConfirmationPage = (props) => {
       setSelectedToValue(value)
     }
   }
+  const placeOrder = async () => {
+    await fetch('http://localhost:8080/twilios/sendSms', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: 'hello world',
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res))
+  }
   const renderItem = ({ item }) => {
     if (item.count > 0) {
       return (
@@ -124,6 +136,7 @@ const ConfirmationPage = (props) => {
           </View>
         </TouchableWithoutFeedback>
       </View>
+
       <SectionList
         style={{ flex: 1 }}
         sections={orders}
@@ -143,7 +156,7 @@ const ConfirmationPage = (props) => {
                 justifyContent: 'space-between',
               }}
             >
-              <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
+              <Text style={{ fontSize: 20, fontWeight: '500' }}>{title}</Text>
               <Text style={{ fontSize: 20, fontWeight: '500' }}>QTY</Text>
             </View>
           )
@@ -153,7 +166,6 @@ const ConfirmationPage = (props) => {
           <Text style={{ marginLeft: 20, fontWeight: '600', fontSize: 30 }}>
             Items
           </Text>
-
           <TouchableOpacity
             style={styles.loginButton}
             onPress={() => handlePlaceOrder()}
@@ -167,58 +179,10 @@ const ConfirmationPage = (props) => {
             <Text style={styles.loginText}>View</Text>
           </TouchableOpacity>
         </View>
-        {isPlacedOrder && (
-          <Modal
-            animationType="slide"
-            visible={props.visible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.')
-              //   setModalVisible(!modalVisible);
-            }}
-            presentationStyle={'pageSheet'}
-          >
-            <ScrollView>
-              <View style={{ alignSelf: 'left', padding: '2%' }}>
-                <AppIcons
-                  type="Ionicons"
-                  name="close"
-                  size={30}
-                  onPress={() => setIsPlacedOrder(false)}
-                />
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Text
-                  style={{ color: 'black', fontWeight: '600', fontSize: 28 }}
-                >
-                  Enter email address
-                </Text>
-                <TextInput
-                  mode="outlined"
-                  label="Email"
-                  onChangeText={(email) => setEmail(email)}
-                  style={{ width: 300, alignSelf: 'center' }}
-                  theme={{
-                    colors: { underlineColor: 'transparent', primary: 'black' },
-                  }}
-                />
-
-                <TouchableOpacity
-                  style={styles.loginButton}
-                  onPress={() => onPaySubmition()}
-                >
-                  <Text style={styles.loginText}>Pay</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </Modal>
-        )}
       </SectionList>
+      <TouchableOpacity style={styles.loginButton} onPress={() => placeOrder()}>
+        <Text style={styles.loginText}>Place Order</Text>
+      </TouchableOpacity>
       <RBSheet
         ref={rbsheetRef}
         height={300}
@@ -278,6 +242,7 @@ const styles = StyleSheet.create({
     width: 300,
     alignSelf: 'center',
     marginTop: 10,
+    bottom: 10,
   },
   loginText: {
     color: 'white',
@@ -299,6 +264,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => {
   return {
     allOrder: state.order,
+    user: state.user,
   }
 }
 

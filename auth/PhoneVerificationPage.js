@@ -55,6 +55,7 @@ function PhoneVerificationPage(props) {
             theme={{
               colors: { underlineColor: 'transparent', primary: 'black' },
             }}
+            value={verificationCode}
             mode="outlined"
             label="Comfirmation Code"
             autoCapitalize="none"

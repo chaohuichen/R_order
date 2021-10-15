@@ -81,6 +81,7 @@ function SignUpPage(props) {
             theme={{
               colors: { underlineColor: 'transparent', primary: 'black' },
             }}
+            value={phoneNumber}
             mode="outlined"
             label="Mobile number"
             autoCapitalize="none"
