@@ -6,7 +6,6 @@ import {
   CLEAR_ORDER,
   FETCH_ORDER,
 } from './orderActionTypes'
-import { db } from '../../../API/FirebaseDatabase'
 /**
  * INITIAL STATE
  */

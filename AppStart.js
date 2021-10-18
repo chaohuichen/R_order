@@ -16,7 +16,6 @@ import {
   HeaderTitleOnly,
   HeaderShownTrue,
 } from './navigation/HeaderOptions'
-import HomePage from './screens/Home/HomePage'
 import { connect } from 'react-redux'
 import SignUpPage from './screens/SignUp/SignUpPage'
 import PhoneVerificationPage from './auth/PhoneVerificationPage'

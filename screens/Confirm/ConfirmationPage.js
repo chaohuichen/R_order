@@ -3,10 +3,7 @@ import { View } from 'native-base'
 import {
   StyleSheet,
   SafeAreaView,
-  ScrollView,
   TouchableOpacity,
-  Modal,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   SectionList,
   Alert,

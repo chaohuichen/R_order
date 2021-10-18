@@ -24,7 +24,6 @@ export const HeaderTitleOnly = (title) => {
 // removeUser={props.removeUserData}
 
 export const HeaderTitleAndIcon = (title, props) => {
-  console.log('props ', props)
   return {
     title,
     headerTitleStyle: {
@@ -40,9 +39,7 @@ export const HeaderTitleAndIcon = (title, props) => {
         color="black"
         style={{ marginRight: 20 }}
         onPress={() => {
-          Alert.alert('Logging Out?', 'Press ok to logout', [
-            { text: 'OK', onPress: () => props.removeUser },
-          ])
+          Alert.alert('Logging Out?', 'Press ok to logout', [{ text: 'OK' }])
         }}
       />
     ),

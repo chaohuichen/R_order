@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar'
 import React, { useState, useRef, useEffect } from 'react'
 import {
   StyleSheet,

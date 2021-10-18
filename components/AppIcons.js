@@ -22,6 +22,8 @@ const AppIcons = (props) => {
       return <MaterialCommunityIcons {...props} />
     case 'FontAwesome5':
       return <FontAwesome5 {...props} />
+    case 'FontAwesome5':
+      return <FontAwesome {...props} />
     case 'MaterialIcons':
       return <MaterialIcons {...props} />
     case 'Ionicons':

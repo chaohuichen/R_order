@@ -7,12 +7,10 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  KeyboardAvoidingView,
   Alert,
 } from 'react-native'
 import { TextInput } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { getUser } from '../../redux'
 import { checkPhoneMap } from '../../API/databaseCall'
 import DismissKeyboard from '../../components/DismissKeyboard'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'

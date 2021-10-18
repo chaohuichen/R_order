@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 
 const ComfirmationPicker = (props) => {

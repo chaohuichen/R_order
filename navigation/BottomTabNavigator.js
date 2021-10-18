@@ -8,7 +8,7 @@ import AddSupplyPageScreen from '../screens/AddSupply/AddSupplyPageScreen'
 const BottomTab = createBottomTabNavigator()
 // TODO add Auth Stack Container
 
-const BottomTabNavigator = ({}, props) => {
+const BottomTabNavigator = ({}) => {
   return (
     <BottomTab.Navigator
       initialRouteName=""
