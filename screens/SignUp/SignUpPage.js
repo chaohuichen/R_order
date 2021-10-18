@@ -79,6 +79,8 @@ function SignUpPage(props) {
             theme={{
               colors: { underlineColor: 'transparent', primary: 'black' },
             }}
+            maxLength={10}
+            autoFocus
             value={phoneNumber}
             mode="outlined"
             label="Mobile number"

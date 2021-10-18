@@ -9,12 +9,11 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
+import { TextInput } from 'react-native-paper'
 import { connect } from 'react-redux'
 import { getUser } from '../../redux'
 import DismissKeyboard from '../../components/DismissKeyboard'
-// import TextInputMask from "react-native-text-input-mask";
-import firebase from '../../API/FirebaseDatabase'
+import firebase, { db } from '../../API/FirebaseDatabase'
 import { checkPhoneMap } from '../../API/databaseCall'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 
@@ -73,12 +72,18 @@ const SignInPage = (props) => {
         .auth()
         .signInWithCredential(credential)
         .then((res) => {
-          const userPayLoad = {
-            userPhoneNumber,
-            uid: res.user.uid,
-          }
-
-          props.fetchData(userPayLoad)
+          db.ref(`/users/${res.user.uid}/userSharedData/`).once(
+            'value',
+            (snapShot) => {
+              console.log('snp ', snapShot.val())
+              if (snapShot.exists()) {
+                props.fetchData(snapShot.val())
+                console.log('user data fetched ')
+              } else {
+                console.log('dont exist ')
+              }
+            }
+          )
         })
         .catch((err) => console.log(err))
     } catch (err) {
@@ -125,6 +130,8 @@ const SignInPage = (props) => {
                 theme={{
                   colors: { underlineColor: 'transparent', primary: 'black' },
                 }}
+                autoFocus
+                maxLength={6}
                 value={verificationCode}
                 mode="outlined"
                 label="Code"
@@ -150,6 +157,8 @@ const SignInPage = (props) => {
                 theme={{
                   colors: { underlineColor: 'transparent', primary: 'black' },
                 }}
+                autoFocus
+                maxLength={10}
                 value={phoneNumber}
                 mode="outlined"
                 label="Mobile number"

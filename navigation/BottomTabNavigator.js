@@ -4,11 +4,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { tabOptions } from './tabOptions'
 import OrderHomeScreen from '../screens/Orders/OrderHomeScreen'
 import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
+import { connect } from 'react-redux'
 import AddSupplyPageScreen from '../screens/AddSupply/AddSupplyPageScreen'
 const BottomTab = createBottomTabNavigator()
 // TODO add Auth Stack Container
 
-const BottomTabNavigator = ({}) => {
+const BottomTabNavigator = (props) => {
+  console.log('props ', props.user)
   return (
     <BottomTab.Navigator
       initialRouteName=""
@@ -22,11 +24,14 @@ const BottomTabNavigator = ({}) => {
         component={OrderHomeScreen}
         options={tabOptions('shopping-cart', 'Orders', 'Feather')}
       />
-      <BottomTab.Screen
-        name="AddSupplyPageScreen"
-        component={AddSupplyPageScreen}
-        options={tabOptions('ios-add', 'Add Supply', 'Ionicons')}
-      />
+      {props.user.userType === 'supplier' && (
+        <BottomTab.Screen
+          name="AddSupplyPageScreen"
+          component={AddSupplyPageScreen}
+          options={tabOptions('ios-add', 'Add Supply', 'Ionicons')}
+        />
+      )}
+
       {/* <BottomTab.Screen
         name="OrderHistoryPage"
         component={OrderHistoryPage}
@@ -40,4 +45,10 @@ const BottomTabNavigator = ({}) => {
   )
 }
 
-export default BottomTabNavigator
+const mapState = (state) => {
+  // console.log('state ', state.user)
+  return {
+    user: state.user,
+  }
+}
+export default connect(mapState, null)(BottomTabNavigator)

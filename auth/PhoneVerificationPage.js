@@ -15,7 +15,7 @@ import DismissKeyboard from '../components/DismissKeyboard'
 function PhoneVerificationPage(props) {
   const [verificationCode, setVerificationCode] = useState('')
   const { phoneNumber, verificationId } = props.route.params
-  let userType = 'user'
+  let userType = 'owner'
   const confirmCode = async () => {
     try {
       const credential = firebase.auth.PhoneAuthProvider.credential(

@@ -30,13 +30,13 @@ export const checkPhoneMap = async (userPhoneNumber) => {
 
 export const setUserData = (payload) => {
   try {
-    const userRef = db.ref('/users')
-    const userKey = userRef.push()
-
-    db.ref(`/users/${userKey.key}/userSharedData/`).set(payload)
+    db.ref(`/users/${payload.uid}/userSharedData/`).set(payload)
   } catch (err) {
     console.log('user ', err)
   }
+}
+export const getUserData = (uid) => {
+  console.log('uid ', uid)
 }
 
 export const setSupplyToDatabase = (payload, category) => {
