@@ -22,8 +22,13 @@ const ConfirmationPage = (props) => {
   const [email, setEmail] = useState('')
   const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
   const [selectedFromValue, setSelectedFromValue] = useState('fillup NY1')
-  const pickerItems = ['fillup logistics', 'fillup mgt', 'fillup roaster']
-  const pickerStores = ['fillup NY1', 'fillup NY2', 'fillup NY3']
+  const pickerItems = [
+    'none',
+    'fillup logistics',
+    'fillup mgt',
+    'fillup roaster',
+  ]
+  const pickerStores = ['none', 'fillup NY1', 'fillup NY2', 'fillup NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
   const [supplyList, setSupplyList] = useState(
@@ -72,41 +77,50 @@ const ConfirmationPage = (props) => {
   const placeOrder = async () => {
     let orderString = ''
     let dividerLine = '------------'
-
-    for (const order of orders) {
-      let tempStr = ''
-      let title = order.title
-      tempStr = '\n' + title + '\n' + dividerLine + '\n'
-      let itemStr = ''
-      for (let item of order.data) {
-        itemStr += `(${item.count})\t` + item.name + '\n'
+    if (selectedFromValue !== 'none' && selectedToValue !== 'none') {
+      for (const order of orders) {
+        let tempStr = ''
+        let title = order.title
+        tempStr = '\n' + title + '\n' + dividerLine + '\n'
+        let itemStr = ''
+        for (let item of order.data) {
+          itemStr += `(${item.count})\t` + item.name + '\n'
+        }
+        tempStr += itemStr + '\n'
+        orderString += tempStr
       }
-      tempStr += itemStr + '\n'
-      orderString += tempStr
-    }
 
-    orderString =
-      'From\n ' +
-      `${selectedToValue}\n` +
-      '646-552-8898\n' +
-      '530 5th Ave, New York, NY 10036\n' +
-      'To\n' +
-      'Sonng Liu\n' +
-      `${selectedFromValue}\n` +
-      '636-469-9628\n' +
-      '2468 Broadway, New York, NY 10025 \n' +
-      orderString
-    axios
-      .post('http://9b3f-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms', {
-        phoneNumber: props.user.userPhoneNumber,
-        orderString,
-        orders,
+      orderString =
+        'From\n ' +
+        `${selectedToValue}\n` +
+        '646-552-8898\n' +
+        '530 5th Ave, New York, NY 10036\n' +
+        'To\n' +
+        'Sonng Liu\n' +
+        `${selectedFromValue}\n` +
+        '636-469-9628\n' +
+        '2468 Broadway, New York, NY 10025 \n' +
+        orderString
+      axios
+        .post(
+          'http://9b3f-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
+          {
+            phoneNumber: props.user.userPhoneNumber,
+            orderString,
+            orders,
+          }
+        )
+        .then(function (res) {})
+        .catch(function (error) {
+          console.log(error)
+        })
+      orderSuccess()
+    } else {
+      Alert.alert('Location is not selected', 'Please select location', {
+        text: 'Ok',
+        style: 'cancel',
       })
-      .then(function (res) {})
-      .catch(function (error) {
-        console.log(error)
-      })
-    orderSuccess()
+    }
   }
   const orderSuccess = () => {
     Alert.alert('Ordered Success', 'You will recieve a text invoice soon', {
