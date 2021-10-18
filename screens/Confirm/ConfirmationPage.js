@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   SectionList,
+  Alert,
 } from 'react-native'
 import { Text } from 'native-base'
 import { connect } from 'react-redux'
@@ -17,10 +18,9 @@ import AppIcons from '../../components/AppIcons'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
-
+import axios from 'axios'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-
   const [isPlacedOrder, setIsPlacedOrder] = useState(false)
   const [email, setEmail] = useState('')
   const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
@@ -29,7 +29,9 @@ const ConfirmationPage = (props) => {
   const pickerStores = ['fillup NY1', 'fillup NY2', 'fillup NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
-
+  const [supplyList, setSupplyList] = useState(
+    'Fillup Supply \n beans 1 \n beans 2'
+  )
   const [orders, setOrders] = useState([])
 
   useEffect(() => {
@@ -50,6 +52,7 @@ const ConfirmationPage = (props) => {
     })
     setOrders(copyData)
   }, [])
+
   const openPickerStore = () => {
     setIsPicker(true)
     rbsheetRef.current.open()
@@ -70,16 +73,51 @@ const ConfirmationPage = (props) => {
     }
   }
   const placeOrder = async () => {
-    await fetch('http://localhost:8080/twilios/sendSms', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: 'hello world',
+    let orderString = ''
+    let dividerLine = '------------'
+
+    for (const order of orders) {
+      let tempStr = ''
+      let title = order.title
+      tempStr = '\n' + title + '\n' + dividerLine + '\n'
+      let itemStr = ''
+      for (let item of order.data) {
+        itemStr += `(${item.count})\t` + item.name + '\n'
+      }
+      tempStr += itemStr + '\n'
+      orderString += tempStr
+    }
+
+    orderString =
+      'From\n ' +
+      `${selectedToValue}\n` +
+      '646-552-8898\n' +
+      '530 5th Ave, New York, NY 10036\n' +
+      'To\n' +
+      'Sonng Liu\n' +
+      `${selectedFromValue}\n` +
+      '636-469-9628\n' +
+      '2468 Broadway, New York, NY 10025 \n' +
+      orderString
+    axios
+      .post('http://9b3f-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms', {
+        phoneNumber: props.user.userPhoneNumber,
+        orderString,
+        orders,
+      })
+      .then(function (res) {})
+      .catch(function (error) {
+        console.log(error)
+      })
+    orderSuccess()
+  }
+  const orderSuccess = () => {
+    Alert.alert('Ordered Success', 'You will recieve a text invoice soon', {
+      text: 'Ok',
+      style: 'cancel',
     })
-      .then((res) => res.json())
-      .then((res) => console.log(res))
+    props.resetOrder()
+    setOrders([])
   }
   const renderItem = ({ item }) => {
     if (item.count > 0) {

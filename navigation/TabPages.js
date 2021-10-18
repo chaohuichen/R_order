@@ -4,6 +4,7 @@ import {
   MyScreenOption,
   HeaderTitleOnly,
   HeaderShownNone,
+  HeaderTitleAndIcon,
 } from './HeaderOptions'
 // CoffeeHome
 import OrderPage from '../screens/Orders/OrderHomePage'
@@ -11,9 +12,10 @@ import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
 import PDFpage from '../screens/PDF/PDFpage'
 import AddSupplyPage from '../screens/AddSupply/AddSupplyPage'
+
 const Stack = createStackNavigator()
 
-export default ({ navigation, tabName }) => {
+export default ({ navigation, tabName }, props) => {
   const headerTitle = 'Fillup Coffee'
   // if (!useIsFocused()) {
   //   return <></>;
@@ -25,7 +27,7 @@ export default ({ navigation, tabName }) => {
         <Stack.Screen
           name="OrderPage"
           component={OrderPage}
-          options={HeaderTitleOnly('Fillup Supply')}
+          options={HeaderTitleAndIcon('Fillup Supply')}
         />
       )}
       {tabName === 'OrderHistoryPage' && (
@@ -55,4 +57,9 @@ export default ({ navigation, tabName }) => {
       />
     </Stack.Navigator>
   )
+}
+const mapDispatch = (dispatch) => {
+  return {
+    removeUserData: () => dispatch(removeUser()),
+  }
 }

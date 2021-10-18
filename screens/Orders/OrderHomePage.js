@@ -87,19 +87,20 @@ const OrderHomePage = (props) => {
           )
         }}
       />
-
-      {/* <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => removeReduxUser()}
-      >
-        <Text style={styles.loginButtonText}>Remove user</Text>
-      </TouchableOpacity> */}
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => confirmOrder()}
-      >
-        <Text style={styles.loginButtonText}>Comfirm Order</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', position: 'absolute', bottom: 10 }}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => removeReduxUser()}
+        >
+          <Text style={styles.loginButtonText}>Logout</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => confirmOrder()}
+        >
+          <Text style={styles.loginButtonText}>Comfirm Order</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -128,12 +129,12 @@ const styles = StyleSheet.create({
   loginButton: {
     justifyContent: 'center',
     height: 50,
-    width: 300,
+    flex: 1,
+    margin: 5,
+    // width: 300,
     borderRadius: 5,
     alignSelf: 'center',
     backgroundColor: 'black',
-    position: 'absolute',
-    bottom: 10,
   },
   loginButtonText: {
     color: 'white',

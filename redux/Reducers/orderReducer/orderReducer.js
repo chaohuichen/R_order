@@ -17,25 +17,6 @@ const defaultOrder = []
 const orderReducer = produce((draft, action) => {
   switch (action.type) {
     case FETCH_ORDER:
-      db.ref('/productData').once('value', (snapshot) => {
-        if (snapshot.exists()) {
-          let productsData = []
-          for (let key in snapshot.val()) {
-            let title = key
-            let data = Object.values(snapshot.val()[`${title}`])
-            if (title && data) {
-              let payload = {
-                title,
-                data,
-              }
-              productsData.push(payload)
-            }
-          }
-          // setData(productsData)
-          draft = productsData
-          // console.log('draft ', draft)
-        }
-      })
       return draft
     case GET_ORDER:
       return action.order

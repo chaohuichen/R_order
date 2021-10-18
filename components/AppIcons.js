@@ -1,5 +1,6 @@
 import {
   Ionicons,
+  FontAwesome,
   FontAwesome5,
   MaterialCommunityIcons,
   MaterialIcons,
