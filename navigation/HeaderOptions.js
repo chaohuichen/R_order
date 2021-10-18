@@ -33,9 +33,9 @@ export const HeaderTitleAndIcon = (title, props) => {
     },
     headerRight: () => (
       <AppIcons
-        type="FontAwesome5"
-        name="user"
-        size={25}
+        type="FontAwesome"
+        name="user-circle-o"
+        size={30}
         color="black"
         style={{ marginRight: 20 }}
         onPress={() => {

@@ -20,10 +20,10 @@ const AppIcons = (props) => {
   switch (iconType) {
     case 'MaterialCommunityIcons':
       return <MaterialCommunityIcons {...props} />
+    case 'FontAwesome':
+      return <FontAwesome {...props} />
     case 'FontAwesome5':
       return <FontAwesome5 {...props} />
-    case 'FontAwesome5':
-      return <FontAwesome {...props} />
     case 'MaterialIcons':
       return <MaterialIcons {...props} />
     case 'Ionicons':
