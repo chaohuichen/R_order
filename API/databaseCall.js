@@ -51,3 +51,29 @@ export const setSupplyToDatabase = (payload, category) => {
       break
   }
 }
+
+export const fetchData = (setDataFun) => {
+  db.ref('/productData')
+    .once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        let productsData = []
+        for (let key in snapshot.val()) {
+          let title = key
+          let data = Object.values(snapshot.val()[`${title}`])
+          if (title && data) {
+            let payload = {
+              title,
+              data,
+            }
+            productsData.push(payload)
+          }
+        }
+        // setData(productsData)
+        setDataFun(productsData)
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      setDataFun([])
+    })
+}

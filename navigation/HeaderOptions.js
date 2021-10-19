@@ -23,7 +23,7 @@ export const HeaderTitleOnly = (title) => {
 }
 // removeUser={props.removeUserData}
 
-export const HeaderTitleAndIcon = (title, props) => {
+export const HeaderTitleAndIcon = (title, navigation) => {
   return {
     title,
     headerTitleStyle: {
@@ -31,18 +31,20 @@ export const HeaderTitleAndIcon = (title, props) => {
       fontFamily: 'Arial-BoldMT',
       color: 'black',
     },
-    headerRight: () => (
-      <AppIcons
-        type="FontAwesome"
-        name="user-circle-o"
-        size={30}
-        color="black"
-        style={{ marginRight: 20 }}
-        onPress={() => {
-          Alert.alert('Logging Out?', 'Press ok to logout', [{ text: 'OK' }])
-        }}
-      />
-    ),
+    headerRight: () => {
+      return (
+        <AppIcons
+          type="FontAwesome"
+          name="user-circle-o"
+          size={30}
+          color="black"
+          style={{ marginRight: 20 }}
+          onPress={() => {
+            navigation.push('UserProfile')
+          }}
+        />
+      )
+    },
     headerBackTitleVisible: false,
     headerTintColor: MainColors.primary,
   }

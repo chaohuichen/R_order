@@ -6,13 +6,14 @@ import OrderHomeScreen from '../screens/Orders/OrderHomeScreen'
 import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import { connect } from 'react-redux'
 import AddSupplyPageScreen from '../screens/AddSupply/AddSupplyPageScreen'
+
 const BottomTab = createBottomTabNavigator()
 // TODO add Auth Stack Container
 
 const BottomTabNavigator = (props) => {
   return (
     <BottomTab.Navigator
-      initialRouteName=""
+      initialRouteName="OrderHomeScreen"
       // tabBar={(props) => <MyTabBar {...props} />}
       screenOptions={{
         headerShown: false,
