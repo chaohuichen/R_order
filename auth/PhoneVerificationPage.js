@@ -1,48 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react'
 import {
-  View,
   Text,
   StyleSheet,
-  Alert,
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
 } from 'react-native'
 import { TextInput } from 'react-native-paper'
 import firebase from '../API/FirebaseDatabase'
+import { setPhoneMap, setUserData } from '../API/databaseCall'
 import { getUser } from '../redux'
 import { connect } from 'react-redux'
 import DismissKeyboard from '../components/DismissKeyboard'
-import AppIcons from '../components/AppIcons'
 function PhoneVerificationPage(props) {
-  const [code, setCode] = useState('')
-  // const [phoneNumber, setPhoneNumber] = useState("+16469223851");
-  const [verificationCode, setVerificationCode] = useState('123456')
-  const [verificationId, setVerificationId] = useState(null)
-  const { phoneNumber } = props.route.params
-
-  const userPhoneNumber = 1 + phoneNumber
-  const recaptchaVerifier = useRef(null)
-  const handleOnSubmit = () => {
-    confirmCode()
-  }
-  useEffect(() => {
-    const sendVerification = async () => {
-      try {
-        const phoneProvider = new firebase.auth.PhoneAuthProvider()
-        const verificationId = await phoneProvider.verifyPhoneNumber(
-          userPhoneNumber,
-          recaptchaVerifier.current
-        )
-        setVerificationId(verificationId)
-      } catch (err) {
-        console.log('error message ' + err)
-      }
-    }
-    sendVerification()
-    return () => {}
-  }, [])
-
+  const [verificationCode, setVerificationCode] = useState('')
+  const { phoneNumber, verificationId } = props.route.params
+  let userType = 'owner'
   const confirmCode = async () => {
     try {
       const credential = firebase.auth.PhoneAuthProvider.credential(
@@ -50,13 +23,18 @@ function PhoneVerificationPage(props) {
         verificationCode
       )
 
-      firebase
+      const firebaseResponse = await firebase
         .auth()
         .signInWithCredential(credential)
-        .then((res) => {
-          props.setUpUser(res.user.uid)
-        })
-        .catch((err) => console.log(err))
+
+      const userPayLoad = {
+        phoneNumber,
+        uid: firebaseResponse.user.uid,
+        userType,
+      }
+      props.setUpUser(userPayLoad)
+      setPhoneMap('+1' + phoneNumber, firebaseResponse.user.uid)
+      setUserData(userPayLoad)
     } catch (err) {
       console.log(err)
     }
@@ -68,22 +46,23 @@ function PhoneVerificationPage(props) {
         <ScrollView contentContainerStyle={styles.keyBoard} behavior="position">
           <Text style={styles.header}>Verify phone number</Text>
           <Text style={styles.subHeader}>
-            Please enter the code sent to +{userPhoneNumber}
+            Please enter the code sent to {phoneNumber}
           </Text>
           <TextInput
             style={{ width: 300, alignSelf: 'center' }}
             theme={{
               colors: { underlineColor: 'transparent', primary: 'black' },
             }}
+            value={verificationCode}
             mode="outlined"
             label="Comfirmation Code"
             autoCapitalize="none"
             keyboardType="phone-pad"
-            onChangeText={(code) => setCode(code)}
+            onChangeText={(code) => setVerificationCode(code)}
           />
           <TouchableOpacity
             style={styles.comfirmButton}
-            onPress={handleOnSubmit}
+            onPress={() => confirmCode()}
           >
             <Text style={styles.comfirmButtonText}>Comfirm</Text>
           </TouchableOpacity>
@@ -136,5 +115,10 @@ const mapDispatch = (dispatch) => {
     setUpUser: (user) => dispatch(getUser(user)),
   }
 }
+const mapState = (state) => {
+  return {
+    user: state.user,
+  }
+}
 
-export default connect(null, mapDispatch)(PhoneVerificationPage)
+export default connect(mapState, mapDispatch)(PhoneVerificationPage)

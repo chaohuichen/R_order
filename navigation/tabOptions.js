@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Text } from 'native-base'
+import { Text } from 'native-base'
 import MainColors from '../constants/MainColors'
 // import PayIcon from '../components/PayIcon'
 import AppIcons from '../components/AppIcons'

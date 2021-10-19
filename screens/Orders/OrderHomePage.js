@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   SectionList,
-  Button,
   Text,
 } from 'react-native'
 import { removeUser } from '../../redux'
@@ -55,51 +54,56 @@ const OrderHomePage = (props) => {
 
   return (
     <View style={styles.container}>
-      <SectionList
-        style={{ flex: 1 }}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: '20%' }}
-        sections={[...props.order] || []}
-        keyExtractor={(item, index) => item + index}
-        renderItem={renderItem}
-        renderSectionHeader={({ section: { title } }) => (
-          <View
-            style={{
-              padding: 20,
-              borderBottomColor: 'rgba(221,221,221,0.5)',
-              borderBottomWidth: 1,
-              flex: 1,
-              width: '100%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
-          </View>
-        )}
-        stickySectionHeadersEnabled={false}
-        ListHeaderComponent={() => {
-          return (
-            <View style={styles.titleContainer}>
-              <Text style={styles.productDetails}>Product</Text>
-              <Text style={styles.productDetails}>Quanitity</Text>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <SectionList
+          style={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: '20%' }}
+          sections={[...props.order] || []}
+          keyExtractor={(item, index) => item + index}
+          renderItem={renderItem}
+          renderSectionHeader={({ section: { title } }) => (
+            <View
+              style={{
+                padding: 12,
+                borderBottomColor: 'rgba(221,221,221,0.5)',
+                borderBottomWidth: 1,
+                flex: 1,
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
             </View>
-          )
-        }}
-      />
-
-      {/* <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => removeReduxUser()}
+          )}
+          stickySectionHeadersEnabled={false}
+          ListHeaderComponent={() => {
+            return (
+              <View style={styles.titleContainer}>
+                <Text style={styles.productDetails}>Product</Text>
+                <Text style={styles.productDetails}>Quanitity</Text>
+              </View>
+            )
+          }}
+        />
+        <View
+          style={{ flexDirection: 'row', position: 'absolute', bottom: 10 }}
         >
-          <Text style={styles.loginButtonText}>Remove user</Text>
-        </TouchableOpacity> */}
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => confirmOrder()}
-      >
-        <Text style={styles.loginButtonText}>Comfirm Order</Text>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => removeReduxUser()}
+          >
+            <Text style={styles.loginButtonText}>Logout</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => confirmOrder()}
+          >
+            <Text style={styles.loginButtonText}>Comfirm Order</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   )
 }
@@ -128,12 +132,11 @@ const styles = StyleSheet.create({
   loginButton: {
     justifyContent: 'center',
     height: 50,
-    width: 300,
+    flex: 1,
+    margin: 5,
     borderRadius: 5,
     alignSelf: 'center',
     backgroundColor: 'black',
-    position: 'absolute',
-    bottom: 10,
   },
   loginButtonText: {
     color: 'white',
@@ -151,6 +154,7 @@ const mapDispatch = (dispatch) => {
 const mapState = (state) => {
   return {
     order: state.order,
+    user: state.user,
   }
 }
 export default connect(mapState, mapDispatch)(OrderHomePage)

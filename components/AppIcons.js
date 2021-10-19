@@ -1,10 +1,12 @@
 import {
   Ionicons,
+  FontAwesome,
   FontAwesome5,
   MaterialCommunityIcons,
   MaterialIcons,
   Feather,
   AntDesign,
+  Entypo,
 } from '@expo/vector-icons'
 import React, { useState, useEffect } from 'react'
 const AppIcons = (props) => {
@@ -18,6 +20,8 @@ const AppIcons = (props) => {
   switch (iconType) {
     case 'MaterialCommunityIcons':
       return <MaterialCommunityIcons {...props} />
+    case 'FontAwesome':
+      return <FontAwesome {...props} />
     case 'FontAwesome5':
       return <FontAwesome5 {...props} />
     case 'MaterialIcons':
@@ -28,6 +32,8 @@ const AppIcons = (props) => {
       return <Feather {...props} />
     case 'AntDesign':
       return <AntDesign {...props} />
+    case 'AntDesign':
+      return <Entypo {...props} />
     default:
       return null
   }

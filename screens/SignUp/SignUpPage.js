@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   StyleSheet,
   Text,
@@ -7,49 +7,62 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  KeyboardAvoidingView,
+  Alert,
 } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
+import { TextInput } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { getUser } from '../../redux'
 import { checkPhoneMap } from '../../API/databaseCall'
-import ExpoFastImage from 'expo-fast-image'
 import DismissKeyboard from '../../components/DismissKeyboard'
-import AppIcons from '../../components/AppIcons'
-import { background, backgroundColor } from 'styled-system'
-// import TextInputMask from "react-native-text-input-mask";
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
+import firebase from '../../API/FirebaseDatabase'
 
 function SignUpPage(props) {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [error, setError] = useState('')
-  const userPhoneNumber = 1 + phoneNumber
+  const userPhone = '+1' + phoneNumber
+
+  const firebaseConfig = firebase.apps.length
+    ? firebase.app().options
+    : undefined
+  const recaptchaVerifier = useRef(null)
   const handleOnSignUp = async () => {
-    const check = await checkPhoneMap(userPhoneNumber)
+    const check = await checkPhoneMap(userPhone)
     if (check) {
-      // user already register go login
       Alert.alert('User already register', 'navigate to sign in page', [
         { text: 'OK', onPress: () => props.navigation.pop() },
       ])
     } else {
+      const phoneProvider = new firebase.auth.PhoneAuthProvider()
+      const verificationId = await phoneProvider.verifyPhoneNumber(
+        userPhone,
+        recaptchaVerifier.current
+      )
       props.navigation.navigate('PhoneVerificationPage', {
         phoneNumber,
+        verificationId,
       })
     }
   }
   return (
     <SafeAreaView style={styles.container}>
+      <FirebaseRecaptchaVerifierModal
+        ref={recaptchaVerifier}
+        firebaseConfig={firebaseConfig}
+        attemptInvisibleVerification={true}
+      />
       <DismissKeyboard>
         <ScrollView
           contentContainerStyle={{
             flex: 1,
-            marginTop: 100,
+            justifyContent: 'center',
             alignItems: 'center',
+            marginBottom: 100,
           }}
         >
           <Image
             source={require('../../assets/upblack.png')}
             style={{
-              height: 150,
+              height: 180,
               resizeMode: 'contain',
               alignSelf: 'center',
               marginBottom: 10,
@@ -66,6 +79,9 @@ function SignUpPage(props) {
             theme={{
               colors: { underlineColor: 'transparent', primary: 'black' },
             }}
+            maxLength={10}
+            autoFocus
+            value={phoneNumber}
             mode="outlined"
             label="Mobile number"
             autoCapitalize="none"

@@ -3,12 +3,10 @@ import { View } from 'native-base'
 import {
   StyleSheet,
   SafeAreaView,
-  ScrollView,
   TouchableOpacity,
-  Modal,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   SectionList,
+  Alert,
 } from 'react-native'
 import { Text } from 'native-base'
 import { connect } from 'react-redux'
@@ -17,19 +15,25 @@ import AppIcons from '../../components/AppIcons'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
-
+import axios from 'axios'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-
   const [isPlacedOrder, setIsPlacedOrder] = useState(false)
   const [email, setEmail] = useState('')
   const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
   const [selectedFromValue, setSelectedFromValue] = useState('fillup NY1')
-  const pickerItems = ['fillup logistics', 'fillup mgt', 'fillup roaster']
-  const pickerStores = ['fillup NY1', 'fillup NY2', 'fillup NY3']
+  const pickerItems = [
+    'none',
+    'fillup logistics',
+    'fillup mgt',
+    'fillup roaster',
+  ]
+  const pickerStores = ['none', 'fillup NY1', 'fillup NY2', 'fillup NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
-
+  const [supplyList, setSupplyList] = useState(
+    'Fillup Supply \n beans 1 \n beans 2'
+  )
   const [orders, setOrders] = useState([])
 
   useEffect(() => {
@@ -50,6 +54,7 @@ const ConfirmationPage = (props) => {
     })
     setOrders(copyData)
   }, [])
+
   const openPickerStore = () => {
     setIsPicker(true)
     rbsheetRef.current.open()
@@ -68,6 +73,62 @@ const ConfirmationPage = (props) => {
     } else {
       setSelectedToValue(value)
     }
+  }
+  const placeOrder = async () => {
+    let orderString = ''
+    let dividerLine = '------------'
+    if (selectedFromValue !== 'none' && selectedToValue !== 'none') {
+      for (const order of orders) {
+        let tempStr = ''
+        let title = order.title
+        tempStr = '\n' + title + '\n' + dividerLine + '\n'
+        let itemStr = ''
+        for (let item of order.data) {
+          itemStr += `(${item.count})\t` + item.name + '\n'
+        }
+        tempStr += itemStr + '\n'
+        orderString += tempStr
+      }
+
+      orderString =
+        'From\n ' +
+        `${selectedToValue}\n` +
+        '646-552-8898\n' +
+        '530 5th Ave, New York, NY 10036\n' +
+        'To\n' +
+        'Sonng Liu\n' +
+        `${selectedFromValue}\n` +
+        '636-469-9628\n' +
+        '2468 Broadway, New York, NY 10025 \n' +
+        orderString
+      axios
+        .post(
+          'http://9b3f-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
+          {
+            phoneNumber: props.user.userPhoneNumber,
+            orderString,
+            orders,
+          }
+        )
+        .then(function (res) {})
+        .catch(function (error) {
+          console.log(error)
+        })
+      orderSuccess()
+    } else {
+      Alert.alert('Location is not selected', 'Please select location', {
+        text: 'Ok',
+        style: 'cancel',
+      })
+    }
+  }
+  const orderSuccess = () => {
+    Alert.alert('Ordered Success', 'You will recieve a text invoice soon', {
+      text: 'Ok',
+      style: 'cancel',
+    })
+    props.resetOrder()
+    setOrders([])
   }
   const renderItem = ({ item }) => {
     if (item.count > 0) {
@@ -124,6 +185,7 @@ const ConfirmationPage = (props) => {
           </View>
         </TouchableWithoutFeedback>
       </View>
+
       <SectionList
         style={{ flex: 1 }}
         sections={orders}
@@ -143,7 +205,7 @@ const ConfirmationPage = (props) => {
                 justifyContent: 'space-between',
               }}
             >
-              <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
+              <Text style={{ fontSize: 20, fontWeight: '500' }}>{title}</Text>
               <Text style={{ fontSize: 20, fontWeight: '500' }}>QTY</Text>
             </View>
           )
@@ -153,7 +215,6 @@ const ConfirmationPage = (props) => {
           <Text style={{ marginLeft: 20, fontWeight: '600', fontSize: 30 }}>
             Items
           </Text>
-
           <TouchableOpacity
             style={styles.loginButton}
             onPress={() => handlePlaceOrder()}
@@ -167,58 +228,10 @@ const ConfirmationPage = (props) => {
             <Text style={styles.loginText}>View</Text>
           </TouchableOpacity>
         </View>
-        {isPlacedOrder && (
-          <Modal
-            animationType="slide"
-            visible={props.visible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.')
-              //   setModalVisible(!modalVisible);
-            }}
-            presentationStyle={'pageSheet'}
-          >
-            <ScrollView>
-              <View style={{ alignSelf: 'left', padding: '2%' }}>
-                <AppIcons
-                  type="Ionicons"
-                  name="close"
-                  size={30}
-                  onPress={() => setIsPlacedOrder(false)}
-                />
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Text
-                  style={{ color: 'black', fontWeight: '600', fontSize: 28 }}
-                >
-                  Enter email address
-                </Text>
-                <TextInput
-                  mode="outlined"
-                  label="Email"
-                  onChangeText={(email) => setEmail(email)}
-                  style={{ width: 300, alignSelf: 'center' }}
-                  theme={{
-                    colors: { underlineColor: 'transparent', primary: 'black' },
-                  }}
-                />
-
-                <TouchableOpacity
-                  style={styles.loginButton}
-                  onPress={() => onPaySubmition()}
-                >
-                  <Text style={styles.loginText}>Pay</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </Modal>
-        )}
       </SectionList>
+      <TouchableOpacity style={styles.loginButton} onPress={() => placeOrder()}>
+        <Text style={styles.loginText}>Place Order</Text>
+      </TouchableOpacity>
       <RBSheet
         ref={rbsheetRef}
         height={300}
@@ -278,6 +291,7 @@ const styles = StyleSheet.create({
     width: 300,
     alignSelf: 'center',
     marginTop: 10,
+    bottom: 10,
   },
   loginText: {
     color: 'white',
@@ -299,6 +313,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => {
   return {
     allOrder: state.order,
+    user: state.user,
   }
 }
 

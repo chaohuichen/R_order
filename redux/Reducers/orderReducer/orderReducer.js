@@ -4,8 +4,8 @@ import {
   REMOVE_ORDER,
   ADD_ORDER,
   CLEAR_ORDER,
+  FETCH_ORDER,
 } from './orderActionTypes'
-import { db } from '../../../API/FirebaseDatabase'
 /**
  * INITIAL STATE
  */
@@ -15,6 +15,8 @@ const defaultOrder = []
  */
 const orderReducer = produce((draft, action) => {
   switch (action.type) {
+    case FETCH_ORDER:
+      return draft
     case GET_ORDER:
       return action.order
     case REMOVE_ORDER: {
@@ -40,10 +42,7 @@ const orderReducer = produce((draft, action) => {
       const copyOrder = draft.map((singleData) => {
         if (singleData.title === action.sectionTitle) {
           const copySingleData = singleData.data.map((singleOrder) => {
-            if (
-              singleOrder.name === action.order.name &&
-              singleOrder.count < 21
-            ) {
+            if (singleOrder.name === action.order.name) {
               return { ...singleOrder, count: singleOrder.count + 1 }
             } else {
               return singleOrder
