@@ -48,6 +48,24 @@ const SignInPage = (props) => {
       ])
     }
   }
+  const firebasePhoneSignIn = (credential) => {
+    firebase
+      .auth()
+      .signInWithCredential(credential)
+      .then((res) => {
+        db.ref(`/users/${res.user.uid}/userSharedData/`).once(
+          'value',
+          (snapShot) => {
+            if (snapShot.exists()) {
+              props.fetchData(snapShot.val())
+            } else {
+              console.log('user dont exist ')
+            }
+          }
+        )
+      })
+      .catch((err) => console.log('phone sign in ', err))
+  }
   const sendVerification = async () => {
     try {
       const phoneProvider = new firebase.auth.PhoneAuthProvider()
@@ -67,25 +85,7 @@ const SignInPage = (props) => {
         verificationId,
         verificationCode
       )
-
-      firebase
-        .auth()
-        .signInWithCredential(credential)
-        .then((res) => {
-          db.ref(`/users/${res.user.uid}/userSharedData/`).once(
-            'value',
-            (snapShot) => {
-              console.log('snp ', snapShot.val())
-              if (snapShot.exists()) {
-                props.fetchData(snapShot.val())
-                console.log('user data fetched ')
-              } else {
-                console.log('dont exist ')
-              }
-            }
-          )
-        })
-        .catch((err) => console.log(err))
+      firebasePhoneSignIn(credential)
     } catch (err) {
       console.log(err)
     }

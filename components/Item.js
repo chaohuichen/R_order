@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Text, Box, View, Button } from 'native-base'
+import React from 'react'
+import { Text, Box, View } from 'native-base'
 import { StyleSheet } from 'react-native'
 import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'

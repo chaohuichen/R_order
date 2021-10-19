@@ -10,7 +10,6 @@ const BottomTab = createBottomTabNavigator()
 // TODO add Auth Stack Container
 
 const BottomTabNavigator = (props) => {
-  console.log('props ', props.user)
   return (
     <BottomTab.Navigator
       initialRouteName=""
