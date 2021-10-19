@@ -28,7 +28,7 @@ const Item = (props) => {
         <Text>
           {order.name}
           {'\n'}
-          <Text sub={true}>{order.description}</Text>
+          <Text sub={true}>Unit: {order.size}</Text>
         </Text>
       </View>
       <View style={styles.actionBox}>

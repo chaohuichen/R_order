@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   StyleSheet,
   View,
@@ -13,6 +13,10 @@ import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { db } from '../../API/FirebaseDatabase'
 const OrderHomePage = (props) => {
+  const loadingRef = useRef(null)
+  const [limit, setLimit] = useState(10)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isRefresh, setIsRefresh] = useState(false)
   useEffect(() => {
     db.ref('/productData').once('value', (snapshot) => {
       if (snapshot.exists()) {

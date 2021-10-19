@@ -10,8 +10,6 @@ import {
 } from 'react-native'
 import { Text } from 'native-base'
 import { connect } from 'react-redux'
-import { TextInput } from 'react-native-paper'
-import AppIcons from '../../components/AppIcons'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
