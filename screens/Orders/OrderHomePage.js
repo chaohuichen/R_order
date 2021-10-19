@@ -1,47 +1,39 @@
-import { StatusBar } from 'expo-status-bar'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
   SectionList,
   Text,
+  RefreshControl,
 } from 'react-native'
+import { Button } from 'native-base'
 import { removeUser } from '../../redux'
 import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
-import { db } from '../../API/FirebaseDatabase'
+import { fetchData } from '../../API/databaseCall'
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout))
+}
+
 const OrderHomePage = (props) => {
+  const [refreshing, setRefreshing] = useState(false)
   const loadingRef = useRef(null)
   const [limit, setLimit] = useState(10)
   const [isLoading, setIsLoading] = useState(false)
   const [isRefresh, setIsRefresh] = useState(false)
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    fetchData(props.fetchData)
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
+
   useEffect(() => {
-    db.ref('/productData').once('value', (snapshot) => {
-      if (snapshot.exists()) {
-        let productsData = []
-        for (let key in snapshot.val()) {
-          let title = key
-          let data = Object.values(snapshot.val()[`${title}`])
-          if (title && data) {
-            let payload = {
-              title,
-              data,
-            }
-            productsData.push(payload)
-          }
-        }
-        // setData(productsData)
-        props.fetchData(productsData)
-      }
-    })
+    fetchData(props.fetchData)
     return () => {}
   }, [])
 
-  const removeReduxUser = () => {
-    props.removeUserData()
-  }
   const confirmOrder = () => {
     props.navigation.navigate('ConfirmationPage')
   }
@@ -60,6 +52,9 @@ const OrderHomePage = (props) => {
     <View style={styles.container}>
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SectionList
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           style={{ flex: 1 }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: '20%' }}
@@ -91,21 +86,10 @@ const OrderHomePage = (props) => {
             )
           }}
         />
-        <View
-          style={{ flexDirection: 'row', position: 'absolute', bottom: 10 }}
-        >
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => removeReduxUser()}
-          >
-            <Text style={styles.loginButtonText}>Logout</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => confirmOrder()}
-          >
+        <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
+          <Button style={styles.loginButton} onPress={() => confirmOrder()}>
             <Text style={styles.loginButtonText}>Comfirm Order</Text>
-          </TouchableOpacity>
+          </Button>
         </View>
       </View>
     </View>
@@ -137,10 +121,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 50,
     flex: 1,
-    margin: 5,
-    borderRadius: 5,
     alignSelf: 'center',
     backgroundColor: 'black',
+    borderRadius: 0,
   },
   loginButtonText: {
     color: 'white',
