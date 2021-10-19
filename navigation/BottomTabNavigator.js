@@ -6,9 +6,22 @@ import OrderHomeScreen from '../screens/Orders/OrderHomeScreen'
 import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import { connect } from 'react-redux'
 import AddSupplyPageScreen from '../screens/AddSupply/AddSupplyPageScreen'
+
 const BottomTab = createBottomTabNavigator()
 // TODO add Auth Stack Container
 
+const isTabBarVisible = (navState) => {
+  // if (!navState) {
+  //   return true
+  // }
+  console.log(navState.getState('showTabBar').routes[0])
+  // let tabBarVisible = navState.routes[navState.index].params
+  //   ? navState.routes[navState.index].params.showTabBar
+  //   : true
+  // return tabBarVisible
+
+  return true
+}
 const BottomTabNavigator = (props) => {
   return (
     <BottomTab.Navigator

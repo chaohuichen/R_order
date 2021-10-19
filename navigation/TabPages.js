@@ -12,11 +12,10 @@ import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
 import PDFpage from '../screens/PDF/PDFpage'
 import AddSupplyPage from '../screens/AddSupply/AddSupplyPage'
-
+import UserProfileHomePage from '../screens/UserProfile/UserProfileHomePage'
 const Stack = createStackNavigator()
 
 export default ({ navigation, tabName }, props) => {
-  const headerTitle = 'Fillup Coffee'
   // if (!useIsFocused()) {
   //   return <></>;
   // }
@@ -27,7 +26,9 @@ export default ({ navigation, tabName }, props) => {
         <Stack.Screen
           name="OrderPage"
           component={OrderPage}
-          options={HeaderTitleAndIcon('Fillup Supply')}
+          options={({ navigation }) =>
+            HeaderTitleAndIcon('Fillup Supply', navigation)
+          }
         />
       )}
       {tabName === 'OrderHistoryPage' && (
@@ -54,6 +55,11 @@ export default ({ navigation, tabName }, props) => {
         name="PDFpage"
         component={PDFpage}
         options={HeaderShownNone()}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfileHomePage}
+        options={HeaderTitleOnly('Profile')}
       />
     </Stack.Navigator>
   )
