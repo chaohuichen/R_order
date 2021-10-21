@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import {
   StyleSheet,
   View,
@@ -19,7 +19,10 @@ const wait = (timeout) => {
 
 const OrderHomePage = (props) => {
   const [refreshing, setRefreshing] = useState(false)
-
+  const loadingRef = useRef(null)
+  const [limit, setLimit] = useState(10)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isRefresh, setIsRefresh] = useState(false)
   const onRefresh = useCallback(() => {
     setRefreshing(true)
     fetchData(props.fetchData)
