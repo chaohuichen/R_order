@@ -4,7 +4,6 @@ import * as Sharing from 'expo-sharing'
 
 import { View, Text } from 'native-base'
 import { StyleSheet, Dimensions } from 'react-native'
-import { htmlContent } from './Template'
 
 const PDFpage = () => {
   useEffect(() => {

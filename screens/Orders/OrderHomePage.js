@@ -23,6 +23,7 @@ const OrderHomePage = (props) => {
   const [limit, setLimit] = useState(10)
   const [isLoading, setIsLoading] = useState(false)
   const [isRefresh, setIsRefresh] = useState(false)
+
   const onRefresh = useCallback(() => {
     setRefreshing(true)
     fetchData(props.fetchData)

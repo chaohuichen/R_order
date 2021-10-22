@@ -14,6 +14,9 @@ import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
 import axios from 'axios'
+import { insertHtml, htmlContent } from '../PDF/HtmlTemplate'
+import * as Print from 'expo-print'
+import * as Sharing from 'expo-sharing'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [isPlacedOrder, setIsPlacedOrder] = useState(false)
@@ -61,10 +64,6 @@ const ConfirmationPage = (props) => {
     setIsPicker(false)
     rbsheetRef.current.open()
   }
-  const handlePlaceOrder = () => {
-    //submit order send pdf send email send sms
-    setIsPlacedOrder(true)
-  }
   const updateSelectedValue = (value) => {
     if (isPicker) {
       setSelectedFromValue(value)
@@ -72,7 +71,20 @@ const ConfirmationPage = (props) => {
       setSelectedToValue(value)
     }
   }
-  const placeOrder = async () => {
+  const sharePdf = async () => {
+    const html = insertHtml(orders)
+    const filePath = await Print.printToFileAsync({
+      html: html,
+      width: 650,
+      height: 842,
+      base64: true,
+      orientation: Print.Orientation.portrait,
+    })
+
+    Sharing.shareAsync(filePath.uri)
+  }
+
+  const createOrderString = () => {
     let orderString = ''
     let dividerLine = '------------'
     if (selectedFromValue !== 'none' && selectedToValue !== 'none') {
@@ -99,6 +111,17 @@ const ConfirmationPage = (props) => {
         '636-469-9628\n' +
         '2468 Broadway, New York, NY 10025 \n' +
         orderString
+      return orderString
+    } else {
+      Alert.alert('Location is not selected', 'Please select location', {
+        text: 'Ok',
+        style: 'cancel',
+      })
+    }
+  }
+  const placeOrder = async () => {
+    orderString = createOrderString()
+    if (orderString.length !== 0) {
       axios
         .post(
           'http://9b3f-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
@@ -114,17 +137,25 @@ const ConfirmationPage = (props) => {
         })
       orderSuccess()
     } else {
-      Alert.alert('Location is not selected', 'Please select location', {
+      Alert.alert('Nothing in cart', 'add order to cart', {
         text: 'Ok',
+        onPress: () => props.navigation.navigate('OrderHomePage'),
         style: 'cancel',
       })
     }
   }
   const orderSuccess = () => {
-    Alert.alert('Ordered Success', 'You will recieve a text invoice soon', {
-      text: 'Ok',
-      style: 'cancel',
-    })
+    Alert.alert('Ordered Success', 'press ok to save a copy', [
+      {
+        text: 'Ok',
+        onPress: () => sharePdf(),
+        style: 'cancel',
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ])
     props.resetOrder()
     setOrders([])
   }
@@ -213,18 +244,6 @@ const ConfirmationPage = (props) => {
           <Text style={{ marginLeft: 20, fontWeight: '600', fontSize: 30 }}>
             Items
           </Text>
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => handlePlaceOrder()}
-          >
-            <Text style={styles.loginText}>Place Order</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => viewPDF()}
-          >
-            <Text style={styles.loginText}>View</Text>
-          </TouchableOpacity>
         </View>
       </SectionList>
       <TouchableOpacity style={styles.loginButton} onPress={() => placeOrder()}>
