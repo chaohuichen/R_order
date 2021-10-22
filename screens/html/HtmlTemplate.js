@@ -1,19 +1,7 @@
-let resultString = ''
-
-{
-  /*
-<tr>
-<td style="text-align:left">Centro comercial Moctezuma</td>
-<td>Francisco Chang</td>
-<td>Mexico</td>
-<td>UK</td>
-</tr> 
-
-*/
-}
-
 export const insertHtml = (orders, img) => {
   let tempStr = ''
+  let resultString = ''
+
   for (const order of orders) {
     for (let item of order.data) {
       tempStr += `<tr>
@@ -23,7 +11,6 @@ export const insertHtml = (orders, img) => {
       <td>${0}</td>
       </tr> `
     }
-    // console.log('tempstry ', tempStr)
   }
   resultString += tempStr
   const htmlContent = `
