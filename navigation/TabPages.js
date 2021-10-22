@@ -3,14 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack'
 import {
   MyScreenOption,
   HeaderTitleOnly,
-  HeaderShownNone,
   HeaderTitleAndIcon,
 } from './HeaderOptions'
 // CoffeeHome
 import OrderPage from '../screens/Orders/OrderHomePage'
 import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
-import PDFpage from '../screens/PDF/PDFpage'
 import AddSupplyPage from '../screens/AddSupply/AddSupplyPage'
 import UserProfileHomePage from '../screens/UserProfile/UserProfileHomePage'
 const Stack = createStackNavigator()
@@ -51,11 +49,7 @@ export default ({ navigation, tabName }, props) => {
         component={ConfirmationPage}
         options={HeaderTitleOnly('Invoice')}
       />
-      <Stack.Screen
-        name="PDFpage"
-        component={PDFpage}
-        options={HeaderShownNone()}
-      />
+
       <Stack.Screen
         name="UserProfile"
         component={UserProfileHomePage}

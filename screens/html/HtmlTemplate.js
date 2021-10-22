@@ -12,7 +12,7 @@ let resultString = ''
 */
 }
 
-export const insertHtml = (orders) => {
+export const insertHtml = (orders, img) => {
   let tempStr = ''
   for (const order of orders) {
     for (let item of order.data) {
@@ -31,6 +31,12 @@ export const insertHtml = (orders) => {
 <html >
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Oswald:wght@200&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&family=Oswald:wght@200&display=swap" rel="stylesheet">
   </head>
   <style>
     * {
@@ -77,39 +83,44 @@ export const insertHtml = (orders) => {
     td{
       text-align: center;
     }
+    h1{
+      font-family: 'Oswald';
+      font-weight:900;
+      font-size: xx-large;
+    }
+    #subheading{
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
   </style>
   <body>
     <div id="page-wrap">
           <div class="row" style = "margin-bottom: 20px;">
-
             <div class="col">
               <img src="./logo.png" style="width: 140px; height: 240px">
             </div>
-
             <div class="col-2" style="margin-top: 20px">
               <h1>FillUP LOGISTIC</h1>
-              <p>Fillup Logistic</p>
-              <p>646-552-8898
+              <p id ='subheading'>Fillup Logistic</p>
+              <p id ='subheading'>646-552-8898
                 <br/>
                 530 5th ave New York NY 10036
               </p>
               <h1 style="font-size: 40px; letter-spacing: 5px; font-weight: bold;">INVOICE</h1>
-              
               <div>  
-              <p style=" font-weight: bold;">Invoice no: #ABCDEFGHIJKLMN</p>
-              <p style=" font-weight: bold;">Invoice due date:10-20-2021</p>
-              <p style=" font-weight: bold;">Date issue: 10-20-2021</p>
+              <p id ='subheading' style=" font-weight: bold;">Invoice no: #ABCDEFGHIJKLMN</p>
+              <p id ='subheading'style=" font-weight: bold;">Invoice due date:10-20-2021</p>
+              <p id ='subheading'style=" font-weight: bold;">Date issue: 10-20-2021</p>
               </div>
-              
             </div>
           </div>
-
           <div class="row" style = "margin-bottom: 30px;">
             <div style="text-align: left;" class="col">
-              <p style="font-weight: 900; font-size: 30px; color: black">
-                Bill To <br />
-              </p>
-              <p>
+              <h1 style="font-weight: 900; font-size: 30px; color: black">
+                BILL TO <br />
+              </h1>
+              <p id="subheading">
                 Sonny Liu <br />
                 Fillup Store NY1
                 <br />
@@ -117,13 +128,11 @@ export const insertHtml = (orders) => {
                 2486 Broadway. New York, NY0025
               </p>
             </div>
-
             <div style="text-align: left;" class="col-2">
-              <p style="font-weight: 900; font-size: 30px; color: black">
-                Ship To <br />
-              </p>
-
-              <p>
+              <h1 style="font-weight: 900; font-size: 30px; color: black">
+                SHIP TO <br />
+              </h1>
+              <p id="subheading">
                 Sonny Liu <br />
                 Fillup Store NY1
                 <br />
@@ -131,7 +140,6 @@ export const insertHtml = (orders) => {
                 2486 Broadway. New York, NY0025
               </p>
             </div>
-
           </div>
           <div>
           <table
@@ -149,34 +157,25 @@ export const insertHtml = (orders) => {
           </table>
           </div>
           <p style="text-align: right">Amount due </p>
-
           <div style="bottom: 0; position: absolute; width: 680px; margin-bottom: 30px;">
           <div class="row" style="letter-spacing: 1px; border-bottom: 3px solid black; margin-top: 40px; ">
             <div class="col" style=" width: 60%;">
-
               <div style="text-align: left; float:left; ">
               <h1 style="text-align: center;" >PAYMENT METHOD:</h1>
               <h4 style="text-align: center;">PAYMENT TO:</h4>
               <h4>ACCT NO: 8888 8888 8888 8888 (Bank)</h4>
               <h4>ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046</h4>
               </div>
-
               </div>
-             
               <div class="col" style=" width: 30%;"><h1 style="text-align: right; float: right;">
                 THANK <br>YOU!</h1>
               </div>
-
             </div>
             <h5 style="text-align: center;">WWW.FILLUP.COFFEE</h5>
-
-          </div>    
+          </div>
     </div>
   </body>
 </html>
-
-
-
 
 `
   return htmlContent

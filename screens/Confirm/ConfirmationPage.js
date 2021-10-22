@@ -14,9 +14,10 @@ import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
 import axios from 'axios'
-import { insertHtml, htmlContent } from '../PDF/HtmlTemplate'
+import { insertHtml } from '../html/HtmlTemplate'
 import * as Print from 'expo-print'
 import * as Sharing from 'expo-sharing'
+
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [isPlacedOrder, setIsPlacedOrder] = useState(false)
@@ -121,7 +122,7 @@ const ConfirmationPage = (props) => {
   }
   const placeOrder = async () => {
     orderString = createOrderString()
-    if (orderString.length !== 0) {
+    if (orders.length !== 0) {
       axios
         .post(
           'http://9b3f-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
@@ -139,7 +140,6 @@ const ConfirmationPage = (props) => {
     } else {
       Alert.alert('Nothing in cart', 'add order to cart', {
         text: 'Ok',
-        onPress: () => props.navigation.navigate('OrderHomePage'),
         style: 'cancel',
       })
     }
@@ -169,10 +169,18 @@ const ConfirmationPage = (props) => {
             padding: 20,
             borderBottomWidth: 1,
             borderBottomColor: 'rgba(211,211,211,0.5)',
+            flex: 1,
           }}
         >
-          <Text>{item.name} </Text>
-          <Text>{item.count}</Text>
+          <Text style={{ flexWrap: 'wrap', width: '70%' }}>{item.name}</Text>
+          <Text
+            style={{
+              width: '10%',
+              textAlign: 'center',
+            }}
+          >
+            {item.count}
+          </Text>
         </View>
       )
     }
