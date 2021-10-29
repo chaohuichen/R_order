@@ -15,13 +15,12 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
 import axios from 'axios'
 import { insertHtml } from '../html/HtmlTemplate'
-import * as Print from 'expo-print'
 import * as Sharing from 'expo-sharing'
+import * as Linking from 'expo-linking'
+// import * as FileSystem from 'expo-file-system'
 
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-  const [isPlacedOrder, setIsPlacedOrder] = useState(false)
-  const [email, setEmail] = useState('')
   const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
   const [selectedFromValue, setSelectedFromValue] = useState('fillup NY1')
   const pickerItems = [
@@ -33,11 +32,7 @@ const ConfirmationPage = (props) => {
   const pickerStores = ['none', 'fillup NY1', 'fillup NY2', 'fillup NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
-  const [supplyList, setSupplyList] = useState(
-    'Fillup Supply \n beans 1 \n beans 2'
-  )
   const [orders, setOrders] = useState([])
-
   useEffect(() => {
     // map all the data from redux
     const copyData = []
@@ -72,17 +67,16 @@ const ConfirmationPage = (props) => {
       setSelectedToValue(value)
     }
   }
-  const sharePdf = async () => {
-    const html = insertHtml(orders)
-    const filePath = await Print.printToFileAsync({
-      html: html,
-      width: 650,
-      height: 842,
-      base64: true,
-      orientation: Print.Orientation.portrait,
-    })
-
-    Sharing.shareAsync(filePath.uri)
+  const sharePdf = async (url) => {
+    // let path = url.split('/')
+    // const file_name = path[path.length - 1]
+    // FileSystem.downloadAsync(url, FileSystem.documentDirectory + file_name)
+    //   .then(({ uri }) => {
+    //     // Sharing.shareAsync(uri)
+    //   })
+    //   .catch((err) => {
+    //     console.log('file download err ', err)
+    //   })
   }
 
   const createOrderString = () => {
@@ -121,22 +115,22 @@ const ConfirmationPage = (props) => {
     }
   }
   const placeOrder = async () => {
-    orderString = createOrderString()
+    const orderString = createOrderString()
     if (orders.length !== 0) {
+      const html = insertHtml(orders)
       axios
         .post(
-          'http://9b3f-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
+          'http://b284-98-14-177-227.ngrok.io/api/fillupSupplyAPI/sendSms',
           {
             phoneNumber: props.user.userPhoneNumber,
             orderString,
             orders,
           }
         )
-        .then(function (res) {})
         .catch(function (error) {
           console.log(error)
         })
-      orderSuccess()
+      createPdf(html)
     } else {
       Alert.alert('Nothing in cart', 'add order to cart', {
         text: 'Ok',
@@ -144,11 +138,22 @@ const ConfirmationPage = (props) => {
       })
     }
   }
-  const orderSuccess = () => {
+  const createPdf = (html) => {
+    axios('http://b284-98-14-177-227.ngrok.io/api/fillupSupplyAPI/createPdf', {
+      method: 'post',
+      data: { html },
+    })
+      .then((res) => {
+        console.log('res data ', res.data)
+        orderSuccessAlert(res.data)
+      })
+      .catch((err) => console.log('axios post err ', err))
+  }
+  const orderSuccessAlert = (url) => {
     Alert.alert('Ordered Success', 'press ok to save a copy', [
       {
         text: 'Ok',
-        onPress: () => sharePdf(),
+        onPress: () => sharePdf(url),
         style: 'cancel',
       },
       {
