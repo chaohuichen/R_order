@@ -16,7 +16,7 @@ import { clearOrder } from '../../redux/Reducers/orderReducer'
 import axios from 'axios'
 import { insertHtml } from '../html/HtmlTemplate'
 import * as Sharing from 'expo-sharing'
-
+import * as FileSystem from 'expo-file-system'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
@@ -68,17 +68,16 @@ const ConfirmationPage = (props) => {
     }
   }
   const sharePdf = async (url) => {
-    FileSystem.downloadAsync(
-      'https://firebasestorage.googleapis.com/v0/b/fillup-supply-3fe4c.appspot.com/o/Invoices%2Finvoice-6.pdf?alt=media&token=bc7a446d-fc6a-44f4-959f-227c983ddbf4',
-      FileSystem.documentDirectory + 'small.pdf'
-    )
-      .then(({ uri }) => {
-        Sharing.shareAsync(uri)
-        console.log('Finished downloading to ', uri)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+    try {
+      const { uri } = await FileSystem.downloadAsync(
+        url,
+        FileSystem.documentDirectory + 'invoice-6.pdf'
+      )
+      await Sharing.shareAsync(uri)
+      console.log('Finished downloading to ', uri)
+    } catch (error) {
+      console.error(error)
+    }
     // props.navigation.navigate('PdfView')
   }
 
