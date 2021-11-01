@@ -73,7 +73,7 @@ const ConfirmationPage = (props) => {
     try {
       const { uri } = await FileSystem.downloadAsync(
         url,
-        FileSystem.documentDirectory + 'invoice-1.pdf'
+        FileSystem.documentDirectory + 'invoice-20.pdf'
       )
       await Sharing.shareAsync(uri)
       await AsyncStorage.clear()
@@ -128,7 +128,7 @@ const ConfirmationPage = (props) => {
       const html = insertHtml(orders)
       axios
         .post(
-          'http://f800-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
+          'http://b61a-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
           {
             phoneNumber: props.user.userPhoneNumber,
             orderString,
@@ -147,7 +147,7 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = (html) => {
-    axios('http://f800-216-158-137-35.ngrok.io/api/fillupSupplyAPI/createPdf', {
+    axios('http://b61a-216-158-137-35.ngrok.io/api/fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html },
     })
@@ -158,20 +158,22 @@ const ConfirmationPage = (props) => {
       .catch((err) => console.log('axios post err ', err))
   }
   const orderSuccessAlert = (url) => {
-    Alert.alert('Ordered Success', 'press ok to save a copy', [
-      {
-        text: 'Ok',
-        onPress: () => sharePdf(url),
-        style: 'cancel',
-      },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-    ])
-    props.resetOrder()
     setLoading(false)
+    props.resetOrder()
     setOrders([])
+    setTimeout(() => {
+      Alert.alert('Ordered Success', 'press ok to save a copy', [
+        {
+          text: 'Ok',
+          onPress: () => sharePdf(url),
+          style: 'cancel',
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ])
+    }, 2000)
   }
   const renderItem = ({ item }) => {
     if (item.count > 0) {
