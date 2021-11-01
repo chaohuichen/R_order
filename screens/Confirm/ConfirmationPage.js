@@ -78,7 +78,9 @@ const ConfirmationPage = (props) => {
     } catch (error) {
       console.error(error)
     }
-    // props.navigation.navigate('PdfView')
+    props.navigation.navigate('PdfView', {
+      uri,
+    })
   }
 
   const createOrderString = () => {
@@ -120,6 +122,7 @@ const ConfirmationPage = (props) => {
     const orderString = createOrderString()
     if (orders.length !== 0) {
       const html = insertHtml(orders)
+      const resHtml = html + html
       axios
         .post(
           'http://f800-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
