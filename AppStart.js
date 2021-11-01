@@ -9,6 +9,7 @@ import { NativeBaseProvider } from 'native-base'
 import { NavigationContainer } from '@react-navigation/native'
 import NavigationTheme from './constants/NavigationTheme'
 import MainNavigation from './navigation/MainNavigation'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default () => {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
@@ -27,7 +28,6 @@ export default () => {
         // 'inter-bold': require('./assets/fonts/Inter-Bold.ttf')
       }),
     ])
-
     const colorScheme = Appearance.getColorScheme()
 
     if (colorScheme === 'dark') {

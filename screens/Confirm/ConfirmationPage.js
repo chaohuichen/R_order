@@ -15,8 +15,8 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
 import axios from 'axios'
 import { insertHtml } from '../html/HtmlTemplate'
-import * as Sharing from 'expo-sharing'
-import * as Linking from 'expo-linking'
+// import * as Sharing from 'expo-sharing'
+// import * as Linking from 'expo-linking'
 // import * as FileSystem from 'expo-file-system'
 
 const ConfirmationPage = (props) => {
@@ -120,7 +120,7 @@ const ConfirmationPage = (props) => {
       const html = insertHtml(orders)
       axios
         .post(
-          'http://b284-98-14-177-227.ngrok.io/api/fillupSupplyAPI/sendSms',
+          'http://f800-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
           {
             phoneNumber: props.user.userPhoneNumber,
             orderString,
@@ -139,7 +139,7 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = (html) => {
-    axios('http://b284-98-14-177-227.ngrok.io/api/fillupSupplyAPI/createPdf', {
+    axios('http://f800-216-158-137-35.ngrok.io/api/fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html },
     })

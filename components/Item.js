@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import * as Haptics from 'expo-haptics'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as FileSystem from 'expo-file-system'
 const Item = (props) => {
   const { sectionTitle, order, index } = props
 
@@ -14,6 +16,7 @@ const Item = (props) => {
     props.removeOnOrder(order, index, sectionTitle)
   }
   const add = () => {
+    AsyncStorage.clear()
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     props.addToOrder(order, index, sectionTitle)
   }
