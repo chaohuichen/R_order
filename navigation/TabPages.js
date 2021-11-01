@@ -11,6 +11,7 @@ import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
 import AddSupplyPage from '../screens/AddSupply/AddSupplyPage'
 import UserProfileHomePage from '../screens/UserProfile/UserProfileHomePage'
+import PdfViewer from '../screens/PdfViewer/PdfView'
 const Stack = createStackNavigator()
 
 export default ({ navigation, tabName }, props) => {
@@ -53,6 +54,12 @@ export default ({ navigation, tabName }, props) => {
       <Stack.Screen
         name="UserProfile"
         component={UserProfileHomePage}
+        options={HeaderTitleOnly('Profile')}
+      />
+
+      <Stack.Screen
+        name="PdfView"
+        component={PdfViewer}
         options={HeaderTitleOnly('Profile')}
       />
     </Stack.Navigator>

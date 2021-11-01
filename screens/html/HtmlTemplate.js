@@ -35,7 +35,7 @@ export const insertHtml = (orders) => {
       font: 14px/1.4 Georgia, serif;
     }
     #page-wrap {
-      width: 680px;
+      width: 590px;
       height: 842px;
       margin: 0 auto;
     }
