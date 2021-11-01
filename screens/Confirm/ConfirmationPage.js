@@ -17,6 +17,8 @@ import axios from 'axios'
 import { insertHtml } from '../html/HtmlTemplate'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
+import Spinner from 'react-native-loading-spinner-overlay'
+import AppLoading from '../../components/AppLoading'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
@@ -32,7 +34,7 @@ const ConfirmationPage = (props) => {
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
   const [pdfUrl, setPdfUrl] = useState()
-
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     // map all the data from redux
     const copyData = []
@@ -71,9 +73,10 @@ const ConfirmationPage = (props) => {
     try {
       const { uri } = await FileSystem.downloadAsync(
         url,
-        FileSystem.documentDirectory + 'invoice-6.pdf'
+        FileSystem.documentDirectory + 'invoice-1.pdf'
       )
       await Sharing.shareAsync(uri)
+      await AsyncStorage.clear()
       console.log('Finished downloading to ', uri)
     } catch (error) {
       console.error(error)
@@ -120,9 +123,9 @@ const ConfirmationPage = (props) => {
   }
   const placeOrder = async () => {
     const orderString = createOrderString()
+    setLoading(true)
     if (orders.length !== 0) {
       const html = insertHtml(orders)
-      const resHtml = html + html
       axios
         .post(
           'http://f800-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
@@ -167,6 +170,7 @@ const ConfirmationPage = (props) => {
       },
     ])
     props.resetOrder()
+    setLoading(false)
     setOrders([])
   }
   const renderItem = ({ item }) => {
@@ -198,6 +202,26 @@ const ConfirmationPage = (props) => {
   }
   return (
     <SafeAreaView style={styles.container}>
+      {loading && (
+        <Spinner
+          color="black"
+          visible={true}
+          // textContent={'signing in....'}
+          customIndicator={
+            <View
+              style={{
+                borderRadius: 25,
+                height: 100,
+                width: 100,
+                backgroundColor: 'rgba(0,0,0,0.8)',
+              }}
+            >
+              <AppLoading color="white" />
+            </View>
+          }
+        />
+      )}
+
       <View
         style={{
           padding: 10,

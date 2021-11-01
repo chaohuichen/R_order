@@ -32,15 +32,15 @@ const BottomTabNavigator = (props) => {
         />
       )}
 
-      {/* <BottomTab.Screen
+      <BottomTab.Screen
         name="OrderHistoryPage"
         component={OrderHistoryPage}
         options={tabOptions(
-          "history",
-          "Order History",
-          "MaterialCommunityIcons"
+          'history',
+          'Order History',
+          'MaterialCommunityIcons'
         )}
-      /> */}
+      />
     </BottomTab.Navigator>
   )
 }
