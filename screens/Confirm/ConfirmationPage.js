@@ -15,7 +15,6 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
 import axios from 'axios'
 import { insertHtml } from '../html/HtmlTemplate'
-import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
@@ -34,6 +33,8 @@ const ConfirmationPage = (props) => {
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(false)
+  const localCacheDir =
+    'file:///var/mobile/Containers/Data/Application/BD76DCF1-861D-43D5-BBE5-DE06DE7B041F/Documents/ExponentExperienceData/%2540shinanlan%252Ffillupsupply/'
   useEffect(() => {
     // map all the data from redux
     const copyData = []
@@ -73,13 +74,13 @@ const ConfirmationPage = (props) => {
       for (var j = 0; j < tempStr.length; j++) {
         counter++
         if (counter < 4) {
-          tempJ = tempJ + tempStr[j]
+          tempJ += tempStr[j]
         } else {
           counter = 0
           itemStr.push(tempJ)
+          tempJ = ' '
           console.log('pushed ')
         }
-        tempJ = tempJ + tempStr[j]
       }
       itemStr.push(tempJ)
       for (var i = 0; i < itemStr.length; i++) {
@@ -93,9 +94,10 @@ const ConfirmationPage = (props) => {
         console.log('page wrap ', i, ' ', pageWrapStr + '\n')
         htmlArr.push(pageWrapStr)
       }
-    } else {
-      tempStr.join('')
-      pageWrapStr = insertHtml(
+    }
+    if (tempStr.length <= 4) {
+      tempStr.join(' ')
+      pageWrapStr += insertHtml(
         tempStr,
         selectedFromValue,
         selectedToValue,
@@ -104,7 +106,8 @@ const ConfirmationPage = (props) => {
       )
       htmlArr.push(pageWrapStr)
     }
-    htmlArr.join('')
+
+    htmlArr.join(' ')
     console.log('html arr ', htmlArr)
     const htmlContent = `
     <!DOCTYPE html>

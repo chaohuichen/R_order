@@ -113,11 +113,12 @@ export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
     </tr>
     ${itemStr}
   </table>
-  <p style="text-align: right; padding-right: 60px">Amount due</p>
+  <p style="text-align:
+   right; padding-right: 60px">Amount due</p>
 </div>
 
 ${paymentStr}
 </div>`
-
+  itemStr = ''
   return pageWrapStr
 }
