@@ -93,6 +93,7 @@ const ConfirmationPage = (props) => {
         )
         console.log('page wrap ', i, ' ', pageWrapStr + '\n')
         htmlArr.push(pageWrapStr)
+        pageWrapStr = ' '
       }
     }
     if (tempStr.length <= 4) {
@@ -105,6 +106,7 @@ const ConfirmationPage = (props) => {
         '#1234567890'
       )
       htmlArr.push(pageWrapStr)
+      pageWrapStr = ' '
     }
 
     htmlArr.join(' ')
@@ -266,7 +268,7 @@ const ConfirmationPage = (props) => {
       const html = insertMultiPageHtml()
       axios
         .post(
-          'http://40eb-98-14-177-227.ngrok.io/api/fillupSupplyAPI/sendSms',
+          'http://b445-98-14-177-227.ngrok.io/api/fillupSupplyAPI/sendSms',
           {
             phoneNumber: props.user.userPhoneNumber,
             orderString,
@@ -285,7 +287,7 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = async (html) => {
-    axios('http://40eb-98-14-177-227.ngrok.io/api/fillupSupplyAPI/createPdf', {
+    axios('http://b445-98-14-177-227.ngrok.io/api/fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html },
     })
