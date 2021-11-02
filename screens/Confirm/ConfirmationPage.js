@@ -57,6 +57,7 @@ const ConfirmationPage = (props) => {
     var tempStr = []
     var itemStr = []
     var pageWrapStr = ''
+    var tempJ = ''
     for (let order of orders) {
       for (let item of order.data) {
         tempStr.push(`<tr>
@@ -67,27 +68,29 @@ const ConfirmationPage = (props) => {
         </tr> `)
       }
     }
-    if (orders.length > 4) {
-      console.log('444444')
+    var counter = 0
+    if (tempStr.length > 4) {
       for (var j = 0; j < tempStr.length; j++) {
-        let counter = 0
+        counter++
         if (counter < 4) {
-          var tempJ = tempJ + tempStr[j]
-          counter++
+          tempJ = tempJ + tempStr[j]
         } else {
-          itemStr.push(tempJ)
           counter = 0
+          itemStr.push(tempJ)
+          console.log('pushed ')
         }
-        tempJ = ''
+        tempJ = tempJ + tempStr[j]
       }
+      itemStr.push(tempJ)
       for (var i = 0; i < itemStr.length; i++) {
-        pageWrapStr = insertHtml(
+        pageWrapStr += insertHtml(
           itemStr[i],
           selectedFromValue,
           selectedToValue,
           '11-01-2021',
           '#1234567890'
         )
+        console.log('page wrap ', i, ' ', pageWrapStr + '\n')
         htmlArr.push(pageWrapStr)
       }
     } else {
@@ -102,7 +105,7 @@ const ConfirmationPage = (props) => {
       htmlArr.push(pageWrapStr)
     }
     htmlArr.join('')
-
+    console.log('html arr ', htmlArr)
     const htmlContent = `
     <!DOCTYPE html>
       <html>
@@ -206,12 +209,8 @@ const ConfirmationPage = (props) => {
       setSelectedToValue(value)
     }
   }
-  const sharePdf = async (url) => {
+  const sharePdf = (uri) => {
     try {
-      const { uri } = await FileSystem.downloadAsync(
-        url,
-        FileSystem.documentDirectory + 'invoice-20.pdf'
-      )
       props.navigation.navigate('PdfView', {
         uri,
       })
@@ -259,12 +258,12 @@ const ConfirmationPage = (props) => {
   const placeOrder = async () => {
     const orderString = createOrderString()
     setLoading(true)
+
     if (orders.length !== 0) {
       const html = insertMultiPageHtml()
-      console.log('html: ', html)
       axios
         .post(
-          'http://b61a-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
+          'http://40eb-98-14-177-227.ngrok.io/api/fillupSupplyAPI/sendSms',
           {
             phoneNumber: props.user.userPhoneNumber,
             orderString,
@@ -282,16 +281,26 @@ const ConfirmationPage = (props) => {
       })
     }
   }
-  const createPdf = (html) => {
-    axios('http://b61a-216-158-137-35.ngrok.io/api/fillupSupplyAPI/createPdf', {
+  const createPdf = async (html) => {
+    axios('http://40eb-98-14-177-227.ngrok.io/api/fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html },
     })
       .then((res) => {
-        console.log('res data ', res.data)
-        orderSuccessAlert(res.data)
+        downloadToLocal(res.data)
       })
       .catch((err) => console.log('axios post err ', err))
+  }
+  const downloadToLocal = async (url) => {
+    try {
+      const { uri } = await FileSystem.downloadAsync(
+        url,
+        FileSystem.documentDirectory + 'invoice-20.pdf'
+      )
+      orderSuccessAlert(uri)
+    } catch (err) {
+      console.log('downlaod err ', err)
+    }
   }
   const orderSuccessAlert = (url) => {
     setLoading(false)

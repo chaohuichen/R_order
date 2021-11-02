@@ -1,6 +1,4 @@
 export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
-  var tempStr = ''
-
   var invoiceStr = `<div class="col-2" style="margin-top: 20px">
   <!-- company info -->
   <h1>FillUP LOGISTIC</h1>
@@ -117,7 +115,6 @@ export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
   </table>
   <p style="text-align: right; padding-right: 60px">Amount due</p>
 </div>
-<!-- </div> -->
 
 ${paymentStr}
 </div>`

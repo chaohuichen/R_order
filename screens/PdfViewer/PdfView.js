@@ -6,6 +6,7 @@ import * as Sharing from 'expo-sharing'
 
 export default function PdfView(props) {
   const { uri } = props.route.params
+  console.log('uri ', uri)
   return (
     <View style={styles.container}>
       <PDFReader
