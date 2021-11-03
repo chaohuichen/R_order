@@ -2,12 +2,9 @@ import React from 'react'
 import { Text, Box, View } from 'native-base'
 import { StyleSheet } from 'react-native'
 import AppIcons from '../components/AppIcons'
-import { connect } from 'react-redux'
-import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import * as Haptics from 'expo-haptics'
-const Invoice = (props) => {
-  const { sectionTitle, order, index, pdf } = props
+export default Invoice = (props) => {
+  const { uri, name } = props
 
   return (
     <Box style={styles.box}>
@@ -15,17 +12,13 @@ const Invoice = (props) => {
         <TouchableOpacity
           onPress={() =>
             props.navigation.navigate('PdfView', {
-              pdf,
+              uri,
             })
           }
-          style={{
-            backgroundColor: '#ddd',
-            borderRadius: 50 / 2,
-            width: 50,
-            height: 50,
-            justifyContent: 'center',
-          }}
-        ></TouchableOpacity>
+        >
+          <AppIcons type="FontAwesome5" name="files" size={25} color="black" />
+          <Text>{name}</Text>
+        </TouchableOpacity>
       </View>
     </Box>
   )
@@ -34,8 +27,7 @@ const Invoice = (props) => {
 const styles = StyleSheet.create({
   box: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignInvoices: 'center',
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(211,211,211,0.5)',
     paddingLeft: 15,
@@ -48,21 +40,6 @@ const styles = StyleSheet.create({
     width: '40%',
     flexDirection: 'row',
     paddingVertical: 5,
-    justifyContent: 'space-around',
     alignItems: 'center',
   },
 })
-const mapState = (state) => {
-  return {
-    allOrder: state.order,
-  }
-}
-const mapDispatch = (dispatch) => {
-  return {
-    addToOrder: (name, index, sectionTitle) =>
-      dispatch(addOrder(name, index, sectionTitle)),
-    removeOnOrder: (name, index, orderIndex) =>
-      dispatch(removeOrder(name, index, orderIndex)),
-  }
-}
-export default connect(mapState, mapDispatch)(Invoice)

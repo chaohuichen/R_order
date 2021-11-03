@@ -113,8 +113,10 @@ export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
     </tr>
     ${itemStr}
   </table>
+  <div style = "margin-bottom: 60px">
   <p style="text-align:
    right; padding-right: 60px">Amount due</p>
+   </div>
 </div>
 
 ${paymentStr}
