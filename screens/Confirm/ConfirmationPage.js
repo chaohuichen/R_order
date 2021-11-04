@@ -73,15 +73,16 @@ const ConfirmationPage = (props) => {
     if (tempStr.length > 4) {
       for (var j = 0; j <= tempStr.length; j++) {
         if (counter < 4) {
+          counter++
           tempJ += tempStr[j]
-        } else {
-          counter = 0
-          itemStr.push(tempJ)
-          tempJ = ' '
-          console.log('pushed ')
         }
-        counter++
+        if (counter == 4) {
+          itemStr.push(tempJ)
+          counter = 0
+          tempJ = ' '
+        }
       }
+
       itemStr.push(tempJ)
       console.log(itemStr)
       for (var i = 0; i < itemStr.length; i++) {
@@ -92,12 +93,10 @@ const ConfirmationPage = (props) => {
           '11-01-2021',
           '#1234567890'
         )
-        // console.log('page wrap ', i, ' ', pageWrapStr + '\n')
         htmlArr.push(pageWrapStr)
         pageWrapStr = ' '
       }
-    }
-    if (tempStr.length <= 4) {
+    } else if (tempStr.length <= 4) {
       tempStr.join(' ')
       pageWrapStr += insertHtml(
         tempStr,
@@ -111,7 +110,6 @@ const ConfirmationPage = (props) => {
     }
 
     htmlArr.join(' ')
-    // console.log('html arr ', htmlArr)
     const htmlContent = `
     <!DOCTYPE html>
       <html>
