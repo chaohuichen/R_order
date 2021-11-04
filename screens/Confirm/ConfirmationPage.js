@@ -7,8 +7,8 @@ import {
   TouchableWithoutFeedback,
   SectionList,
   Alert,
+  Text,
 } from 'react-native'
-import { Text } from 'native-base'
 import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
@@ -19,6 +19,7 @@ import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
 import moment from 'moment'
 import Api from '../../API'
+
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('Fillup logistics')
@@ -63,10 +64,10 @@ const ConfirmationPage = (props) => {
         </tr> `)
       }
     }
-    var counter = 0
-    var marginStr = ''
+    let counter = 0
+    let marginStr = ''
     if (tempStr.length > 4) {
-      for (var j = 0; j <= tempStr.length; j++) {
+      for (let j = 0; j <= tempStr.length; j++) {
         if (counter < 4) {
           counter++
           tempJ += tempStr[j]
@@ -278,7 +279,7 @@ const ConfirmationPage = (props) => {
   const downloadToLocal = async (url) => {
     try {
       let now = moment()
-      let date = now.format('DD_MM_YY')
+      let date = now.format('DD_MM_YY_HH:MM:SS')
       const { uri } = await FileSystem.downloadAsync(
         url,
         FileSystem.documentDirectory + `${date}_invoice.pdf`
@@ -288,6 +289,7 @@ const ConfirmationPage = (props) => {
       console.log('downlaod err ', err)
     }
   }
+
   const orderSuccessAlert = (uri) => {
     setLoading(false)
     props.resetOrder()
@@ -342,7 +344,6 @@ const ConfirmationPage = (props) => {
         <Spinner
           color="black"
           visible={true}
-          // textContent={'signing in....'}
           customIndicator={
             <View
               style={{
