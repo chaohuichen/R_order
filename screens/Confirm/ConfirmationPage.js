@@ -267,7 +267,7 @@ const ConfirmationPage = (props) => {
       const html = insertMultiPageHtml()
       axios
         .post(
-          'http://b445-98-14-177-227.ngrok.io/api/fillupSupplyAPI/sendSms',
+          'http://8bd3-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
           {
             phoneNumber: props.user.userPhoneNumber,
             orderString,
@@ -286,7 +286,7 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = async (html) => {
-    axios('http://b445-98-14-177-227.ngrok.io/api/fillupSupplyAPI/createPdf', {
+    axios('http://8bd3-216-158-137-35.ngrok.io/api/fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html },
     })
