@@ -99,7 +99,7 @@ const ConfirmationPage = (props) => {
       })
     }
   }
-  const s = async () => {
+  const createSmsMessage = async () => {
     const orderString = createOrderString()
     setLoading(true)
 
@@ -283,7 +283,10 @@ const ConfirmationPage = (props) => {
           </Text>
         </View>
       </SectionList>
-      <TouchableOpacity style={styles.loginButton} onPress={() => s()}>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => createSmsMessage()}
+      >
         <Text style={styles.loginText}>Place Order</Text>
       </TouchableOpacity>
       <RBSheet
