@@ -13,12 +13,12 @@ import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
-import axios from 'axios'
 import { insertHtml } from '../html/HtmlTemplate'
 import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
 import moment from 'moment'
+import Api from '../../API'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('Fillup logistics')
@@ -250,18 +250,13 @@ const ConfirmationPage = (props) => {
 
     if (orders.length !== 0) {
       const html = insertMultiPageHtml()
-      axios
-        .post(
-          'http://d64e-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
-          {
-            phoneNumber: props.user.userPhoneNumber,
-            orderString,
-            orders,
-          }
-        )
-        .catch(function (error) {
-          console.log('axios post send sms ', error)
-        })
+      Api.post('fillupSupplyAPI/sendSms', {
+        phoneNumber: props.user.userPhoneNumber,
+        orderString,
+        orders,
+      }).catch(function (error) {
+        console.log('axios post send sms ', error)
+      })
       createPdf(html)
     } else {
       Alert.alert('Nothing in cart', 'add order to cart', {
@@ -271,7 +266,7 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = async (html) => {
-    axios('http://d64e-216-158-137-35.ngrok.io/api/fillupSupplyAPI/createPdf', {
+    Api('fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html },
     })
