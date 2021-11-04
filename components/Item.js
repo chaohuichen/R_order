@@ -5,13 +5,16 @@ import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import * as Haptics from 'expo-haptics'
 const Item = (props) => {
   const { sectionTitle, order, index } = props
 
   const remove = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     props.removeOnOrder(order, index, sectionTitle)
   }
   const add = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     props.addToOrder(order, index, sectionTitle)
   }
 

@@ -3,16 +3,15 @@ import { createStackNavigator } from '@react-navigation/stack'
 import {
   MyScreenOption,
   HeaderTitleOnly,
-  HeaderShownNone,
   HeaderTitleAndIcon,
 } from './HeaderOptions'
 // CoffeeHome
 import OrderPage from '../screens/Orders/OrderHomePage'
 import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
-import PDFpage from '../screens/PDF/PDFpage'
 import AddSupplyPage from '../screens/AddSupply/AddSupplyPage'
 import UserProfileHomePage from '../screens/UserProfile/UserProfileHomePage'
+import PdfViewer from '../screens/PdfViewer/PdfView'
 const Stack = createStackNavigator()
 
 export default ({ navigation, tabName }, props) => {
@@ -35,7 +34,7 @@ export default ({ navigation, tabName }, props) => {
         <Stack.Screen
           name="OrderHistoryPage"
           component={OrderHistoryPage}
-          options={HeaderTitleOnly('Fillup Supply')}
+          options={HeaderTitleOnly('Order History')}
         />
       )}
       {tabName === 'AddSupplyPage' && (
@@ -51,21 +50,18 @@ export default ({ navigation, tabName }, props) => {
         component={ConfirmationPage}
         options={HeaderTitleOnly('Invoice')}
       />
-      <Stack.Screen
-        name="PDFpage"
-        component={PDFpage}
-        options={HeaderShownNone()}
-      />
+
       <Stack.Screen
         name="UserProfile"
         component={UserProfileHomePage}
         options={HeaderTitleOnly('Profile')}
       />
+
+      <Stack.Screen
+        name="PdfView"
+        component={PdfViewer}
+        options={HeaderTitleOnly('Pdf Viewer')}
+      />
     </Stack.Navigator>
   )
-}
-const mapDispatch = (dispatch) => {
-  return {
-    removeUserData: () => dispatch(removeUser()),
-  }
 }

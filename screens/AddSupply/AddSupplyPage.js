@@ -15,7 +15,8 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 import { setSupplyToDatabase } from '../../API/databaseCall'
 import { connect } from 'react-redux'
 import { fetchOrder, getOrder } from '../../redux/Reducers/orderReducer'
-import { db } from '../../API/FirebaseDatabase'
+import { fetchData } from '../../API/databaseCall'
+
 const AddSupplyPage = (props) => {
   const [itemName, setItemName] = useState('')
   const [itemDes, setItemDes] = useState('')
@@ -27,7 +28,6 @@ const AddSupplyPage = (props) => {
     if (itemDes.length !== 0 && itemDes.length !== 0 && itemSize.length !== 0) {
       const supplyPayload = {
         name: itemName,
-        description: itemDes,
         size: itemSize,
         count: 0,
       }
@@ -46,26 +46,9 @@ const AddSupplyPage = (props) => {
       },
     ])
   }
-  const updateRedux = () => {
-    db.ref('/productData').once('value', (snapshot) => {
-      if (snapshot.exists()) {
-        let productsData = []
-        for (let key in snapshot.val()) {
-          let title = key
-          let data = Object.values(snapshot.val()[`${title}`])
-          if (title && data) {
-            let payload = {
-              title,
-              data,
-            }
-            productsData.push(payload)
-          }
-        }
-        // setData(productsData)
-        props.fetchData(productsData)
-      }
-    })
 
+  const updateRedux = () => {
+    fetchData(props.fetchData)
     setItemDes('')
     setItemName('')
     setItemSize('')
@@ -127,7 +110,7 @@ const AddSupplyPage = (props) => {
             onChangeText={(name) => setItemName(name)}
           />
           {/* {itemDes.length === 0 && <Text>{errorMessage} </Text>} */}
-          <TextInput
+          {/* <TextInput
             value={itemDes}
             style={{ width: 300, marginVertical: 5 }}
             theme={{
@@ -138,7 +121,7 @@ const AddSupplyPage = (props) => {
             autoCapitalize="none"
             keyboardType="default"
             onChangeText={(des) => setItemDes(des)}
-          />
+          /> */}
           <TextInput
             value={itemSize}
             style={{ width: 300, marginVertical: 5 }}
@@ -194,6 +177,7 @@ const AddSupplyPage = (props) => {
                 setSelectedCategory(itemValue)
               }
             >
+              <Picker.Item label="none" value="none" />
               <Picker.Item label="Coffee Beans" value="Coffee Beans" />
               <Picker.Item label="Cups" value="Cups" />
             </Picker>

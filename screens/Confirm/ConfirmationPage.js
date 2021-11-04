@@ -13,27 +13,22 @@ import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
-import axios from 'axios'
+import { insertHtml } from '../html/HtmlTemplate'
+import * as FileSystem from 'expo-file-system'
+import Spinner from 'react-native-loading-spinner-overlay'
+import AppLoading from '../../components/AppLoading'
+import moment from 'moment'
+import Api from '../../API'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-  const [isPlacedOrder, setIsPlacedOrder] = useState(false)
-  const [email, setEmail] = useState('')
-  const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
-  const [selectedFromValue, setSelectedFromValue] = useState('fillup NY1')
-  const pickerItems = [
-    'none',
-    'fillup logistics',
-    'fillup mgt',
-    'fillup roaster',
-  ]
+  const [selectedToValue, setSelectedToValue] = useState('Fillup logistics')
+  const [selectedFromValue, setSelectedFromValue] = useState('Fillup NY1')
+  const pickerItems = ['none', 'Fillup Logistics', 'Fillup MGT']
   const pickerStores = ['none', 'fillup NY1', 'fillup NY2', 'fillup NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
-  const [supplyList, setSupplyList] = useState(
-    'Fillup Supply \n beans 1 \n beans 2'
-  )
   const [orders, setOrders] = useState([])
-
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     // map all the data from redux
     const copyData = []
@@ -52,7 +47,152 @@ const ConfirmationPage = (props) => {
     })
     setOrders(copyData)
   }, [])
+  const insertMultiPageHtml = () => {
+    var htmlArr = []
+    var tempStr = []
+    var itemStr = []
+    var pageWrapStr = ''
+    var tempJ = ''
+    for (let order of orders) {
+      for (let item of order.data) {
+        tempStr.push(`<tr>
+        <td style="text-align:left">${item.name}</td>
+        <td>${item.count}</td>
+        <td>${0}</td>
+        <td>${0}</td>
+        </tr> `)
+      }
+    }
+    var counter = 0
+    var marginStr = ''
+    if (tempStr.length > 4) {
+      for (var j = 0; j <= tempStr.length; j++) {
+        if (counter < 4) {
+          counter++
+          tempJ += tempStr[j]
+        }
+        if (counter === 4) {
+          itemStr.push(tempJ)
+          counter = 0
+          tempJ = ' '
+        }
+      }
 
+      itemStr.push(tempJ)
+      for (var i = 0; i < itemStr.length; i++) {
+        pageWrapStr += insertHtml(
+          itemStr[i],
+          marginStr,
+          selectedFromValue,
+          selectedToValue,
+          '11-01-2021',
+          '#1234567890'
+        )
+        htmlArr.push(pageWrapStr)
+        pageWrapStr = ' '
+      }
+    } else if (tempStr.length <= 4) {
+      tempStr.join(' ')
+      pageWrapStr += insertHtml(
+        tempStr,
+        selectedFromValue,
+        selectedToValue,
+        '11-01-2021',
+        '#1234567890'
+      )
+      htmlArr.push(pageWrapStr)
+      pageWrapStr = ' '
+    }
+
+    htmlArr.join(' ')
+    const htmlContent = `
+    <!DOCTYPE html>
+      <html>
+        <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Oswald:wght@200&display=swap"
+            rel="stylesheet"
+          />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&family=Oswald:wght@200&display=swap"
+        rel="stylesheet"
+      />
+          </head>
+          <style>
+            * {
+              margin: 0;
+              padding: 0;
+            }
+            body {
+              font: 14px/1.4 Georgia, serif;
+            }
+            #page-wrap {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              height: 800px;
+              width: 540px;
+              margin: 0 auto;
+              
+            }
+            table {
+              border-collapse: collapse;
+            }
+            td {
+              padding: 15px;
+              font-size: 12px;
+            }
+            th {
+              padding-bottom: 5px;
+              padding-top: 5px;
+            }
+            tr:nth-child(even) {
+              background-color: #dddddd;
+            }
+        
+            .title-tr {
+              background-color: black;
+              color: white;
+            }
+            .row:after {
+              content: '';
+              display: table;
+              clear: both;
+            }
+            .col {
+              float: left;
+              width: 50%;
+            }
+            .col-2 {
+              float: right;
+              width: 50%;
+            }
+            td {
+              text-align: center;
+              font-size: 12px;
+            }
+            h1 {
+              font-family: 'Oswald';
+              font-weight: 900;
+              font-size: xx-large;
+            }
+            #subheading {
+              font-family: 'Montserrat', sans-serif;
+              font-size: 12px;
+            }
+          </style>
+          <body>
+            ${htmlArr}
+          </body>
+        </html>
+    `
+    return htmlContent
+  }
   const openPickerStore = () => {
     setIsPicker(true)
     rbsheetRef.current.open()
@@ -61,10 +201,6 @@ const ConfirmationPage = (props) => {
     setIsPicker(false)
     rbsheetRef.current.open()
   }
-  const handlePlaceOrder = () => {
-    //submit order send pdf send email send sms
-    setIsPlacedOrder(true)
-  }
   const updateSelectedValue = (value) => {
     if (isPicker) {
       setSelectedFromValue(value)
@@ -72,7 +208,8 @@ const ConfirmationPage = (props) => {
       setSelectedToValue(value)
     }
   }
-  const placeOrder = async () => {
+
+  const createOrderString = () => {
     let orderString = ''
     let dividerLine = '------------'
     if (selectedFromValue !== 'none' && selectedToValue !== 'none') {
@@ -99,20 +236,7 @@ const ConfirmationPage = (props) => {
         '636-469-9628\n' +
         '2468 Broadway, New York, NY 10025 \n' +
         orderString
-      axios
-        .post(
-          'http://9b3f-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
-          {
-            phoneNumber: props.user.userPhoneNumber,
-            orderString,
-            orders,
-          }
-        )
-        .then(function (res) {})
-        .catch(function (error) {
-          console.log(error)
-        })
-      orderSuccess()
+      return orderString
     } else {
       Alert.alert('Location is not selected', 'Please select location', {
         text: 'Ok',
@@ -120,13 +244,70 @@ const ConfirmationPage = (props) => {
       })
     }
   }
-  const orderSuccess = () => {
-    Alert.alert('Ordered Success', 'You will recieve a text invoice soon', {
-      text: 'Ok',
-      style: 'cancel',
+  const placeOrder = async () => {
+    const orderString = createOrderString()
+    setLoading(true)
+
+    if (orders.length !== 0) {
+      const html = insertMultiPageHtml()
+      Api.post('fillupSupplyAPI/sendSms', {
+        phoneNumber: props.user.userPhoneNumber,
+        orderString,
+        orders,
+      }).catch(function (error) {
+        console.log('axios post send sms ', error)
+      })
+      createPdf(html)
+    } else {
+      Alert.alert('Nothing in cart', 'add order to cart', {
+        text: 'Ok',
+        style: 'cancel',
+      })
+    }
+  }
+  const createPdf = async (html) => {
+    Api('fillupSupplyAPI/createPdf', {
+      method: 'post',
+      data: { html },
     })
+      .then((res) => {
+        downloadToLocal(res.data)
+      })
+      .catch((err) => console.log('axios post err ', err))
+  }
+  const downloadToLocal = async (url) => {
+    try {
+      let now = moment()
+      let date = now.format('DD_MM_YY')
+      const { uri } = await FileSystem.downloadAsync(
+        url,
+        FileSystem.documentDirectory + `${date}_invoice.pdf`
+      )
+      orderSuccessAlert(uri)
+    } catch (err) {
+      console.log('downlaod err ', err)
+    }
+  }
+  const orderSuccessAlert = (uri) => {
+    setLoading(false)
     props.resetOrder()
     setOrders([])
+    setTimeout(() => {
+      Alert.alert('Ordered Success', 'press ok to view invoice', [
+        {
+          text: 'Ok',
+          onPress: () =>
+            props.navigation.navigate('PdfView', {
+              uri,
+            }),
+          style: 'cancel',
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ])
+    }, 200)
   }
   const renderItem = ({ item }) => {
     if (item.count > 0) {
@@ -138,10 +319,18 @@ const ConfirmationPage = (props) => {
             padding: 20,
             borderBottomWidth: 1,
             borderBottomColor: 'rgba(211,211,211,0.5)',
+            flex: 1,
           }}
         >
-          <Text>{item.name} </Text>
-          <Text>{item.count}</Text>
+          <Text style={{ flexWrap: 'wrap', width: '70%' }}>{item.name}</Text>
+          <Text
+            style={{
+              width: '10%',
+              textAlign: 'center',
+            }}
+          >
+            {item.count}
+          </Text>
         </View>
       )
     }
@@ -149,6 +338,26 @@ const ConfirmationPage = (props) => {
   }
   return (
     <SafeAreaView style={styles.container}>
+      {loading && (
+        <Spinner
+          color="black"
+          visible={true}
+          // textContent={'signing in....'}
+          customIndicator={
+            <View
+              style={{
+                borderRadius: 25,
+                height: 100,
+                width: 100,
+                backgroundColor: 'rgba(0,0,0,0.8)',
+              }}
+            >
+              <AppLoading color="white" />
+            </View>
+          }
+        />
+      )}
+
       <View
         style={{
           padding: 10,
@@ -213,18 +422,6 @@ const ConfirmationPage = (props) => {
           <Text style={{ marginLeft: 20, fontWeight: '600', fontSize: 30 }}>
             Items
           </Text>
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => handlePlaceOrder()}
-          >
-            <Text style={styles.loginText}>Place Order</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => viewPDF()}
-          >
-            <Text style={styles.loginText}>View</Text>
-          </TouchableOpacity>
         </View>
       </SectionList>
       <TouchableOpacity style={styles.loginButton} onPress={() => placeOrder()}>
