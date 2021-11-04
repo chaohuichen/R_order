@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View } from 'native-base'
 import {
   StyleSheet,
   SafeAreaView,
@@ -7,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   SectionList,
   Alert,
+  View,
 } from 'react-native'
 import { Text } from 'native-base'
 import { connect } from 'react-redux'
