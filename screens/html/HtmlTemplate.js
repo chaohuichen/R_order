@@ -6,10 +6,10 @@ export const insertHtml = (
   dateIssue,
   invoiceNo
 ) => {
-  var invoiceStr = `<div class="col-2" style="margin-top: 20px">
+  let invoiceStr = `<div class="col-2" style="margin-top: 20px">
   <!-- company info -->
   <h1>${selectedFrom}</h1>
-  <p id="subheading">Fillup Logistic</p>
+  <p id="subheading">${selectedFrom}</p>
   <p id="subheading">
     646-552-8898
     <br />
@@ -32,7 +32,7 @@ export const insertHtml = (
   </div>
 </div>`
 
-  var billStr = `<div style="text-align: left" class="col">
+  let billStr = `<div style="text-align: left" class="col">
   <h1 style="font-weight: 900; font-size: 30px; color: black">
     BILL TO <br />
   </h1>
@@ -45,7 +45,7 @@ export const insertHtml = (
   </p>
 </div>`
 
-  var shipStr = ` <div style="text-align: left" class="col-2">
+  let shipStr = ` <div style="text-align: left" class="col-2">
   <h1 style="font-weight: 900; font-size: 30px; color: black">
     SHIP TO <br />
   </h1>
@@ -59,7 +59,7 @@ export const insertHtml = (
   </p>
 </div>`
 
-  var paymentStr = ` <div style="width: 540px">
+  let paymentStr = ` <div style="width: 540px">
   <div
     class="row"
     style="letter-spacing: 1px; border-bottom: 3px solid black"
@@ -90,9 +90,9 @@ export const insertHtml = (
   //     </tr> `
   //   }
   // }
-  // var resultString = tempStr
+  // let resultString = tempStr
 
-  var pageWrapStr = `<div id="page-wrap">
+  let pageWrapStr = `<div id="page-wrap">
 <div style="width: 540px">
   <div class="row" style="margin-bottom: 20px">
     <div class="col">
@@ -121,7 +121,7 @@ export const insertHtml = (
     ${itemStr}
   </table>
   <p style="text-align:
-   right; padding-right: 60px; margin-bottom: 100px">Amount due</p>
+   right; padding-right: 60px; margin-bottom: 30px">Amount due</p>
   
 </div>
 

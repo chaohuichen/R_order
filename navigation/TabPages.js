@@ -34,7 +34,7 @@ export default ({ navigation, tabName }, props) => {
         <Stack.Screen
           name="OrderHistoryPage"
           component={OrderHistoryPage}
-          options={HeaderTitleOnly('Order History')}
+          options={HeaderTitleOnly('Order Invoices')}
         />
       )}
       {tabName === 'AddSupplyPage' && (

@@ -7,19 +7,18 @@ import {
   TouchableWithoutFeedback,
   SectionList,
   Alert,
-  Text,
 } from 'react-native'
+import { Text } from 'native-base'
 import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
-import { insertHtml } from '../html/HtmlTemplate'
+import { insertMultiPageHtml } from './CreateHtml'
 import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
 import moment from 'moment'
 import Api from '../../API'
-
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('Fillup logistics')
@@ -48,152 +47,7 @@ const ConfirmationPage = (props) => {
     })
     setOrders(copyData)
   }, [])
-  const insertMultiPageHtml = () => {
-    var htmlArr = []
-    var tempStr = []
-    var itemStr = []
-    var pageWrapStr = ''
-    var tempJ = ''
-    for (let order of orders) {
-      for (let item of order.data) {
-        tempStr.push(`<tr>
-        <td style="text-align:left">${item.name}</td>
-        <td>${item.count}</td>
-        <td>${0}</td>
-        <td>${0}</td>
-        </tr> `)
-      }
-    }
-    let counter = 0
-    let marginStr = ''
-    if (tempStr.length > 4) {
-      for (let j = 0; j <= tempStr.length; j++) {
-        if (counter < 4) {
-          counter++
-          tempJ += tempStr[j]
-        }
-        if (counter === 4) {
-          itemStr.push(tempJ)
-          counter = 0
-          tempJ = ' '
-        }
-      }
 
-      itemStr.push(tempJ)
-      for (var i = 0; i < itemStr.length; i++) {
-        pageWrapStr += insertHtml(
-          itemStr[i],
-          marginStr,
-          selectedFromValue,
-          selectedToValue,
-          '11-01-2021',
-          '#1234567890'
-        )
-        htmlArr.push(pageWrapStr)
-        pageWrapStr = ' '
-      }
-    } else if (tempStr.length <= 4) {
-      tempStr.join(' ')
-      pageWrapStr += insertHtml(
-        tempStr,
-        selectedFromValue,
-        selectedToValue,
-        '11-01-2021',
-        '#1234567890'
-      )
-      htmlArr.push(pageWrapStr)
-      pageWrapStr = ' '
-    }
-
-    htmlArr.join(' ')
-    const htmlContent = `
-    <!DOCTYPE html>
-      <html>
-        <head>
-          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Oswald:wght@200&display=swap"
-            rel="stylesheet"
-          />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&family=Oswald:wght@200&display=swap"
-        rel="stylesheet"
-      />
-          </head>
-          <style>
-            * {
-              margin: 0;
-              padding: 0;
-            }
-            body {
-              font: 14px/1.4 Georgia, serif;
-            }
-            #page-wrap {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              height: 800px;
-              width: 540px;
-              margin: 0 auto;
-              
-            }
-            table {
-              border-collapse: collapse;
-            }
-            td {
-              padding: 15px;
-              font-size: 12px;
-            }
-            th {
-              padding-bottom: 5px;
-              padding-top: 5px;
-            }
-            tr:nth-child(even) {
-              background-color: #dddddd;
-            }
-        
-            .title-tr {
-              background-color: black;
-              color: white;
-            }
-            .row:after {
-              content: '';
-              display: table;
-              clear: both;
-            }
-            .col {
-              float: left;
-              width: 50%;
-            }
-            .col-2 {
-              float: right;
-              width: 50%;
-            }
-            td {
-              text-align: center;
-              font-size: 12px;
-            }
-            h1 {
-              font-family: 'Oswald';
-              font-weight: 900;
-              font-size: xx-large;
-            }
-            #subheading {
-              font-family: 'Montserrat', sans-serif;
-              font-size: 12px;
-            }
-          </style>
-          <body>
-            ${htmlArr}
-          </body>
-        </html>
-    `
-    return htmlContent
-  }
   const openPickerStore = () => {
     setIsPicker(true)
     rbsheetRef.current.open()
@@ -245,12 +99,16 @@ const ConfirmationPage = (props) => {
       })
     }
   }
-  const placeOrder = async () => {
+  const s = async () => {
     const orderString = createOrderString()
     setLoading(true)
 
     if (orders.length !== 0) {
-      const html = insertMultiPageHtml()
+      const html = insertMultiPageHtml(
+        orders,
+        selectedFromValue,
+        selectedToValue
+      )
       Api.post('fillupSupplyAPI/sendSms', {
         phoneNumber: props.user.userPhoneNumber,
         orderString,
@@ -289,7 +147,6 @@ const ConfirmationPage = (props) => {
       console.log('downlaod err ', err)
     }
   }
-
   const orderSuccessAlert = (uri) => {
     setLoading(false)
     props.resetOrder()
@@ -344,6 +201,7 @@ const ConfirmationPage = (props) => {
         <Spinner
           color="black"
           visible={true}
+          // textContent={'signing in....'}
           customIndicator={
             <View
               style={{
@@ -425,7 +283,7 @@ const ConfirmationPage = (props) => {
           </Text>
         </View>
       </SectionList>
-      <TouchableOpacity style={styles.loginButton} onPress={() => placeOrder()}>
+      <TouchableOpacity style={styles.loginButton} onPress={() => s()}>
         <Text style={styles.loginText}>Place Order</Text>
       </TouchableOpacity>
       <RBSheet
