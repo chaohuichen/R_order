@@ -3,7 +3,7 @@ import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { tabOptions } from './tabOptions'
 import OrderHomeScreen from '../screens/Orders/OrderHomeScreen'
-import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
+import OrderHistoryScreen from '../screens/OrdersHistory/OrderHistoryScreen'
 import { connect } from 'react-redux'
 import AddSupplyPageScreen from '../screens/AddSupply/AddSupplyPageScreen'
 
@@ -31,10 +31,9 @@ const BottomTabNavigator = (props) => {
           options={tabOptions('ios-add', 'Add Supply', 'Ionicons')}
         />
       )}
-
       <BottomTab.Screen
-        name="OrderHistoryPage"
-        component={OrderHistoryPage}
+        name="OrderHistoryScreen"
+        component={OrderHistoryScreen}
         options={tabOptions(
           'history',
           'Order History',

@@ -1,7 +1,14 @@
-export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
+export const insertHtml = (
+  itemStr,
+  marginStr,
+  selectedValue,
+  selectedFrom,
+  dateIssue,
+  invoiceNo
+) => {
   var invoiceStr = `<div class="col-2" style="margin-top: 20px">
   <!-- company info -->
-  <h1>FillUP LOGISTIC</h1>
+  <h1>${selectedFrom}</h1>
   <p id="subheading">Fillup Logistic</p>
   <p id="subheading">
     646-552-8898
@@ -31,7 +38,7 @@ export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
   </h1>
   <p id="subheading">
     Sonny Liu <br />
-    ${billTo}
+    ${selectedValue}
     <br />
     636-469-9628 92nd@fillup.coffee <br />
     2486 Broadway. New York, NY0025
@@ -45,7 +52,7 @@ export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
 
   <p id="subheading">
     Sonny Liu <br />
-    ${shipTo}
+    ${selectedValue}
     <br />
     636-469-9628 92nd@fillup.coffee <br />
     2486 Broadway. New York, NY0025
@@ -60,7 +67,7 @@ export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
     <div class="col" style="width: 70%">
       <div style="text-align: left; float: left">
         <h1 style="text-align: center">PAYMENT METHOD:</h1>
-        <h4 style="text-align: center">PAYMENT TO:${billTo}</h4>
+        <h4 style="text-align: center">PAYMENT TO:${selectedFrom}</h4>
         <h4>ACCT NO: 8888 8888 8888 8888 (Bank)</h4>
         <h4>ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046</h4>
       </div>
@@ -113,13 +120,13 @@ export const insertHtml = (itemStr, shipTo, billTo, dateIssue, invoiceNo) => {
     </tr>
     ${itemStr}
   </table>
-  <div style = "margin-bottom: 60px">
   <p style="text-align:
-   right; padding-right: 60px">Amount due</p>
-   </div>
+   right; padding-right: 60px; margin-bottom: 100px">Amount due</p>
+  
 </div>
 
 ${paymentStr}
+
 </div>`
   itemStr = ''
   return pageWrapStr

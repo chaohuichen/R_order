@@ -34,7 +34,7 @@ export default ({ navigation, tabName }, props) => {
         <Stack.Screen
           name="OrderHistoryPage"
           component={OrderHistoryPage}
-          options={HeaderTitleOnly('Fillup Supply')}
+          options={HeaderTitleOnly('Order History')}
         />
       )}
       {tabName === 'AddSupplyPage' && (
@@ -64,9 +64,4 @@ export default ({ navigation, tabName }, props) => {
       />
     </Stack.Navigator>
   )
-}
-const mapDispatch = (dispatch) => {
-  return {
-    removeUserData: () => dispatch(removeUser()),
-  }
 }

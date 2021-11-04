@@ -18,23 +18,17 @@ import { insertHtml } from '../html/HtmlTemplate'
 import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
+import moment from 'moment'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-  const [selectedToValue, setSelectedToValue] = useState('fillup logistics')
-  const [selectedFromValue, setSelectedFromValue] = useState('fillup NY1')
-  const pickerItems = [
-    'none',
-    'fillup logistics',
-    'fillup mgt',
-    'fillup roaster',
-  ]
+  const [selectedToValue, setSelectedToValue] = useState('Fillup logistics')
+  const [selectedFromValue, setSelectedFromValue] = useState('Fillup NY1')
+  const pickerItems = ['none', 'Fillup Logistics', 'Fillup MGT']
   const pickerStores = ['none', 'fillup NY1', 'fillup NY2', 'fillup NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(false)
-  const localCacheDir =
-    'file:///var/mobile/Containers/Data/Application/BD76DCF1-861D-43D5-BBE5-DE06DE7B041F/Documents/ExponentExperienceData/%2540shinanlan%252Ffillupsupply/'
   useEffect(() => {
     // map all the data from redux
     const copyData = []
@@ -70,13 +64,14 @@ const ConfirmationPage = (props) => {
       }
     }
     var counter = 0
+    var marginStr = ''
     if (tempStr.length > 4) {
       for (var j = 0; j <= tempStr.length; j++) {
         if (counter < 4) {
           counter++
           tempJ += tempStr[j]
         }
-        if (counter == 4) {
+        if (counter === 4) {
           itemStr.push(tempJ)
           counter = 0
           tempJ = ' '
@@ -84,10 +79,10 @@ const ConfirmationPage = (props) => {
       }
 
       itemStr.push(tempJ)
-      console.log(itemStr)
       for (var i = 0; i < itemStr.length; i++) {
         pageWrapStr += insertHtml(
           itemStr[i],
+          marginStr,
           selectedFromValue,
           selectedToValue,
           '11-01-2021',
@@ -213,16 +208,6 @@ const ConfirmationPage = (props) => {
       setSelectedToValue(value)
     }
   }
-  const sharePdf = (uri) => {
-    try {
-      props.navigation.navigate('PdfView', {
-        uri,
-      })
-      console.log('Finished downloading to ', uri)
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   const createOrderString = () => {
     let orderString = ''
@@ -267,7 +252,7 @@ const ConfirmationPage = (props) => {
       const html = insertMultiPageHtml()
       axios
         .post(
-          'http://8bd3-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
+          'http://d64e-216-158-137-35.ngrok.io/api/fillupSupplyAPI/sendSms',
           {
             phoneNumber: props.user.userPhoneNumber,
             orderString,
@@ -275,7 +260,7 @@ const ConfirmationPage = (props) => {
           }
         )
         .catch(function (error) {
-          console.log(error)
+          console.log('axios post send sms ', error)
         })
       createPdf(html)
     } else {
@@ -286,7 +271,7 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = async (html) => {
-    axios('http://8bd3-216-158-137-35.ngrok.io/api/fillupSupplyAPI/createPdf', {
+    axios('http://d64e-216-158-137-35.ngrok.io/api/fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html },
     })
@@ -297,16 +282,18 @@ const ConfirmationPage = (props) => {
   }
   const downloadToLocal = async (url) => {
     try {
+      let now = moment()
+      let date = now.format('DD_MM_YY')
       const { uri } = await FileSystem.downloadAsync(
         url,
-        FileSystem.documentDirectory + 'invoice-20.pdf'
+        FileSystem.documentDirectory + `${date}_invoice.pdf`
       )
       orderSuccessAlert(uri)
     } catch (err) {
       console.log('downlaod err ', err)
     }
   }
-  const orderSuccessAlert = (url) => {
+  const orderSuccessAlert = (uri) => {
     setLoading(false)
     props.resetOrder()
     setOrders([])
@@ -314,7 +301,10 @@ const ConfirmationPage = (props) => {
       Alert.alert('Ordered Success', 'press ok to view invoice', [
         {
           text: 'Ok',
-          onPress: () => sharePdf(url),
+          onPress: () =>
+            props.navigation.navigate('PdfView', {
+              uri,
+            }),
           style: 'cancel',
         },
         {
