@@ -6,7 +6,6 @@ export const insertHtml = (
   dateIssue,
   invoiceNo
 ) => {
-  console.log(itemStr)
   let invoiceStr = `<div class="col-2" style="margin-top: 20px">
   <!-- company info -->
   <h1>${selectedFrom}</h1>
