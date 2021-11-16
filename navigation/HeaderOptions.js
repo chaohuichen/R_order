@@ -1,5 +1,4 @@
 import React from 'react'
-import { Alert } from 'react-native'
 import MainColors from '../constants/MainColors'
 import { CardStyleInterpolators } from '@react-navigation/stack'
 import AppIcons from '../components/AppIcons'

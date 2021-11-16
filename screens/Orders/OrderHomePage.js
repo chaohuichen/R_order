@@ -12,28 +12,39 @@ import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { fetchData } from '../../API/databaseCall'
+import AppLoading from '../../components/AppLoading'
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
+let count = 1
 
 const OrderHomePage = (props) => {
   const [refreshing, setRefreshing] = useState(false)
-  const loadingRef = useRef(null)
-  const [limit, setLimit] = useState(10)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isRefresh, setIsRefresh] = useState(false)
-
+  const [offset, setOffset] = useState(1)
+  const [loading, setLoading] = useState(false)
   const onRefresh = useCallback(() => {
     setRefreshing(true)
-    fetchData(props.fetchData)
+    fetchData(props.fetchData, offset)
     wait(2000).then(() => setRefreshing(false))
   }, [])
 
   useEffect(() => {
-    fetchData(props.fetchData)
-    return () => {}
+    fetchData(props.fetchData, offset)
+
+    return () => {
+      //reset offset to 1
+      // setOffset(1)
+    }
   }, [])
+  const handleLoadMoreData = () => {
+    setLoading(true)
+    setTimeout(() => {
+      count++
+      fetchData(props.fetchData, count)
+      setLoading(false)
+    }, 2000)
+  }
 
   const confirmOrder = () => {
     props.navigation.navigate('ConfirmationPage')
@@ -56,9 +67,18 @@ const OrderHomePage = (props) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          onEndReached={handleLoadMoreData}
           style={{ flex: 1 }}
+          ListFooterComponent={
+            loading && (
+              <View style={{ marginTop: 20 }}>
+                <AppLoading />
+              </View>
+            )
+          }
+          onEndReachedThreshold={0}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: '20%' }}
+          contentContainerStyle={{ paddingBottom: '25%' }}
           sections={[...props.order] || []}
           keyExtractor={(item, index) => item + index}
           renderItem={renderItem}
