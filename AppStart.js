@@ -43,7 +43,7 @@ export default () => {
           setLoadingComplete(true)
           //  SplashScreen.hideAsync()
         }}
-        onError={(error) => HandleError(error)}
+        onError={(error) => console.log(error)}
       />
     )
   } else {
