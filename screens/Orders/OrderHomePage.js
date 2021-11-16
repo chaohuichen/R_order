@@ -21,21 +21,18 @@ let count = 1
 
 const OrderHomePage = (props) => {
   const [refreshing, setRefreshing] = useState(false)
-  const [offset, setOffset] = useState(1)
+  // const [offset, setOffset] = useState(1)
   const [loading, setLoading] = useState(false)
   const onRefresh = useCallback(() => {
     setRefreshing(true)
-    fetchData(props.fetchData, offset)
+    fetchData(props.fetchData)
     wait(2000).then(() => setRefreshing(false))
   }, [])
 
   useEffect(() => {
-    fetchData(props.fetchData, offset)
+    fetchData(props.fetchData)
 
-    return () => {
-      //reset offset to 1
-      // setOffset(1)
-    }
+    return () => {}
   }, [])
   const handleLoadMoreData = () => {
     setLoading(true)
@@ -67,15 +64,15 @@ const OrderHomePage = (props) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          onEndReached={handleLoadMoreData}
+          // onEndReached={handleLoadMoreData}
           style={{ flex: 1 }}
-          ListFooterComponent={
-            loading && (
-              <View style={{ marginTop: 20 }}>
-                <AppLoading />
-              </View>
-            )
-          }
+          // ListFooterComponent={
+          //   loading && (
+          //     <View style={{ marginTop: 20 }}>
+          //       <AppLoading />
+          //     </View>
+          //   )
+          // }
           onEndReachedThreshold={0}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: '25%' }}
