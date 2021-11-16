@@ -19,12 +19,13 @@ import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
 import moment from 'moment'
 import Api from '../../API'
+import { StackActions } from '@react-navigation/native'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-  const [selectedToValue, setSelectedToValue] = useState('Fillup logistics')
+  const [selectedToValue, setSelectedToValue] = useState('Fillup Logistics')
   const [selectedFromValue, setSelectedFromValue] = useState('Fillup NY1')
-  const pickerItems = ['none', 'Fillup Logistics', 'Fillup MGT']
-  const pickerStores = ['none', 'fillup NY1', 'fillup NY2', 'fillup NY3']
+  const pickerItems = ['Fillup Logistics', 'Fillup MGT']
+  const pickerStores = ['Fillup NY1', 'fillup NY2', 'fillup NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
@@ -156,9 +157,11 @@ const ConfirmationPage = (props) => {
         {
           text: 'Ok',
           onPress: () =>
-            props.navigation.navigate('PdfView', {
-              uri,
-            }),
+            props.navigation.dispatch(
+              StackActions.replace('PdfView', {
+                uri,
+              })
+            ),
           style: 'cancel',
         },
         {
@@ -217,6 +220,40 @@ const ConfirmationPage = (props) => {
         />
       )}
 
+      <Text
+        style={{
+          fontWeight: '500',
+          marginLeft: 20,
+          fontSize: 20,
+          marginTop: 10,
+        }}
+      >
+        From:
+      </Text>
+      <TouchableWithoutFeedback onPress={() => openPickerItem()}>
+        <View style={styles.selectionButtonView}>
+          <Text style={{ fontWeight: '900' }}>
+            {selectedToValue ? selectedToValue : 'To'}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+      <Text
+        style={{
+          fontWeight: '500',
+          fontSize: 20,
+          marginLeft: 20,
+        }}
+      >
+        To:
+      </Text>
+      <TouchableWithoutFeedback onPress={() => openPickerStore()}>
+        <View style={styles.selectionButtonView}>
+          <Text style={{ fontWeight: '900' }}>
+            {selectedFromValue ? selectedFromValue : 'From'}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+
       <View
         style={{
           padding: 10,
@@ -235,23 +272,6 @@ const ConfirmationPage = (props) => {
           <Text style={{ color: 'red', marginRight: '5%' }}>Clear All</Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          alignItems: 'center',
-        }}
-      >
-        <TouchableWithoutFeedback onPress={() => openPickerItem()}>
-          <View style={styles.selectionButtonView}>
-            <Text>{selectedToValue ? selectedToValue : 'To'}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => openPickerStore()}>
-          <View style={styles.selectionButtonView}>
-            <Text>{selectedFromValue ? selectedFromValue : 'From'}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-
       <SectionList
         style={{ flex: 1 }}
         sections={orders}
@@ -357,6 +377,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   selectionButtonView: {
+    alignSelf: 'center',
     fontSize: 10,
     justifyContent: 'center',
     alignItems: 'center',

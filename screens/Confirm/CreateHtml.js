@@ -10,6 +10,7 @@ export const insertMultiPageHtml = (
   let itemStr = []
   let pageWrapStr = ''
   let tempJ = ''
+  //get all order in orders and push to tempstry array
   for (let order of orders) {
     for (let item of order.data) {
       tempStr.push(`<tr>
@@ -22,6 +23,7 @@ export const insertMultiPageHtml = (
   }
   let counter = 0
   let marginStr = ''
+  //check if tempstry arr is greater then 4, to insert 4 item per page
   if (tempStr.length > 4) {
     for (let j = 0; j <= tempStr.length; j++) {
       if (counter < 4) {
@@ -32,11 +34,10 @@ export const insertMultiPageHtml = (
         itemStr.push(tempJ)
         counter = 0
         tempJ = ' '
-        marginStr
       }
     }
-
     itemStr.push(tempJ)
+    //loop itemstr.length time for how many page loop twice two page
     for (let i = 0; i < itemStr.length; i++) {
       pageWrapStr += insertHtml(
         itemStr[i],
@@ -50,9 +51,25 @@ export const insertMultiPageHtml = (
       pageWrapStr = ' '
     }
   } else if (tempStr.length <= 4) {
-    tempStr.join(' ')
+    //check how many items and margin each case 1 items to 4 items.
+    let tempStrlen = tempStr.length
+    switch (tempStrlen) {
+      case 1:
+        marginStr = 'margin-bottom: 220px;'
+        break
+      case 2:
+        marginStr = 'margin-bottom: 180px;'
+        break
+      case 3:
+        marginStr = 'margin-bottom: 140px;'
+        break
+      default:
+        break
+    }
+    const itemsStr = tempStr.join(' ')
+
     pageWrapStr += insertHtml(
-      tempStr,
+      itemsStr,
       marginStr,
       selectedFromValue,
       selectedToValue,

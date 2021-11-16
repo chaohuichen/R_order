@@ -18,17 +18,15 @@ export default ({ navigation }) => {
   }, [])
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1 }}>
-      <SafeAreaView style={styles.container}>
-        {fileName.map((fileName, index) => (
-          <Invoice
-            key={index}
-            uri={localCacheDir + fileName}
-            name={fileName}
-            navigation={navigation}
-          />
-        ))}
-      </SafeAreaView>
+    <ScrollView contentContainerStyle={styles.container}>
+      {fileName.map((fileName, index) => (
+        <Invoice
+          key={index}
+          uri={localCacheDir + fileName}
+          name={fileName}
+          navigation={navigation}
+        />
+      ))}
     </ScrollView>
   )
 }
@@ -39,5 +37,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    marginTop: 20,
   },
 })

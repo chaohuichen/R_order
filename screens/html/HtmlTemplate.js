@@ -6,6 +6,7 @@ export const insertHtml = (
   dateIssue,
   invoiceNo
 ) => {
+  console.log(itemStr)
   let invoiceStr = `<div class="col-2" style="margin-top: 20px">
   <!-- company info -->
   <h1>${selectedFrom}</h1>
@@ -64,7 +65,7 @@ export const insertHtml = (
     class="row"
     style="letter-spacing: 1px; border-bottom: 3px solid black"
   >
-    <div class="col" style="width: 70%">
+    <div class="col" style="width: 78%">
       <div style="text-align: left; float: left">
         <h1 style="text-align: center">PAYMENT METHOD:</h1>
         <h4 style="text-align: center">PAYMENT TO:${selectedFrom}</h4>
@@ -73,24 +74,12 @@ export const insertHtml = (
       </div>
     </div>
 
-    <div class="col" style="width: 30%">
+    <div class="col" style="width: 10%">
       <h1 style="text-align: right; float: right">THANK <br />YOU!</h1>
     </div>
   </div>
   <h5 style="text-align: center">WWW.FILLUP.COFFEE</h5>
 </div>`
-
-  // for (let order of orders) {
-  //   for (let item of order.data) {
-  //     tempStr += `<tr>
-  //     <td style="text-align:left">${item.name}</td>
-  //     <td>${item.count}</td>
-  //     <td>${0}</td>
-  //     <td>${0}</td>
-  //     </tr> `
-  //   }
-  // }
-  // let resultString = tempStr
 
   let pageWrapStr = `<div id="page-wrap">
 <div style="width: 540px">
@@ -121,10 +110,9 @@ export const insertHtml = (
     ${itemStr}
   </table>
   <p style="text-align:
-   right; padding-right: 60px; margin-bottom: 30px">Amount due</p>
+   right; padding-right: 60px; ${marginStr}">Amount due</p>
   
 </div>
-
 ${paymentStr}
 
 </div>`
