@@ -22,7 +22,7 @@ export const insertMultiPageHtml = (
     }
   }
   let counter = 0
-  let marginStr = ''
+  let marginStr = ' '
   //check if tempstry arr is greater then 4, to insert 4 item per page
   if (tempStr.length > 4) {
     for (let j = 0; j <= tempStr.length; j++) {
@@ -49,6 +49,7 @@ export const insertMultiPageHtml = (
       )
       htmlArr.push(pageWrapStr)
       pageWrapStr = ' '
+      marginStr = ' '
     }
   } else if (tempStr.length <= 4) {
     //check how many items and margin each case 1 items to 4 items.
@@ -63,6 +64,7 @@ export const insertMultiPageHtml = (
       case 3:
         marginStr = 'margin-bottom: 140px;'
         break
+
       default:
         break
     }
@@ -78,9 +80,10 @@ export const insertMultiPageHtml = (
     )
     htmlArr.push(pageWrapStr)
     pageWrapStr = ' '
+    marginStr = ' '
   }
 
-  htmlArr.join(' ')
+  const htmlStr = htmlArr.join(' ')
   const htmlContent = `
         <!DOCTYPE html>
           <html>
@@ -163,7 +166,7 @@ export const insertMultiPageHtml = (
                 }
               </style>
               <body>
-                ${htmlArr}
+                ${htmlStr}
               </body>
             </html>
         `

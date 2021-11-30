@@ -6,6 +6,14 @@ export const insertHtml = (
   dateIssue,
   invoiceNo
 ) => {
+  marginStr === undefined ? ' ' : marginStr
+
+  console.log('margin ', typeof marginStr)
+  console.log('item ', typeof itemStr)
+  console.log('slectevalue ', typeof selectedValue)
+  console.log('sdate', typeof dateIssue)
+  console.log('inovce ', typeof invoiceNo)
+
   let invoiceStr = `<div class="col-2" style="margin-top: 20px">
   <!-- company info -->
   <h1>${selectedFrom}</h1>
@@ -68,7 +76,7 @@ export const insertHtml = (
       <div style="text-align: left; float: left">
         <h1 style="text-align: center">PAYMENT METHOD:</h1>
         <h4 style="text-align: center">PAYMENT TO:${selectedFrom}</h4>
-        <h4>ACCT NO: 8888 8888 8888 8888 (Bank)</h4>
+        <h4>ACCT NO: 4916 8418 9082 4339 (Bank)</h4>
         <h4>ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046</h4>
       </div>
     </div>

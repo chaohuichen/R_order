@@ -126,19 +126,20 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = async (html) => {
+    let now = moment()
+    let date = now.format('DD_MM_YY_HH:MM:SS')
+
     Api('fillupSupplyAPI/createPdf', {
       method: 'post',
-      data: { html },
+      data: { html, date },
     })
       .then((res) => {
-        downloadToLocal(res.data)
+        downloadToLocal(res.data, date)
       })
       .catch((err) => console.log('axios post err ', err))
   }
-  const downloadToLocal = async (url) => {
+  const downloadToLocal = async (url, date) => {
     try {
-      let now = moment()
-      let date = now.format('DD_MM_YY_HH:MM:SS')
       const { uri } = await FileSystem.downloadAsync(
         url,
         FileSystem.documentDirectory + `${date}_invoice.pdf`
