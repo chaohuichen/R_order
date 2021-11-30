@@ -6,13 +6,9 @@ export const insertHtml = (
   dateIssue,
   invoiceNo
 ) => {
-  marginStr === undefined ? ' ' : marginStr
-
-  console.log('margin ', typeof marginStr)
-  console.log('item ', typeof itemStr)
-  console.log('slectevalue ', typeof selectedValue)
-  console.log('sdate', typeof dateIssue)
-  console.log('inovce ', typeof invoiceNo)
+  if (marginStr === undefined) {
+    marginStr = ''
+  }
 
   let invoiceStr = `<div class="col-2" style="margin-top: 20px">
   <!-- company info -->
@@ -117,7 +113,7 @@ export const insertHtml = (
     ${itemStr}
   </table>
   <p style="text-align:
-   right; padding-right: 60px; ${marginStr}">Amount due</p>
+   right; padding-right: 60px; ">Amount due</p>
   
 </div>
 ${paymentStr}

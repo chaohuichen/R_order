@@ -10,6 +10,7 @@ export const insertMultiPageHtml = (
   let itemStr = []
   let pageWrapStr = ''
   let tempJ = ''
+  let tempStrlen = 0
   //get all order in orders and push to tempstry array
   for (let order of orders) {
     for (let item of order.data) {
@@ -22,7 +23,7 @@ export const insertMultiPageHtml = (
     }
   }
   let counter = 0
-  let marginStr = ' '
+  let marginStrArr = []
   //check if tempstry arr is greater then 4, to insert 4 item per page
   if (tempStr.length > 4) {
     for (let j = 0; j <= tempStr.length; j++) {
@@ -37,11 +38,30 @@ export const insertMultiPageHtml = (
       }
     }
     itemStr.push(tempJ)
+    for (let i = 0; i < itemStr.length; i++) {
+      tempStrlen = tempStr.length
+      switch (tempStrlen) {
+        case 1:
+          marginStrArr.push('margin-bottom: 220px;')
+          break
+        case 2:
+          marginStrArr.push('margin-bottom: 180px;')
+          break
+        case 3:
+          marginStrArr.push('margin-bottom: 140px;')
+          break
+        case 4:
+          marginStrArr.push('margin-bottom: 20px;')
+          break
+        default:
+          break
+      }
+    }
     //loop itemstr.length time for how many page loop twice two page
     for (let i = 0; i < itemStr.length; i++) {
       pageWrapStr += insertHtml(
         itemStr[i],
-        marginStr,
+        marginStrArr[i],
         selectedFromValue,
         selectedToValue,
         '11-01-2021',
@@ -49,22 +69,24 @@ export const insertMultiPageHtml = (
       )
       htmlArr.push(pageWrapStr)
       pageWrapStr = ' '
-      marginStr = ' '
+      // marginStr = ' '
     }
   } else if (tempStr.length <= 4) {
     //check how many items and margin each case 1 items to 4 items.
-    let tempStrlen = tempStr.length
+    tempStrlen = tempStr.length
     switch (tempStrlen) {
       case 1:
-        marginStr = 'margin-bottom: 220px;'
+        marginStrArr.push('margin-bottom: 220px;')
         break
       case 2:
-        marginStr = 'margin-bottom: 180px;'
+        marginStrArr.push('margin-bottom: 180px;')
         break
       case 3:
-        marginStr = 'margin-bottom: 140px;'
+        marginStrArr.push('margin-bottom: 140px;')
         break
-
+      case 4:
+        marginStrArr.push('margin-bottom: 20px;')
+        break
       default:
         break
     }
@@ -72,7 +94,7 @@ export const insertMultiPageHtml = (
 
     pageWrapStr += insertHtml(
       itemsStr,
-      marginStr,
+      marginStr[0],
       selectedFromValue,
       selectedToValue,
       '11-01-2021',

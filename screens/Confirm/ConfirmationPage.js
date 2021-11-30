@@ -110,6 +110,7 @@ const ConfirmationPage = (props) => {
         selectedFromValue,
         selectedToValue
       )
+      const newHtml = html.replaceAll('undefined', ' ')
       Api.post('fillupSupplyAPI/sendSms', {
         phoneNumber: props.user.userPhoneNumber,
         orderString,
@@ -117,7 +118,7 @@ const ConfirmationPage = (props) => {
       }).catch(function (error) {
         console.log('axios post send sms ', error)
       })
-      createPdf(html)
+      createPdf(newHtml)
     } else {
       Alert.alert('Nothing in cart', 'add order to cart', {
         text: 'Ok',
