@@ -51,7 +51,7 @@ export const insertMultiPageHtml = (
           marginStrArr.push('margin-bottom: 140px;')
           break
         case 4:
-          marginStrArr.push('margin-bottom: 20px;')
+          marginStrArr.push('margin-bottom: 40px;')
           break
         default:
           break
@@ -85,7 +85,7 @@ export const insertMultiPageHtml = (
         marginStrArr.push('margin-bottom: 140px;')
         break
       case 4:
-        marginStrArr.push('margin-bottom: 20px;')
+        marginStrArr.push('margin-bottom: 40px;')
         break
       default:
         break

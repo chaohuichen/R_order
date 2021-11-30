@@ -6,10 +6,6 @@ export const insertHtml = (
   dateIssue,
   invoiceNo
 ) => {
-  if (marginStr === undefined) {
-    marginStr = ''
-  }
-
   let invoiceStr = `<div class="col-2" style="margin-top: 20px">
   <!-- company info -->
   <h1>${selectedFrom}</h1>
@@ -113,7 +109,7 @@ export const insertHtml = (
     ${itemStr}
   </table>
   <p style="text-align:
-   right; padding-right: 60px; ">Amount due</p>
+   right; padding-right: 60px; ${marginStr}">Amount due</p>
   
 </div>
 ${paymentStr}
