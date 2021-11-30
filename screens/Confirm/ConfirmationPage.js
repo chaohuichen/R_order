@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View } from 'native-base'
 import {
   StyleSheet,
   SafeAreaView,
@@ -7,25 +6,26 @@ import {
   TouchableWithoutFeedback,
   SectionList,
   Alert,
-  Text,
+  View,
 } from 'react-native'
+import { Text } from 'native-base'
 import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { clearOrder } from '../../redux/Reducers/orderReducer'
-import { insertHtml } from '../html/HtmlTemplate'
+import { insertMultiPageHtml } from './CreateHtml'
 import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
 import moment from 'moment'
 import Api from '../../API'
-
+import { StackActions } from '@react-navigation/native'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-  const [selectedToValue, setSelectedToValue] = useState('Fillup logistics')
+  const [selectedToValue, setSelectedToValue] = useState('Fillup Logistics')
   const [selectedFromValue, setSelectedFromValue] = useState('Fillup NY1')
-  const pickerItems = ['none', 'Fillup Logistics', 'Fillup MGT']
-  const pickerStores = ['none', 'fillup NY1', 'fillup NY2', 'fillup NY3']
+  const pickerItems = ['Fillup Logistics', 'Fillup MGT']
+  const pickerStores = ['Fillup NY1', 'fillup NY2', 'fillup NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
@@ -48,152 +48,7 @@ const ConfirmationPage = (props) => {
     })
     setOrders(copyData)
   }, [])
-  const insertMultiPageHtml = () => {
-    var htmlArr = []
-    var tempStr = []
-    var itemStr = []
-    var pageWrapStr = ''
-    var tempJ = ''
-    for (let order of orders) {
-      for (let item of order.data) {
-        tempStr.push(`<tr>
-        <td style="text-align:left">${item.name}</td>
-        <td>${item.count}</td>
-        <td>${0}</td>
-        <td>${0}</td>
-        </tr> `)
-      }
-    }
-    let counter = 0
-    let marginStr = ''
-    if (tempStr.length > 4) {
-      for (let j = 0; j <= tempStr.length; j++) {
-        if (counter < 4) {
-          counter++
-          tempJ += tempStr[j]
-        }
-        if (counter === 4) {
-          itemStr.push(tempJ)
-          counter = 0
-          tempJ = ' '
-        }
-      }
 
-      itemStr.push(tempJ)
-      for (var i = 0; i < itemStr.length; i++) {
-        pageWrapStr += insertHtml(
-          itemStr[i],
-          marginStr,
-          selectedFromValue,
-          selectedToValue,
-          '11-01-2021',
-          '#1234567890'
-        )
-        htmlArr.push(pageWrapStr)
-        pageWrapStr = ' '
-      }
-    } else if (tempStr.length <= 4) {
-      tempStr.join(' ')
-      pageWrapStr += insertHtml(
-        tempStr,
-        selectedFromValue,
-        selectedToValue,
-        '11-01-2021',
-        '#1234567890'
-      )
-      htmlArr.push(pageWrapStr)
-      pageWrapStr = ' '
-    }
-
-    htmlArr.join(' ')
-    const htmlContent = `
-    <!DOCTYPE html>
-      <html>
-        <head>
-          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Oswald:wght@200&display=swap"
-            rel="stylesheet"
-          />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&family=Oswald:wght@200&display=swap"
-        rel="stylesheet"
-      />
-          </head>
-          <style>
-            * {
-              margin: 0;
-              padding: 0;
-            }
-            body {
-              font: 14px/1.4 Georgia, serif;
-            }
-            #page-wrap {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              height: 800px;
-              width: 540px;
-              margin: 0 auto;
-              
-            }
-            table {
-              border-collapse: collapse;
-            }
-            td {
-              padding: 15px;
-              font-size: 12px;
-            }
-            th {
-              padding-bottom: 5px;
-              padding-top: 5px;
-            }
-            tr:nth-child(even) {
-              background-color: #dddddd;
-            }
-        
-            .title-tr {
-              background-color: black;
-              color: white;
-            }
-            .row:after {
-              content: '';
-              display: table;
-              clear: both;
-            }
-            .col {
-              float: left;
-              width: 50%;
-            }
-            .col-2 {
-              float: right;
-              width: 50%;
-            }
-            td {
-              text-align: center;
-              font-size: 12px;
-            }
-            h1 {
-              font-family: 'Oswald';
-              font-weight: 900;
-              font-size: xx-large;
-            }
-            #subheading {
-              font-family: 'Montserrat', sans-serif;
-              font-size: 12px;
-            }
-          </style>
-          <body>
-            ${htmlArr}
-          </body>
-        </html>
-    `
-    return htmlContent
-  }
   const openPickerStore = () => {
     setIsPicker(true)
     rbsheetRef.current.open()
@@ -245,12 +100,17 @@ const ConfirmationPage = (props) => {
       })
     }
   }
-  const placeOrder = async () => {
+  const createSmsMessage = async () => {
     const orderString = createOrderString()
     setLoading(true)
 
     if (orders.length !== 0) {
-      const html = insertMultiPageHtml()
+      const html = insertMultiPageHtml(
+        orders,
+        selectedFromValue,
+        selectedToValue
+      )
+      const newHtml = html.replaceAll('undefined', ' ')
       Api.post('fillupSupplyAPI/sendSms', {
         phoneNumber: props.user.userPhoneNumber,
         orderString,
@@ -258,7 +118,7 @@ const ConfirmationPage = (props) => {
       }).catch(function (error) {
         console.log('axios post send sms ', error)
       })
-      createPdf(html)
+      createPdf(newHtml)
     } else {
       Alert.alert('Nothing in cart', 'add order to cart', {
         text: 'Ok',
@@ -267,19 +127,20 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = async (html) => {
+    let now = moment()
+    let date = now.format('DD_MM_YY_HH:MM:SS')
+
     Api('fillupSupplyAPI/createPdf', {
       method: 'post',
-      data: { html },
+      data: { html, date },
     })
       .then((res) => {
-        downloadToLocal(res.data)
+        downloadToLocal(res.data, date)
       })
       .catch((err) => console.log('axios post err ', err))
   }
-  const downloadToLocal = async (url) => {
+  const downloadToLocal = async (url, date) => {
     try {
-      let now = moment()
-      let date = now.format('DD_MM_YY_HH:MM:SS')
       const { uri } = await FileSystem.downloadAsync(
         url,
         FileSystem.documentDirectory + `${date}_invoice.pdf`
@@ -289,7 +150,6 @@ const ConfirmationPage = (props) => {
       console.log('downlaod err ', err)
     }
   }
-
   const orderSuccessAlert = (uri) => {
     setLoading(false)
     props.resetOrder()
@@ -299,9 +159,11 @@ const ConfirmationPage = (props) => {
         {
           text: 'Ok',
           onPress: () =>
-            props.navigation.navigate('PdfView', {
-              uri,
-            }),
+            props.navigation.dispatch(
+              StackActions.replace('PdfView', {
+                uri,
+              })
+            ),
           style: 'cancel',
         },
         {
@@ -344,6 +206,7 @@ const ConfirmationPage = (props) => {
         <Spinner
           color="black"
           visible={true}
+          // textContent={'signing in....'}
           customIndicator={
             <View
               style={{
@@ -358,6 +221,40 @@ const ConfirmationPage = (props) => {
           }
         />
       )}
+
+      <Text
+        style={{
+          fontWeight: '500',
+          marginLeft: 20,
+          fontSize: 20,
+          marginTop: 10,
+        }}
+      >
+        From:
+      </Text>
+      <TouchableWithoutFeedback onPress={() => openPickerItem()}>
+        <View style={styles.selectionButtonView}>
+          <Text style={{ fontWeight: '900' }}>
+            {selectedToValue ? selectedToValue : 'To'}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+      <Text
+        style={{
+          fontWeight: '500',
+          fontSize: 20,
+          marginLeft: 20,
+        }}
+      >
+        To:
+      </Text>
+      <TouchableWithoutFeedback onPress={() => openPickerStore()}>
+        <View style={styles.selectionButtonView}>
+          <Text style={{ fontWeight: '900' }}>
+            {selectedFromValue ? selectedFromValue : 'From'}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
 
       <View
         style={{
@@ -377,23 +274,6 @@ const ConfirmationPage = (props) => {
           <Text style={{ color: 'red', marginRight: '5%' }}>Clear All</Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          alignItems: 'center',
-        }}
-      >
-        <TouchableWithoutFeedback onPress={() => openPickerItem()}>
-          <View style={styles.selectionButtonView}>
-            <Text>{selectedToValue ? selectedToValue : 'To'}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => openPickerStore()}>
-          <View style={styles.selectionButtonView}>
-            <Text>{selectedFromValue ? selectedFromValue : 'From'}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-
       <SectionList
         style={{ flex: 1 }}
         sections={orders}
@@ -425,7 +305,10 @@ const ConfirmationPage = (props) => {
           </Text>
         </View>
       </SectionList>
-      <TouchableOpacity style={styles.loginButton} onPress={() => placeOrder()}>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => createSmsMessage()}
+      >
         <Text style={styles.loginText}>Place Order</Text>
       </TouchableOpacity>
       <RBSheet
@@ -496,6 +379,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   selectionButtonView: {
+    alignSelf: 'center',
     fontSize: 10,
     justifyContent: 'center',
     alignItems: 'center',

@@ -52,8 +52,11 @@ export const setSupplyToDatabase = (payload, category) => {
   }
 }
 
-export const fetchData = (setDataFun) => {
+export const fetchData = (setDataFun, offset) => {
+  const ting = offset || 1
   db.ref('/productData')
+    // .orderByKey()
+    // .limitToFirst(ting)
     .once('value', (snapshot) => {
       if (snapshot.exists()) {
         let productsData = []
@@ -68,7 +71,9 @@ export const fetchData = (setDataFun) => {
             productsData.push(payload)
           }
         }
+        // console.log(Object.values(snapshot.val()).length)
         // setData(productsData)
+
         setDataFun(productsData)
       }
     })
