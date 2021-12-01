@@ -186,11 +186,14 @@ const ConfirmationPage = (props) => {
             flex: 1,
           }}
         >
-          <Text style={{ flexWrap: 'wrap', width: '70%' }}>{item.name}</Text>
+          <Text style={{ flexWrap: 'wrap', width: '70%', color: 'white' }}>
+            {item.name}
+          </Text>
           <Text
             style={{
               width: '10%',
               textAlign: 'center',
+              color: 'white',
             }}
           >
             {item.count}
@@ -228,6 +231,7 @@ const ConfirmationPage = (props) => {
           marginLeft: 20,
           fontSize: 20,
           marginTop: 10,
+          color: 'white',
         }}
       >
         From:
@@ -244,6 +248,7 @@ const ConfirmationPage = (props) => {
           fontWeight: '500',
           fontSize: 20,
           marginLeft: 20,
+          color: 'white',
         }}
       >
         To:
@@ -264,14 +269,17 @@ const ConfirmationPage = (props) => {
           alignItems: 'center',
         }}
       >
-        <Text style={{ fontSize: 25, fontWeight: 'bold' }}> Your Orders: </Text>
+        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
+          {' '}
+          Your Orders:{' '}
+        </Text>
         <TouchableOpacity
           onPress={() => {
             props.resetOrder()
             setOrders([])
           }}
         >
-          <Text style={{ color: 'red', marginRight: '5%' }}>Clear All</Text>
+          <Text style={{ color: 'red' }}>Clear All</Text>
         </TouchableOpacity>
       </View>
       <SectionList
@@ -293,14 +301,25 @@ const ConfirmationPage = (props) => {
                 justifyContent: 'space-between',
               }}
             >
-              <Text style={{ fontSize: 20, fontWeight: '500' }}>{title}</Text>
-              <Text style={{ fontSize: 20, fontWeight: '500' }}>QTY</Text>
+              <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
+                {title}
+              </Text>
+              <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
+                QTY
+              </Text>
             </View>
           )
         }}
       >
         <View style={{ flex: 3 }}>
-          <Text style={{ marginLeft: 20, fontWeight: '600', fontSize: 30 }}>
+          <Text
+            style={{
+              marginLeft: 20,
+              fontWeight: '600',
+              fontSize: 30,
+              color: 'white',
+            }}
+          >
             Items
           </Text>
         </View>
@@ -357,27 +376,21 @@ const ConfirmationPage = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    backgroundColor: 'black',
   },
   loginButton: {
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 5,
-    backgroundColor: 'black',
-    opacity: 0.8,
-    width: 300,
+    height: 50,
     alignSelf: 'center',
-    marginTop: 10,
-    bottom: 10,
+    backgroundColor: '#BEAC74',
+    borderRadius: 0,
+    width: '100%',
   },
   loginText: {
     color: 'white',
-    justifyContent: 'center',
     textAlign: 'center',
-    fontSize: 25,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   selectionButtonView: {
     alignSelf: 'center',

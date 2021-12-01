@@ -59,57 +59,59 @@ const OrderHomePage = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <SectionList
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          // onEndReached={handleLoadMoreData}
-          style={{ flex: 1 }}
-          // ListFooterComponent={
-          //   loading && (
-          //     <View style={{ marginTop: 20 }}>
-          //       <AppLoading />
-          //     </View>
-          //   )
-          // }
-          onEndReachedThreshold={0}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: '25%' }}
-          sections={[...props.order] || []}
-          keyExtractor={(item, index) => item + index}
-          renderItem={renderItem}
-          renderSectionHeader={({ section: { title } }) => (
-            <View
-              style={{
-                padding: 12,
-                borderBottomColor: 'rgba(221,221,221,0.5)',
-                borderBottomWidth: 1,
-                flex: 1,
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: '500' }}>{title} </Text>
+      {/* <View style={{ flex: 1}}> */}
+      <SectionList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        // onEndReached={handleLoadMoreData}
+        style={{ flex: 1 }}
+        // ListFooterComponent={
+        //   loading && (
+        //     <View style={{ marginTop: 20 }}>
+        //       <AppLoading />
+        //     </View>
+        //   )
+        // }
+        onEndReachedThreshold={0}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: '25%' }}
+        sections={[...props.order] || []}
+        keyExtractor={(item, index) => item + index}
+        renderItem={renderItem}
+        renderSectionHeader={({ section: { title } }) => (
+          <View
+            style={{
+              padding: 12,
+              borderBottomColor: 'rgba(221,221,221,0.5)',
+              borderBottomWidth: 1,
+              flex: 1,
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
+              {title}{' '}
+            </Text>
+          </View>
+        )}
+        stickySectionHeadersEnabled={false}
+        ListHeaderComponent={() => {
+          return (
+            <View style={styles.titleContainer}>
+              <Text style={styles.productDetails}>Product</Text>
+              <Text style={styles.productDetails}>Quanitity</Text>
             </View>
-          )}
-          stickySectionHeadersEnabled={false}
-          ListHeaderComponent={() => {
-            return (
-              <View style={styles.titleContainer}>
-                <Text style={styles.productDetails}>Product</Text>
-                <Text style={styles.productDetails}>Quanitity</Text>
-              </View>
-            )
-          }}
-        />
-        <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
-          <Button style={styles.loginButton} onPress={() => confirmOrder()}>
-            <Text style={styles.loginButtonText}>Comfirm Order</Text>
-          </Button>
-        </View>
+          )
+        }}
+      />
+      <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
+        <Button style={styles.loginButton} onPress={() => confirmOrder()}>
+          <Text style={styles.loginButtonText}>Comfirm Order</Text>
+        </Button>
       </View>
+      {/* </View> */}
     </View>
   )
 }
@@ -117,7 +119,7 @@ const OrderHomePage = (props) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'black',
   },
   titleContainer: {
     flexDirection: 'row',
@@ -130,6 +132,7 @@ const styles = StyleSheet.create({
   productDetails: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: 'white',
   },
   buttonView: {
     flexDirection: 'row',
@@ -140,13 +143,14 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     alignSelf: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#BEAC74',
     borderRadius: 0,
   },
   loginButtonText: {
     color: 'white',
     textAlign: 'center',
     fontSize: 20,
+    fontWeight: 'bold',
   },
 })
 const mapDispatch = (dispatch) => {

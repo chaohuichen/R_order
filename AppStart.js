@@ -10,6 +10,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import NavigationTheme from './constants/NavigationTheme'
 import MainNavigation from './navigation/MainNavigation'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { DefaultTheme, DarkTheme } from '@react-navigation/native'
 
 export default () => {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
@@ -48,8 +49,8 @@ export default () => {
   } else {
     return (
       <NativeBaseProvider>
-        <StatusBar barStyle={styleStatusBar} />
-        <NavigationContainer theme={NavigationTheme}>
+        <StatusBar barStyle={'light-content'} />
+        <NavigationContainer theme={DarkTheme}>
           <MainNavigation />
         </NavigationContainer>
       </NativeBaseProvider>

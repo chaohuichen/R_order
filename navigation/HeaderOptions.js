@@ -12,12 +12,12 @@ export const HeaderTitleOnly = (title) => {
     title,
     headerTitleStyle: {
       fontSize: 25,
-      fontFamily: 'Arial-BoldMT',
-      color: 'black',
+      fontFamily: 'CrimsonText-Bold',
+      color: 'white',
     },
 
-    headerBackTitleVisible: false,
-    headerTintColor: MainColors.primary,
+    headerBackTitle: 'Back',
+    headerTintColor: 'white',
   }
 }
 // removeUser={props.removeUserData}
@@ -53,8 +53,8 @@ export const HeaderTitleAndIcon = (title, navigation) => {
     title,
     headerTitleStyle: {
       fontSize: 25,
-      fontFamily: 'Arial-BoldMT',
-      color: 'black',
+      fontFamily: 'CrimsonText-Bold',
+      color: 'white',
     },
     headerRight: () => {
       return (
@@ -62,7 +62,7 @@ export const HeaderTitleAndIcon = (title, navigation) => {
           type="FontAwesome"
           name="user-circle-o"
           size={30}
-          color="black"
+          color="white"
           style={{ marginRight: 20 }}
           onPress={() => {
             navigation.push('UserProfile')
