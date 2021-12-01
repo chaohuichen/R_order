@@ -16,7 +16,7 @@ import DismissKeyboard from '../../components/DismissKeyboard'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import firebase from '../../API/FirebaseDatabase'
 
-function SignUpPage(props) {
+const SignUpPage = (props) => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [error, setError] = useState('')
   const userPhone = '+1' + phoneNumber
@@ -28,7 +28,7 @@ function SignUpPage(props) {
   const handleOnSignUp = async () => {
     const check = await checkPhoneMap(userPhone)
     if (check) {
-      Alert.alert('User already register', 'navigate to sign in page', [
+      Alert.alert('User already registered', 'navigate to sign in page', [
         { text: 'OK', onPress: () => props.navigation.pop() },
       ])
     } else {
@@ -38,7 +38,7 @@ function SignUpPage(props) {
         recaptchaVerifier.current
       )
       props.navigation.navigate('PhoneVerificationPage', {
-        phoneNumber,
+        phoneNumber,    
         verificationId,
       })
     }
@@ -59,16 +59,6 @@ function SignUpPage(props) {
             marginBottom: 100,
           }}
         >
-          <Image
-            source={require('../../assets/upblack.png')}
-            style={{
-              height: 180,
-              resizeMode: 'contain',
-              alignSelf: 'center',
-              marginBottom: 10,
-            }}
-            alt="app logo"
-          />
           <Text
             style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
           >

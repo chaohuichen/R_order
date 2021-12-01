@@ -37,13 +37,16 @@ const SignInPage = (props) => {
     return () => {}
   }, [])
   const handleOnLogin = async () => {
+    console.log(props.navigation.navigate)
     const check = await checkPhoneMap(userPhoneNumber)
     if (check === true && error !== '') {
       //login
       sendVerification()
     } else {
       //user not register go register page
-      Alert.alert('User not register', 'navigate to sign up page', [
+
+      console.log(props)
+      Alert.alert('User not registered', 'navigate to sign up page', [
         { text: 'OK', onPress: () => props.navigation.navigate('SignUpPage') },
       ])
     }
@@ -106,16 +109,6 @@ const SignInPage = (props) => {
             marginBottom: 100,
           }}
         >
-          <Image
-            source={require('../../assets/upblack.png')}
-            style={{
-              height: 180,
-              resizeMode: 'contain',
-              alignSelf: 'center',
-              marginBottom: 10,
-            }}
-            alt="app logo"
-          />
           <Text
             style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
           >
@@ -170,6 +163,7 @@ const SignInPage = (props) => {
               <TouchableOpacity
                 style={styles.loginButton}
                 onPress={() => handleOnLogin()}
+                
               >
                 <Text style={styles.loginText}>Sign In</Text>
               </TouchableOpacity>
