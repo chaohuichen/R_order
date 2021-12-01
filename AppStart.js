@@ -22,10 +22,9 @@ export default () => {
       Font.loadAsync({
         ...Ionicons.font,
         ...FontAwesome5.font,
-        // Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-        // 'inter-regular': require('./assets/fonts/Inter-Regular.otf'),
-        // 'inter-italic': require('./assets/fonts/Inter-Italic.otf'),
-        // 'inter-bold': require('./assets/fonts/Inter-Bold.ttf')
+
+        'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
+        'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
       }),
     ])
     const colorScheme = Appearance.getColorScheme()
