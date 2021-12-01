@@ -4,6 +4,7 @@ import {
   MyScreenOption,
   HeaderTitleOnly,
   HeaderTitleAndIcon,
+  HeaderTitleOnlyStyleChange,
 } from './HeaderOptions'
 // CoffeeHome
 import OrderPage from '../screens/Orders/OrderHomePage'

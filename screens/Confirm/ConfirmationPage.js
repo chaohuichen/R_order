@@ -111,7 +111,7 @@ const ConfirmationPage = (props) => {
         selectedToValue
       )
       const newHtml = html.replaceAll('undefined', ' ')
-      Api.post('fillupSupplyAPI/sendSms', {
+      Api.post('fdmSupplyAPI/sendSms', {
         phoneNumber: props.user.userPhoneNumber,
         orderString,
         orders,
@@ -130,7 +130,7 @@ const ConfirmationPage = (props) => {
     let now = moment()
     let date = now.format('DD_MM_YY_HH:MM:SS')
 
-    Api('FDMSupplyAPI/createPdf', {
+    Api('fdmSupplyAPI/createPdf', {
       method: 'post',
       data: { html, date },
     })
@@ -238,7 +238,7 @@ const ConfirmationPage = (props) => {
       </Text>
       <TouchableWithoutFeedback onPress={() => openPickerItem()}>
         <View style={styles.selectionButtonView}>
-          <Text style={{ fontWeight: '900' }}>
+          <Text style={{ fontWeight: '900', fontSize: 20 }}>
             {selectedToValue ? selectedToValue : 'To'}
           </Text>
         </View>
@@ -255,7 +255,7 @@ const ConfirmationPage = (props) => {
       </Text>
       <TouchableWithoutFeedback onPress={() => openPickerStore()}>
         <View style={styles.selectionButtonView}>
-          <Text style={{ fontWeight: '900' }}>
+          <Text style={{ fontWeight: '900', fontSize: 20 }}>
             {selectedFromValue ? selectedFromValue : 'From'}
           </Text>
         </View>

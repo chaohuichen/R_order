@@ -38,7 +38,7 @@ const SignUpPage = (props) => {
         recaptchaVerifier.current
       )
       props.navigation.navigate('PhoneVerificationPage', {
-        phoneNumber,    
+        phoneNumber,
         verificationId,
       })
     }
@@ -79,8 +79,15 @@ const SignUpPage = (props) => {
             }}
           >
             Flor De Mayo
+          </Text>
           <Text
-            style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
+            style={{
+              color: 'white',
+              fontSize: 30,
+              fontWeight: '600',
+              textAlign: 'center',
+              paddingBottom: 20,
+            }}
           >
             Sign Up
           </Text>
@@ -90,10 +97,11 @@ const SignUpPage = (props) => {
               colors: { underlineColor: 'transparent', primary: 'black' },
             }}
             maxLength={10}
+            placeholder="Sign Up"
             autoFocus
             value={phoneNumber}
             mode="outlined"
-            label="Mobile number"
+            placeholder="Phone Number"
             autoCapitalize="none"
             keyboardType="phone-pad"
             onChangeText={(number) => setPhoneNumber(number)}
@@ -145,7 +153,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   loginText: {
-    color: 'white',
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: 20,

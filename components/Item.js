@@ -28,10 +28,10 @@ const Item = (props) => {
           paddingRight: 15,
         }}
       >
-        <Text style={{ color: 'white' }}>
+        <Text style={{ color: 'white', fontSize: 25 }}>
           {order.name}
           {'\n'}
-          <Text sub={true} style={{ color: 'white' }}>
+          <Text sub={true} style={{ color: 'white', fontSize: 12 }}>
             Unit: {order.size}
           </Text>
         </Text>
@@ -63,6 +63,7 @@ const Item = (props) => {
             width: 25,
             textAlign: 'center',
             color: 'white',
+            fontSize: 25,
           }}
         >
           {order.count}
