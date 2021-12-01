@@ -37,15 +37,12 @@ const SignInPage = (props) => {
     return () => {}
   }, [])
   const handleOnLogin = async () => {
-    console.log(props.navigation.navigate)
     const check = await checkPhoneMap(userPhoneNumber)
     if (check === true && error !== '') {
       //login
       sendVerification()
     } else {
       //user not register go register page
-
-      console.log(props)
       Alert.alert('User not registered', 'navigate to sign up page', [
         { text: 'OK', onPress: () => props.navigation.navigate('SignUpPage') },
       ])
