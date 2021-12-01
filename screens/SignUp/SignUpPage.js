@@ -57,8 +57,28 @@ const SignUpPage = (props) => {
             justifyContent: 'center',
             alignItems: 'center',
             marginBottom: 100,
+            backgroundColor: 'black',
           }}
         >
+          <Text
+            style={{
+              color: '#BEAC74',
+              fontSize: 25,
+              fontFamily: 'CrimsonText-Bold',
+            }}
+          >
+            SINCE {'  '}|{'  '} 1977
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+              fontWeight: '600',
+              textAlign: 'center',
+              fontFamily: 'CrimsonText-Bold',
+              color: 'white',
+            }}
+          >
+            Flor De Mayo
           <Text
             style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
           >
@@ -89,7 +109,7 @@ const SignUpPage = (props) => {
               marginTop: 5,
             }}
           >
-            <Text style={{ fontSize: 12, alignSelf: 'center' }}>
+            <Text style={{ fontSize: 12, alignSelf: 'center', color: 'white' }}>
               Already have an account?
             </Text>
             <TouchableOpacity onPress={() => props.navigation.pop()}>
@@ -97,9 +117,10 @@ const SignUpPage = (props) => {
                 style={{
                   textDecorationLine: 'underline',
                   fontSize: 12,
+                  color: 'white',
                 }}
               >
-                Sign in
+                {'   '} Sign in
               </Text>
             </TouchableOpacity>
           </View>
@@ -112,19 +133,16 @@ const SignUpPage = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f3f3',
-    margin: 10,
+    backgroundColor: 'black',
   },
   loginButton: {
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 5,
-    backgroundColor: 'black',
+    backgroundColor: '#BEAC74',
     opacity: 0.8,
     width: 300,
+    height: 40,
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 30,
   },
   loginText: {
     color: 'white',

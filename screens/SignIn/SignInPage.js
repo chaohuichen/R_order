@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image,
   ScrollView,
   SafeAreaView,
   Alert,
@@ -107,6 +106,26 @@ const SignInPage = (props) => {
           }}
         >
           <Text
+            style={{
+              color: '#BEAC74',
+              fontSize: 25,
+              fontFamily: 'CrimsonText-Bold',
+            }}
+          >
+            SINCE {'  '}|{'  '} 1977
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+              fontWeight: '600',
+              textAlign: 'center',
+              fontFamily: 'CrimsonText-Bold',
+              color: 'white',
+            }}
+          >
+            Flor De Mayo
+          </Text>
+          <Text
             style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
           >
             Sign in
@@ -151,7 +170,8 @@ const SignInPage = (props) => {
                 maxLength={10}
                 value={phoneNumber}
                 mode="outlined"
-                label="Mobile number"
+                placeholder="Phone Number"
+                // label="Mobile number"
                 autoCapitalize="none"
                 keyboardType="phone-pad"
                 onChangeText={(number) => setPhoneNumber(number)}
@@ -173,7 +193,7 @@ const SignInPage = (props) => {
               marginTop: 5,
             }}
           >
-            <Text style={{ fontSize: 12, alignSelf: 'center' }}>
+            <Text style={{ fontSize: 12, alignSelf: 'center', color: 'white' }}>
               Don't have an account?
             </Text>
             <TouchableOpacity
@@ -182,10 +202,11 @@ const SignInPage = (props) => {
               <Text
                 style={{
                   textDecorationLine: 'underline',
+                  color: 'white',
                   fontSize: 12,
                 }}
               >
-                Sign up
+                {'  '} Sign up
               </Text>
             </TouchableOpacity>
           </View>
@@ -197,23 +218,19 @@ const SignInPage = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#f3f3f3',
-    margin: 10,
+    flexGrow: 1,
+    backgroundColor: 'black',
   },
   loginButton: {
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 5,
-    backgroundColor: 'black',
+    backgroundColor: '#BEAC74',
     opacity: 0.8,
     width: 300,
+    height: 40,
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 30,
   },
   loginText: {
-    color: 'white',
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: 20,
