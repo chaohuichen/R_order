@@ -79,9 +79,17 @@ const SignUpPage = (props) => {
             }}
           >
             Flor De Mayo
-            <Text
-              style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
-            ></Text>
+          </Text>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 30,
+              fontWeight: '600',
+              textAlign: 'center',
+              paddingBottom: 20,
+            }}
+          >
+            Sign Up
           </Text>
           <TextInput
             style={{ width: 300, alignSelf: 'center' }}
@@ -89,10 +97,11 @@ const SignUpPage = (props) => {
               colors: { underlineColor: 'transparent', primary: 'black' },
             }}
             maxLength={10}
+            placeholder="Sign Up"
             autoFocus
             value={phoneNumber}
             mode="outlined"
-            label="Mobile number"
+            placeholder="Phone Number"
             autoCapitalize="none"
             keyboardType="phone-pad"
             onChangeText={(number) => setPhoneNumber(number)}
@@ -144,7 +153,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   loginText: {
-    color: 'white',
+    color: 'black',
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: 20,

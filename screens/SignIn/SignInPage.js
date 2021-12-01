@@ -126,7 +126,12 @@ const SignInPage = (props) => {
             Flor De Mayo
           </Text>
           <Text
-            style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
+            style={{
+              color: 'white',
+              fontSize: 30,
+              fontWeight: '600',
+              textAlign: 'center',
+            }}
           >
             Sign in
           </Text>
@@ -171,7 +176,6 @@ const SignInPage = (props) => {
                 value={phoneNumber}
                 mode="outlined"
                 placeholder="Phone Number"
-                // label="Mobile number"
                 autoCapitalize="none"
                 keyboardType="phone-pad"
                 onChangeText={(number) => setPhoneNumber(number)}
@@ -180,7 +184,6 @@ const SignInPage = (props) => {
               <TouchableOpacity
                 style={styles.loginButton}
                 onPress={() => handleOnLogin()}
-                
               >
                 <Text style={styles.loginText}>Sign In</Text>
               </TouchableOpacity>
