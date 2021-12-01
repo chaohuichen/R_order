@@ -40,9 +40,9 @@ export const insertHtml = (
     Sonny Liu <br />
     ${selectedValue}
     <br />
-    636-469-9628 92nd@fillup.coffee <br />
-    2486 Broadway. New York, NY0025
-  </p>
+    1-234-567-6666 92nd@FDM.com <br />
+   ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046
+    </p>
 </div>`
 
   let shipStr = ` <div style="text-align: left" class="col-2">
@@ -54,7 +54,7 @@ export const insertHtml = (
     Sonny Liu <br />
     ${selectedValue}
     <br />
-    636-469-9628 92nd@fillup.coffee <br />
+    1-234-567-6666 92nd@FDM.com <br />
     2486 Broadway. New York, NY0025
   </p>
 </div>`
@@ -68,7 +68,7 @@ export const insertHtml = (
       <div style="text-align: left; float: left">
         <h1 style="text-align: center">PAYMENT METHOD:</h1>
         <h4 style="text-align: center">PAYMENT TO:${selectedFrom}</h4>
-        <h4>ACCT NO: 4916 8418 9082 4339 (Bank)</h4>
+        <h4>ACCT NO: 1234 5678 9101 1213 (Bank)</h4>
         <h4>ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046</h4>
       </div>
     </div>
@@ -77,7 +77,7 @@ export const insertHtml = (
       <h1 style="text-align: right; float: right">THANK <br />YOU!</h1>
     </div>
   </div>
-  <h5 style="text-align: center">WWW.FILLUP.COFFEE</h5>
+  <h5 style="text-align: center">WWW.FDM.COM</h5>
 </div>`
 
   let pageWrapStr = `<div id="page-wrap">
@@ -85,10 +85,7 @@ export const insertHtml = (
   <div class="row" style="margin-bottom: 20px">
     <div class="col">
       <div>
-        <img
-          src="https://fillupstore.s3.amazonaws.com/Slice+30.png"
-          style="width: 100px; height: 150px"
-        />
+        <h1> FDM </h1>
       </div>
     </div>
     ${invoiceStr}

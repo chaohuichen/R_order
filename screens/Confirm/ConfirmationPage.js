@@ -22,10 +22,10 @@ import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-  const [selectedToValue, setSelectedToValue] = useState('Fillup Logistics')
-  const [selectedFromValue, setSelectedFromValue] = useState('Fillup NY1')
-  const pickerItems = ['Fillup Logistics', 'Fillup MGT']
-  const pickerStores = ['Fillup NY1', 'fillup NY2', 'fillup NY3']
+  const [selectedToValue, setSelectedToValue] = useState('FDM Logistics')
+  const [selectedFromValue, setSelectedFromValue] = useState('FDM NY1')
+  const pickerItems = ['FDM Logistics', 'FDM MGT']
+  const pickerStores = ['FDM NY1', 'FDM NY2', 'FDM NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
@@ -111,7 +111,7 @@ const ConfirmationPage = (props) => {
         selectedToValue
       )
       const newHtml = html.replaceAll('undefined', ' ')
-      Api.post('fillupSupplyAPI/sendSms', {
+      Api.post('fdmSupplyAPI/sendSms', {
         phoneNumber: props.user.userPhoneNumber,
         orderString,
         orders,
@@ -130,7 +130,7 @@ const ConfirmationPage = (props) => {
     let now = moment()
     let date = now.format('DD_MM_YY_HH:MM:SS')
 
-    Api('fillupSupplyAPI/createPdf', {
+    Api('fdmSupplyAPI/createPdf', {
       method: 'post',
       data: { html, date },
     })
@@ -234,7 +234,7 @@ const ConfirmationPage = (props) => {
       </Text>
       <TouchableWithoutFeedback onPress={() => openPickerItem()}>
         <View style={styles.selectionButtonView}>
-          <Text style={{ fontWeight: '900' }}>
+          <Text style={{ fontWeight: '900', fontSize: 20 }}>
             {selectedToValue ? selectedToValue : 'To'}
           </Text>
         </View>
@@ -250,7 +250,7 @@ const ConfirmationPage = (props) => {
       </Text>
       <TouchableWithoutFeedback onPress={() => openPickerStore()}>
         <View style={styles.selectionButtonView}>
-          <Text style={{ fontWeight: '900' }}>
+          <Text style={{ fontWeight: '900', fontSize: 20 }}>
             {selectedFromValue ? selectedFromValue : 'From'}
           </Text>
         </View>
@@ -376,7 +376,8 @@ const styles = StyleSheet.create({
     color: 'white',
     justifyContent: 'center',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 25,
+    fontWeight: '600',
   },
   selectionButtonView: {
     alignSelf: 'center',

@@ -28,10 +28,12 @@ const Item = (props) => {
           paddingRight: 15,
         }}
       >
-        <Text>
+        <Text style={{ fontSize: 20 }}>
           {order.name}
           {'\n'}
-          <Text sub={true}>Unit: {order.size}</Text>
+          <Text sub={true} style={{ fontSize: 12 }}>
+            Unit: {order.size}
+          </Text>
         </Text>
       </View>
       <View style={styles.actionBox}>
@@ -60,6 +62,7 @@ const Item = (props) => {
             marginHorizontal: 10,
             width: 25,
             textAlign: 'center',
+            fontSize: 25,
           }}
         >
           {order.count}

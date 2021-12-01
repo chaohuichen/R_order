@@ -21,6 +21,32 @@ export const HeaderTitleOnly = (title) => {
   }
 }
 // removeUser={props.removeUserData}
+export const HeaderTitleOnlyStyleChange = (title) => {
+  return {
+    title,
+    headerTitleStyle: {
+      fontSize: 25,
+      fontFamily: 'Arial-BoldMT',
+      color: 'black',
+    },
+    headerLeft: () => {
+      return (
+        <AppIcons
+          type="Ionicons"
+          name="chevron-back"
+          size={30}
+          color="black"
+          style={{ marginLeft: 15 }}
+          onPress={() => {
+            navigation.push('UserProfile')
+          }}
+        />
+      )
+    },
+    headerBackTitleVisible: false,
+    headerTintColor: MainColors.primary,
+  }
+}
 
 export const HeaderTitleAndIcon = (title, navigation) => {
   return {

@@ -4,6 +4,7 @@ import {
   MyScreenOption,
   HeaderTitleOnly,
   HeaderTitleAndIcon,
+  HeaderTitleOnlyStyleChange,
 } from './HeaderOptions'
 // CoffeeHome
 import OrderPage from '../screens/Orders/OrderHomePage'
@@ -48,7 +49,7 @@ export default ({ navigation, tabName }, props) => {
       <Stack.Screen
         name="ConfirmationPage"
         component={ConfirmationPage}
-        options={HeaderTitleOnly('Invoice')}
+        options={HeaderTitleOnlyStyleChange('Invoice')}
       />
 
       <Stack.Screen
