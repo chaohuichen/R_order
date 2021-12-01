@@ -49,7 +49,7 @@ export default ({ navigation, tabName }, props) => {
       <Stack.Screen
         name="ConfirmationPage"
         component={ConfirmationPage}
-        options={HeaderTitleOnlyStyleChange('Invoice')}
+        options={HeaderTitleOnly('Invoice')}
       />
 
       <Stack.Screen
