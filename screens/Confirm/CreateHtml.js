@@ -11,6 +11,7 @@ export const insertMultiPageHtml = (
   let pageWrapStr = ''
   let tempJ = ''
   let tempStrlen = 0
+  let marginStr = ''
   //get all order in orders and push to tempstry array
   for (let order of orders) {
     for (let item of order.data) {

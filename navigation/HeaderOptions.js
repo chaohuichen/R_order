@@ -16,8 +16,8 @@ export const HeaderTitleOnly = (title) => {
       color: 'white',
     },
 
-    headerBackTitleVisible: false,
-    headerTintColor: MainColors.primary,
+    headerBackTitle: 'Back',
+    headerTintColor: 'white',
   }
 }
 // removeUser={props.removeUserData}

@@ -60,7 +60,7 @@ export default ({ navigation, tabName }, props) => {
       <Stack.Screen
         name="PdfView"
         component={PdfViewer}
-        options={HeaderTitleOnly('PDF Viewer')}
+        options={HeaderTitleOnly('PDF View')}
       />
     </Stack.Navigator>
   )
