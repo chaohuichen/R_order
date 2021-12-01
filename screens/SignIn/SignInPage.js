@@ -42,7 +42,7 @@ const SignInPage = (props) => {
       sendVerification()
     } else {
       //user not register go register page
-      Alert.alert('User not register', 'navigate to sign up page', [
+      Alert.alert('User not registered', 'navigate to sign up page', [
         { text: 'OK', onPress: () => props.navigation.navigate('SignUpPage') },
       ])
     }
@@ -180,6 +180,7 @@ const SignInPage = (props) => {
               <TouchableOpacity
                 style={styles.loginButton}
                 onPress={() => handleOnLogin()}
+                
               >
                 <Text style={styles.loginText}>Sign In</Text>
               </TouchableOpacity>

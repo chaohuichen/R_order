@@ -1,7 +1,11 @@
 import axios from 'axios'
 
 //for development call
+<<<<<<< HEAD
 // export const serverUrl = 'http://975d-2603-7000-73e-59fd-00-100f.ngrok.io'
+=======
+export const serverUrl = 'http://f018-216-158-137-35.ngrok.io/'
+>>>>>>> master
 //for production call
 export const serverUrl = 'https://www.fillupserve.com'
 const api = axios.create({

@@ -95,7 +95,7 @@ export const insertMultiPageHtml = (
 
     pageWrapStr += insertHtml(
       itemsStr,
-      marginStr[0],
+      marginStrArr[0],
       selectedFromValue,
       selectedToValue,
       '11-01-2021',
@@ -103,7 +103,6 @@ export const insertMultiPageHtml = (
     )
     htmlArr.push(pageWrapStr)
     pageWrapStr = ' '
-    marginStr = ' '
   }
 
   const htmlStr = htmlArr.join(' ')
