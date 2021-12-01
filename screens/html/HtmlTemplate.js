@@ -68,7 +68,7 @@ export const insertHtml = (
       <div style="text-align: left; float: left">
         <h1 style="text-align: center">PAYMENT METHOD:</h1>
         <h4 style="text-align: center">PAYMENT TO:${selectedFrom}</h4>
-        <h4>ACCT NO: 4916 8418 9082 4339 (Bank)</h4>
+        <h4>ACCT NO: 1324 1234 1432 1523 (Bank)</h4>
         <h4>ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046</h4>
       </div>
     </div>
@@ -77,7 +77,7 @@ export const insertHtml = (
       <h1 style="text-align: right; float: right">THANK <br />YOU!</h1>
     </div>
   </div>
-  <h5 style="text-align: center">WWW.FILLUP.COFFEE</h5>
+  <h5 style="text-align: center">WWW.FlorDeMayo.com</h5>
 </div>`
 
   let pageWrapStr = `<div id="page-wrap">

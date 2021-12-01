@@ -16,7 +16,7 @@ import DismissKeyboard from '../../components/DismissKeyboard'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import firebase from '../../API/FirebaseDatabase'
 
-function SignUpPage(props) {
+const SignUpPage = (props) => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [error, setError] = useState('')
   const userPhone = '+1' + phoneNumber
@@ -28,7 +28,7 @@ function SignUpPage(props) {
   const handleOnSignUp = async () => {
     const check = await checkPhoneMap(userPhone)
     if (check) {
-      Alert.alert('User already register', 'navigate to sign in page', [
+      Alert.alert('User already registered', 'navigate to sign in page', [
         { text: 'OK', onPress: () => props.navigation.pop() },
       ])
     } else {
@@ -38,7 +38,7 @@ function SignUpPage(props) {
         recaptchaVerifier.current
       )
       props.navigation.navigate('PhoneVerificationPage', {
-        phoneNumber,
+        phoneNumber,    
         verificationId,
       })
     }
@@ -79,7 +79,6 @@ function SignUpPage(props) {
             }}
           >
             Flor De Mayo
-          </Text>
           <Text
             style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
           >

@@ -22,10 +22,10 @@ import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-  const [selectedToValue, setSelectedToValue] = useState('Fillup Logistics')
-  const [selectedFromValue, setSelectedFromValue] = useState('Fillup NY1')
-  const pickerItems = ['Fillup Logistics', 'Fillup MGT']
-  const pickerStores = ['Fillup NY1', 'fillup NY2', 'fillup NY3']
+  const [selectedToValue, setSelectedToValue] = useState('FDM Logistics')
+  const [selectedFromValue, setSelectedFromValue] = useState('FDM NY1')
+  const pickerItems = ['FDM Logistics', 'FDM MGT']
+  const pickerStores = ['FDM NY1', 'FDM NY2', 'FDM NY3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
@@ -130,7 +130,7 @@ const ConfirmationPage = (props) => {
     let now = moment()
     let date = now.format('DD_MM_YY_HH:MM:SS')
 
-    Api('fillupSupplyAPI/createPdf', {
+    Api('FDMSupplyAPI/createPdf', {
       method: 'post',
       data: { html, date },
     })
