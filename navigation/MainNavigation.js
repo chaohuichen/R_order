@@ -12,7 +12,11 @@ const MainNavigation = (props) => {
 
   return (
     <Stack.Navigator>
+<<<<<<< HEAD
+      {!user.uid ? (
+=======
       {/* {user.uid ? (
+>>>>>>> master
         <Stack.Group>
           <Stack.Screen
             name="BottomTabNavigator"
