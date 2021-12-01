@@ -38,7 +38,7 @@ const SignUpPage = (props) => {
         recaptchaVerifier.current
       )
       props.navigation.navigate('PhoneVerificationPage', {
-        phoneNumber,    
+        phoneNumber,
         verificationId,
       })
     }
@@ -79,10 +79,9 @@ const SignUpPage = (props) => {
             }}
           >
             Flor De Mayo
-          <Text
-            style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
-          >
-            Sign Up
+            <Text
+              style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}
+            ></Text>
           </Text>
           <TextInput
             style={{ width: 300, alignSelf: 'center' }}

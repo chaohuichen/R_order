@@ -12,7 +12,7 @@ const MainNavigation = (props) => {
 
   return (
     <Stack.Navigator>
-      {/* {user.uid ? (
+      {user.uid ? (
         <Stack.Group>
           <Stack.Screen
             name="BottomTabNavigator"
@@ -24,12 +24,12 @@ const MainNavigation = (props) => {
         <Stack.Group>
           <Stack.Screen
             name="SignInPage"
-            component={SignUpPage}
+            component={SignInPage}
             options={HeaderShownNone()}
           />
           <Stack.Screen
             name="SignUpPage"
-            component={SignInPage}
+            component={SignUpPage}
             options={HeaderShownTrue('')}
           />
           <Stack.Screen
@@ -38,14 +38,7 @@ const MainNavigation = (props) => {
             options={HeaderShownTrue('')}
           />
         </Stack.Group>
-      )} */}
-          <Stack.Group>
-          <Stack.Screen
-            name="BottomTabNavigator"
-            component={BottomTabNavigator}
-            options={HeaderShownNone()}
-          />
-        </Stack.Group>
+      )}
     </Stack.Navigator>
   )
 }
