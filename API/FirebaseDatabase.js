@@ -4,6 +4,7 @@ import 'firebase/database'
 const firebaseConfig = {
   apiKey: 'AIzaSyB_JyA6_wVWHYyCJnRRW6YW8DHNrFmuQ58',
   authDomain: 'fdm-supply.firebaseapp.com',
+  databaseURL: 'https://fdm-supply-default-rtdb.firebaseio.com',
   projectId: 'fdm-supply',
   storageBucket: 'fdm-supply.appspot.com',
   messagingSenderId: '199780509758',

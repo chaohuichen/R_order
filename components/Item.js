@@ -28,17 +28,19 @@ const Item = (props) => {
           paddingRight: 15,
         }}
       >
-        <Text>
+        <Text style={{ color: 'white' }}>
           {order.name}
           {'\n'}
-          <Text sub={true}>Unit: {order.size}</Text>
+          <Text sub={true} style={{ color: 'white' }}>
+            Unit: {order.size}
+          </Text>
         </Text>
       </View>
       <View style={styles.actionBox}>
         <TouchableOpacity
           onPress={() => remove()}
           style={{
-            backgroundColor: '#ddd',
+            backgroundColor: 'white',
             borderRadius: 50 / 2,
             width: 50,
             height: 50,
@@ -60,6 +62,7 @@ const Item = (props) => {
             marginHorizontal: 10,
             width: 25,
             textAlign: 'center',
+            color: 'white',
           }}
         >
           {order.count}
@@ -67,7 +70,7 @@ const Item = (props) => {
         <TouchableOpacity
           onPress={() => add()}
           style={{
-            backgroundColor: '#ddd',
+            backgroundColor: 'white',
             borderRadius: 50 / 2,
             width: 50,
             height: 50,

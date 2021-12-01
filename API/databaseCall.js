@@ -54,7 +54,7 @@ export const setSupplyToDatabase = (payload, category) => {
 
 export const fetchData = (setDataFun, offset) => {
   const ting = offset || 1
-  db.ref('/productData')
+  db.ref('/ProductData')
     // .orderByKey()
     // .limitToFirst(ting)
     .once('value', (snapshot) => {

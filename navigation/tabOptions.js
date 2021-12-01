@@ -8,7 +8,7 @@ export const tabOptions = (iconName, tabName, iconType = 'FontAwesome') => {
     tabBarLabel: ({ focused }) => (
       <Text
         style={{
-          color: focused ? MainColors.primary : '#A1A1A1',
+          color: focused ? '#BEAC74' : '#A1A1A1',
           fontSize: 12,
         }}
       >
@@ -18,9 +18,7 @@ export const tabOptions = (iconName, tabName, iconType = 'FontAwesome') => {
     tabBarIcon: ({ focused }) => (
       <AppIcons
         name={iconName}
-        style={[
-          { color: focused ? MainColors.primary : '#A1A1A1', fontSize: 25 },
-        ]}
+        style={[{ color: focused ? '#BEAC74' : '#A1A1A1', fontSize: 25 }]}
         type={iconType}
       />
     ),

@@ -26,7 +26,7 @@ export default ({ navigation, tabName }, props) => {
           name="OrderPage"
           component={OrderPage}
           options={({ navigation }) =>
-            HeaderTitleAndIcon('Fillup Supply', navigation)
+            HeaderTitleAndIcon('Flor De Mayo', navigation)
           }
         />
       )}
@@ -41,7 +41,7 @@ export default ({ navigation, tabName }, props) => {
         <Stack.Screen
           name="AddSupplyPage"
           component={AddSupplyPage}
-          options={HeaderTitleOnly('Fillup Supply')}
+          options={HeaderTitleOnly('Flor De Mayo Supply')}
         />
       )}
 
@@ -60,7 +60,7 @@ export default ({ navigation, tabName }, props) => {
       <Stack.Screen
         name="PdfView"
         component={PdfViewer}
-        options={HeaderTitleOnly('Pdf Viewer')}
+        options={HeaderTitleOnly('PDF Viewer')}
       />
     </Stack.Navigator>
   )
