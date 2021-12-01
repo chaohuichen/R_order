@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   loginText: {
-    color: 'black',
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: 20,
