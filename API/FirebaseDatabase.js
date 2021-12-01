@@ -2,14 +2,13 @@ import firebase from 'firebase'
 import 'firebase/database'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyA40d_8921eduethV_MTeSoytEfLadT29k',
-  authDomain: 'fillup-supply-3fe4c.firebaseapp.com',
-  databaseURL: 'https://fillup-supply-3fe4c-default-rtdb.firebaseio.com',
-  projectId: 'fillup-supply-3fe4c',
-  storageBucket: 'fillup-supply-3fe4c.appspot.com',
-  messagingSenderId: '909970131020',
-  appId: '1:909970131020:web:f44f87ded52c9fa82a8ce9',
-  measurementId: 'G-HN6438W6V6',
+  apiKey: 'AIzaSyB_JyA6_wVWHYyCJnRRW6YW8DHNrFmuQ58',
+  authDomain: 'fdm-supply.firebaseapp.com',
+  projectId: 'fdm-supply',
+  storageBucket: 'fdm-supply.appspot.com',
+  messagingSenderId: '199780509758',
+  appId: '1:199780509758:web:e771736f8724c9c805896f',
+  measurementId: 'G-S9QNZSXJ47',
 }
 
 firebase.initializeApp(firebaseConfig)
