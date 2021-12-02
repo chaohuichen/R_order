@@ -33,7 +33,7 @@ export const insertHtml = (
 </div>`
 
   let billStr = `<div style="text-align: left" class="col">
-  <h1 style="font-weight: 900; font-size: 30px; color: black">
+  <h1 style="font-weight: 900; font-size: 25px; color: black">
     BILL TO <br />
   </h1>
   <p id="subheading">
@@ -46,7 +46,7 @@ export const insertHtml = (
 </div>`
 
   let shipStr = ` <div style="text-align: left" class="col-2">
-  <h1 style="font-weight: 900; font-size: 30px; color: black">
+  <h1 style="font-weight: 900; font-size: 25px; color: black">
     SHIP TO <br />
   </h1>
 
@@ -62,19 +62,19 @@ export const insertHtml = (
   let paymentStr = ` <div style="width: 540px">
   <div
     class="row"
-    style="letter-spacing: 1px; border-bottom: 3px solid black"
+    style="letter-spacing: 0.5px; border-bottom: 3px solid black"
   >
-    <div class="col" style="width: 78%">
+    <div class="col" style="width: 70%">
       <div style="text-align: left; float: left">
-        <h1 style="text-align: center">PAYMENT METHOD:</h1>
-        <h4 style="text-align: center">PAYMENT TO:${selectedFrom}</h4>
-        <h4>ACCT NO: 1234 5678 9101 1213 (Bank)</h4>
-        <h4>ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046</h4>
+        <h1 style="text-align: left">PAYMENT METHOD:</h1>
+        <h4 style="text-align: left">PAYMENT TO:${selectedFrom}</h4>
+        <p>ACCT NO: 1234 5678 9101 1213 (Bank)</h4>
+        <p>ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046</h4>
       </div>
     </div>
 
-    <div class="col" style="width: 10%">
-      <h1 style="text-align: right; float: right">THANK <br />YOU!</h1>
+    <div class="col" style="width: 20%">
+      <h1 style="text-align: right; float: right; margin-left: 20px; padding-left: 20px;">THANK <br />YOU!</h1>
     </div>
   </div>
   <h5 style="text-align: center">WWW.FDM.COM</h5>
@@ -85,13 +85,14 @@ export const insertHtml = (
   <div class="row" style="margin-bottom: 20px">
     <div class="col">
       <div>
-        <h1> FDM </h1>
+        <p class = 'logo-name'> FlOR  DE   MAYO  </p>
+       
       </div>
     </div>
     ${invoiceStr}
   </div>
 
-  <div class="row" style="margin-bottom: 30px">
+  <div class="row" style="margin-bottom: 25px">
   ${billStr}
 
    ${shipStr}

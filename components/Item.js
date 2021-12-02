@@ -5,16 +5,13 @@ import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import * as Haptics from 'expo-haptics'
 const Item = (props) => {
   const { sectionTitle, order, index } = props
 
   const remove = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     props.removeOnOrder(order, index, sectionTitle)
   }
   const add = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     props.addToOrder(order, index, sectionTitle)
   }
 
@@ -55,19 +52,19 @@ const Item = (props) => {
             style={{ alignSelf: 'center' }}
           />
         </TouchableOpacity>
-
-        <Text
-          bold
+        <View
           style={{
-            marginHorizontal: 10,
-            width: 25,
-            textAlign: 'center',
-            color: 'white',
-            fontSize: 25,
+            flex: 1,
+            alignItems: 'center',
           }}
         >
-          {order.count}
-        </Text>
+          <Text
+            bold
+            style={{ color: 'white', fontSize: 20, letterSpacing: 0.5 }}
+          >
+            {order.count}
+          </Text>
+        </View>
         <TouchableOpacity
           onPress={() => add()}
           style={{
@@ -102,10 +99,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 90,
   },
-
   actionBox: {
     marginRight: 10,
-    width: '40%',
+    width: '50%',
     flexDirection: 'row',
     paddingVertical: 5,
     justifyContent: 'space-around',
