@@ -4,25 +4,16 @@ import * as FileSystem from 'expo-file-system'
 import Invoice from '../../components/Invoice'
 import { getOrderHistory } from '../../redux'
 import { connect } from 'react-redux'
-const OrderHistoryPage = ({ navigation, orderHistory }) => {
-  console.log(orderHistory)
-  const [fileName, setFileName] = useState([])
+
+const OrderHistoryPage = ({ navigation, orderHistory, fetchOrderHistory }) => {
   const localCacheDir = FileSystem.documentDirectory
 
   useEffect(() => {
-    async function fetchData() {
-      const systemFiles = await FileSystem.readDirectoryAsync(localCacheDir)
-      const filtedsystemFiles = systemFiles.filter((singleFile) =>
-        singleFile.includes('pdf')
-      )
-      setFileName(filtedsystemFiles)
-    }
-    fetchData()
+    fetchOrderHistory()
   }, [])
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {fileName.map((fileName, index) => (
+      {orderHistory.map((fileName, index) => (
         <Invoice
           key={index}
           uri={localCacheDir + fileName}
@@ -36,10 +27,12 @@ const OrderHistoryPage = ({ navigation, orderHistory }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
+    marginHorizontal: '7%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    width: '100%',
+    alignItems: 'center',
     marginTop: 20,
   },
 })
@@ -51,7 +44,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    getOrderHistory: () => dispatch(getOrderHistory),
+    fetchOrderHistory: () => dispatch(getOrderHistory()),
   }
 }
 

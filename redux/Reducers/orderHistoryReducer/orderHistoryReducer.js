@@ -18,7 +18,7 @@ const defaultOrderHistory = []
 const orderHistoryReducer = produce((draft, action) => {
   switch (action.type) {
     case GET_ORDER_HISTORY:
-      return draft.orderHistory
+      return action.orderHistory
     default: {
       return draft
     }

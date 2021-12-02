@@ -85,18 +85,15 @@ const OrderHomePage = (props) => {
               padding: 12,
               borderBottomColor: 'rgba(221,221,221,0.5)',
               borderBottomWidth: 1,
-              flex: 1,
-              width: '100%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              backgroundColor: 'black',
             }}
           >
             <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
-              {title}{' '}
+              {title}
             </Text>
           </View>
         )}
-        stickySectionHeadersEnabled={false}
+        stickySectionHeadersEnabled
         ListHeaderComponent={() => {
           return (
             <View style={styles.titleContainer}>

@@ -5,11 +5,12 @@ import {
   ADD_ORDER_HISTORY,
   FETCH_ORDER_HISTORY,
 } from './orderHistoryActionTypes'
+import * as FileSystem from 'expo-file-system'
 
 /**
  * ACTION CREATORS
  */
-export const getOrderHistory = (orderHistory) => ({
+export const gotOrderHistory = (orderHistory) => ({
   type: GET_ORDER_HISTORY,
   orderHistory,
 })
@@ -17,10 +18,15 @@ export const getOrderHistory = (orderHistory) => ({
 /**
  * THUNK CREATORS
  */
-export const me = () => async (dispatch) => {
+export const getOrderHistory = () => async (dispatch) => {
   try {
-    const res = await axios.get('/auth/me')
-    dispatch(getUser(res.data || defaultUser))
+    const localCacheDir = FileSystem.documentDirectory
+    const systemFiles = await FileSystem.readDirectoryAsync(localCacheDir)
+
+    const filtedsystemFiles = systemFiles.filter((singleFile) =>
+      singleFile.includes('pdf')
+    )
+    dispatch(gotOrderHistory(filtedsystemFiles))
   } catch (err) {
     console.error(err)
   }

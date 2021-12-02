@@ -55,7 +55,7 @@ const Item = (props) => {
         </TouchableOpacity>
         <View
           style={{
-            flex: 1,
+            // flex: 1,
             alignItems: 'center',
           }}
         >
@@ -102,9 +102,8 @@ const styles = StyleSheet.create({
   },
   actionBox: {
     marginRight: 10,
-    width: '50%',
+    width: '40%',
     flexDirection: 'row',
-    paddingVertical: 5,
     justifyContent: 'space-between',
     alignItems: 'center',
   },

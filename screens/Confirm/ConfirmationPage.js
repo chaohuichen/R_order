@@ -20,6 +20,8 @@ import AppLoading from '../../components/AppLoading'
 import moment from 'moment'
 import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
+import { getOrderHistory } from '../../redux'
+
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('FDM Logistics')
@@ -128,9 +130,9 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = async (html) => {
-    let now = moment()
+    let now = moment().utc()
     // let date = now.format(`YY MM DD HH MM SS ${selectedToValue}Invoice`)
-    const date = now.format('DD_MM_YY_HH:MM:SS')
+    const date = now
 
     Api('fillupSupplyAPI/createPdf', {
       method: 'post',
@@ -148,6 +150,7 @@ const ConfirmationPage = (props) => {
         FileSystem.documentDirectory + `${date}_invoice.pdf`
       )
       orderSuccessAlert(uri)
+      props.fetchOrderHistory()
     } catch (err) {
       console.log('downlaod err ', err)
     }
@@ -416,6 +419,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     resetOrder: () => dispatch(clearOrder()),
+    fetchOrderHistory: () => dispatch(getOrderHistory()),
   }
 }
 export default connect(mapState, mapDispatch)(ConfirmationPage)

@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system'
 
 export default Invoice = (props) => {
   const { uri, name } = props
+  const nameChange = () => {}
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -35,10 +36,10 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     padding: 8,
+    margin: 5,
     height: 150,
     width: 110,
     backgroundColor: '#ddd',
-    margin: 5,
     borderRadius: 3,
   },
 })
