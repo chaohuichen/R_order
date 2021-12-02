@@ -63,7 +63,7 @@ const Item = (props) => {
             width: 25,
             textAlign: 'center',
             color: 'white',
-            fontSize: 25,
+            fontSize: 20,
           }}
         >
           {order.count}
@@ -102,10 +102,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 90,
   },
-
   actionBox: {
     marginRight: 10,
-    width: '40%',
+    width: '50%',
     flexDirection: 'row',
     paddingVertical: 5,
     justifyContent: 'space-around',

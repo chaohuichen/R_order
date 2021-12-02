@@ -11,7 +11,6 @@ export const insertMultiPageHtml = (
   let pageWrapStr = ''
   let tempJ = ''
   let tempStrlen = 0
-  let marginStr = ''
   //get all order in orders and push to tempstry array
   for (let order of orders) {
     for (let item of order.data) {
@@ -70,7 +69,6 @@ export const insertMultiPageHtml = (
       )
       htmlArr.push(pageWrapStr)
       pageWrapStr = ' '
-      // marginStr = ' '
     }
   } else if (tempStr.length <= 4) {
     //check how many items and margin each case 1 items to 4 items.
@@ -123,6 +121,10 @@ export const insertMultiPageHtml = (
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&family=Oswald:wght@200&display=swap"
             rel="stylesheet"
           />
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&display=swap" rel="stylesheet">
+          <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Crimson+Text" />
               </head>
               <style>
                 * {
@@ -167,11 +169,12 @@ export const insertMultiPageHtml = (
                 }
                 .col {
                   float: left;
-                  width: 50%;
+                  width: 40%%;
                 }
                 .col-2 {
                   float: right;
-                  width: 50%;
+                  width: 40%;
+                  padding-left: 30px;
                 }
                 td {
                   text-align: center;
@@ -179,12 +182,18 @@ export const insertMultiPageHtml = (
                 }
                 h1 {
                   font-family: 'Oswald';
-                  font-weight: 900;
+                  font-weight: 600;
                   font-size: xx-large;
                 }
                 #subheading {
                   font-family: 'Montserrat', sans-serif;
                   font-size: 12px;
+                }
+                .logo-name{
+                  font-family: 'Amiri', serif;
+                  font-size: 50px;
+                  font-weight: 900;
+                  margin-top: 20px;
                 }
               </style>
               <body>

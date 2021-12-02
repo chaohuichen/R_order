@@ -24,9 +24,9 @@ export default Invoice = (props) => {
         />
       </TouchableOpacity>
       <Text style={{ paddingTop: 10 }}>{name}</Text>
-      {/* <Button onPress={async () => await FileSystem.deleteAsync(uri)}>
+      <Button onPress={async () => await FileSystem.deleteAsync(uri)}>
         delete
-      </Button> */}
+      </Button>
     </View>
   )
 }
