@@ -77,7 +77,7 @@ export const insertHtml = (
       <h1 style="text-align: right; float: right; margin-left: 20px; padding-left: 20px;">THANK <br />YOU!</h1>
     </div>
   </div>
-  <h5 style="text-align: center">WWW.FDM.COM</h5>
+  <h5 style="text-align: center">www.FlorDeMayo.com</h5>
 </div>`
 
   let pageWrapStr = `<div id="page-wrap">

@@ -90,10 +90,10 @@ const ConfirmationPage = (props) => {
         '646-552-8898\n' +
         '530 5th Ave, New York, NY 10036\n' +
         'To\n' +
-        'Sonng Liu\n' +
+        'Kenny Cho\n' +
         `${selectedFromValue}\n` +
         '636-469-9628\n' +
-        '2468 Broadway, New York, NY 10025 \n' +
+        '2651 Broadway, New York, NY 10025 \n' +
         orderString
       return orderString
     } else {
@@ -144,10 +144,13 @@ const ConfirmationPage = (props) => {
       .catch((err) => console.log('axios post err ', err))
   }
   const downloadToLocal = async (url, date) => {
+    // date = date.format(`YYMMDDHH:MM:SS`)
+    // console.log(date)
     try {
       const { uri } = await FileSystem.downloadAsync(
         url,
-        FileSystem.documentDirectory + `${date}_invoice.pdf`
+        FileSystem.documentDirectory +
+          `${date}${selectedToValue.replace(/\s/g, '')}Invoice.pdf`
       )
       orderSuccessAlert(uri)
       props.fetchOrderHistory()
