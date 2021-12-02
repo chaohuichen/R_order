@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   StyleSheet,
   View,
@@ -23,6 +23,7 @@ const OrderHomePage = (props) => {
   const [refreshing, setRefreshing] = useState(false)
   // const [offset, setOffset] = useState(1)
   const [loading, setLoading] = useState(false)
+
   const onRefresh = useCallback(() => {
     setRefreshing(true)
     fetchData(props.fetchData)
@@ -31,7 +32,6 @@ const OrderHomePage = (props) => {
 
   useEffect(() => {
     fetchData(props.fetchData)
-
     return () => {}
   }, [])
   const handleLoadMoreData = () => {
@@ -46,6 +46,7 @@ const OrderHomePage = (props) => {
   const confirmOrder = () => {
     props.navigation.navigate('ConfirmationPage')
   }
+
   const renderItem = ({ item, index, section }) => {
     return (
       <Item
@@ -107,7 +108,7 @@ const OrderHomePage = (props) => {
         }}
       />
       <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
-        <Button style={styles.loginButton} onPress={() => confirmOrder()}>
+        <Button style={styles.loginButton} onPress={confirmOrder}>
           <Text style={styles.loginButtonText}>Comfirm Order</Text>
         </Button>
       </View>

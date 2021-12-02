@@ -5,16 +5,14 @@ import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import * as Haptics from 'expo-haptics'
+
 const Item = (props) => {
   const { sectionTitle, order, index } = props
 
-  const remove = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+  const removeItem = () => {
     props.removeOnOrder(order, index, sectionTitle)
   }
-  const add = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+  const addItem = () => {
     props.addToOrder(order, index, sectionTitle)
   }
 
@@ -38,7 +36,7 @@ const Item = (props) => {
       </View>
       <View style={styles.actionBox}>
         <TouchableOpacity
-          onPress={() => remove()}
+          onPress={removeItem}
           style={{
             backgroundColor: 'white',
             borderRadius: 50 / 2,
@@ -59,8 +57,6 @@ const Item = (props) => {
         <Text
           bold
           style={{
-            marginHorizontal: 10,
-            width: 25,
             textAlign: 'center',
             color: 'white',
             fontSize: 25,
@@ -69,7 +65,7 @@ const Item = (props) => {
           {order.count}
         </Text>
         <TouchableOpacity
-          onPress={() => add()}
+          onPress={addItem}
           style={{
             backgroundColor: 'white',
             borderRadius: 50 / 2,
@@ -108,7 +104,7 @@ const styles = StyleSheet.create({
     width: '40%',
     flexDirection: 'row',
     paddingVertical: 5,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 })

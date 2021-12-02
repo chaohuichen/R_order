@@ -18,7 +18,7 @@ const orderReducer = produce((draft, action) => {
     case FETCH_ORDER:
       return draft
     case GET_ORDER:
-      return action.order
+      return action.order || []
     case REMOVE_ORDER: {
       const copyOrder = draft.map((singleData) => {
         if (singleData.title === action.sectionTitle) {
