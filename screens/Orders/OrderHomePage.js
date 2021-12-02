@@ -12,7 +12,6 @@ import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { fetchData } from '../../API/databaseCall'
-import AppLoading from '../../components/AppLoading'
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
@@ -112,7 +111,6 @@ const OrderHomePage = (props) => {
           <Text style={styles.loginButtonText}>Comfirm Order</Text>
         </Button>
       </View>
-      {/* </View> */}
     </View>
   )
 }

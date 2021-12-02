@@ -30,6 +30,7 @@ const ConfirmationPage = (props) => {
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     // map all the data from redux
     const copyData = []
@@ -128,9 +129,10 @@ const ConfirmationPage = (props) => {
   }
   const createPdf = async (html) => {
     let now = moment()
-    let date = now.format('DD_MM_YY_HH:MM:SS')
+    // let date = now.format(`YY MM DD HH MM SS ${selectedToValue}Invoice`)
+    const date = now.format('DD_MM_YY_HH:MM:SS')
 
-    Api('fdmSupplyAPI/createPdf', {
+    Api('fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html, date },
     })

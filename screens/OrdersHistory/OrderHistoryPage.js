@@ -2,21 +2,23 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, ScrollView } from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import Invoice from '../../components/Invoice'
-export default ({ navigation }) => {
+import { getOrderHistory } from '../../redux'
+import { connect } from 'react-redux'
+const OrderHistoryPage = ({ navigation, orderHistory }) => {
+  console.log(orderHistory)
   const [fileName, setFileName] = useState([])
   const localCacheDir = FileSystem.documentDirectory
-  let count = 0
+
   useEffect(() => {
     async function fetchData() {
-      const files = await FileSystem.readDirectoryAsync(localCacheDir)
-      const filtedFiles = files.filter((singleFile) =>
+      const systemFiles = await FileSystem.readDirectoryAsync(localCacheDir)
+      const filtedsystemFiles = systemFiles.filter((singleFile) =>
         singleFile.includes('pdf')
       )
-      setFileName(filtedFiles)
+      setFileName(filtedsystemFiles)
     }
     fetchData()
-    count++
-  }, [count])
+  }, [])
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -41,3 +43,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 })
+const mapState = (state) => {
+  return {
+    orderHistory: state.orderHistory,
+  }
+}
+
+const mapDispatch = (dispatch) => {
+  return {
+    getOrderHistory: () => dispatch(getOrderHistory),
+  }
+}
+
+export default connect(mapState, mapDispatch)(OrderHistoryPage)
