@@ -7,7 +7,6 @@ import * as FileSystem from 'expo-file-system'
 
 export default Invoice = (props) => {
   const { uri, name } = props
-  const nameChange = () => {}
   return (
     <View style={styles.container}>
       <TouchableOpacity
