@@ -5,13 +5,14 @@ import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+
 const Item = (props) => {
   const { sectionTitle, order, index } = props
 
-  const remove = () => {
+  const removeItem = () => {
     props.removeOnOrder(order, index, sectionTitle)
   }
-  const add = () => {
+  const addItem = () => {
     props.addToOrder(order, index, sectionTitle)
   }
 
@@ -35,7 +36,7 @@ const Item = (props) => {
       </View>
       <View style={styles.actionBox}>
         <TouchableOpacity
-          onPress={() => remove()}
+          onPress={removeItem}
           style={{
             backgroundColor: 'white',
             borderRadius: 50 / 2,
@@ -54,7 +55,7 @@ const Item = (props) => {
         </TouchableOpacity>
         <View
           style={{
-            flex: 1,
+            // flex: 1,
             alignItems: 'center',
           }}
         >
@@ -66,7 +67,7 @@ const Item = (props) => {
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => add()}
+          onPress={addItem}
           style={{
             backgroundColor: 'white',
             borderRadius: 50 / 2,
@@ -101,10 +102,9 @@ const styles = StyleSheet.create({
   },
   actionBox: {
     marginRight: 10,
-    width: '50%',
+    width: '40%',
     flexDirection: 'row',
-    paddingVertical: 5,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 })

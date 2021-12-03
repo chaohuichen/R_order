@@ -2,13 +2,12 @@
   "expo": {
     "name": "fdmsupply",
     "slug": "fdmsupply",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/img/FdmappIcon.png",
     "splash": {
       "image": "./assets/img/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
