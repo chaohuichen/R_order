@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/img/FdmappIcon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/img/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
