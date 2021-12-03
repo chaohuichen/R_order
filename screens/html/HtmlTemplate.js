@@ -37,10 +37,10 @@ export const insertHtml = (
     BILL TO <br />
   </h1>
   <p id="subheading">
-    Sonny Liu <br />
+    Kenny Cho <br />
     ${selectedValue}
     <br />
-    1-234-567-6666 92nd@FDM.com <br />
+    1-234-567-6666 ${selectedValue}@flordemayo.com <br />
    ADDRESS: 540 5th Avenue, 9FL, NEW YORK, NY 10046
     </p>
 </div>`
@@ -51,11 +51,11 @@ export const insertHtml = (
   </h1>
 
   <p id="subheading">
-    Sonny Liu <br />
+    Kenny Cho <br />
     ${selectedValue}
     <br />
-    1-234-567-6666 92nd@FDM.com <br />
-    2486 Broadway. New York, NY0025
+    1-234-567-6666 ${selectedValue}@flordemayo.com <br />
+    2651 Broadway. New York, NY 10025
   </p>
 </div>`
 
@@ -77,7 +77,7 @@ export const insertHtml = (
       <h1 style="text-align: right; float: right; margin-left: 20px; padding-left: 20px;">THANK <br />YOU!</h1>
     </div>
   </div>
-  <h5 style="text-align: center">WWW.FDM.COM</h5>
+  <h5 style="text-align: center">www.FlorDeMayo.com</h5>
 </div>`
 
   let pageWrapStr = `<div id="page-wrap">
@@ -86,7 +86,6 @@ export const insertHtml = (
     <div class="col">
       <div>
         <p class = 'logo-name'> FlOR  DE   MAYO  </p>
-       
       </div>
     </div>
     ${invoiceStr}

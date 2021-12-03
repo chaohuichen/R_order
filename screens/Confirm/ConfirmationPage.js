@@ -20,6 +20,8 @@ import AppLoading from '../../components/AppLoading'
 import moment from 'moment'
 import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
+import { getOrderHistory } from '../../redux'
+
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('FDM Logistics')
@@ -30,6 +32,7 @@ const ConfirmationPage = (props) => {
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     // map all the data from redux
     const copyData = []
@@ -87,10 +90,10 @@ const ConfirmationPage = (props) => {
         '646-552-8898\n' +
         '530 5th Ave, New York, NY 10036\n' +
         'To\n' +
-        'Sonng Liu\n' +
+        'Kenny Cho\n' +
         `${selectedFromValue}\n` +
         '636-469-9628\n' +
-        '2468 Broadway, New York, NY 10025 \n' +
+        '2651 Broadway, New York, NY 10025 \n' +
         orderString
       return orderString
     } else {
@@ -127,10 +130,11 @@ const ConfirmationPage = (props) => {
     }
   }
   const createPdf = async (html) => {
-    let now = moment()
-    let date = now.format('DD_MM_YY_HH:MM:SS')
+    let now = moment().utc()
+    // let date = now.format(`YY MM DD HH MM SS ${selectedToValue}Invoice`)
+    const date = now
 
-    Api('fdmSupplyAPI/createPdf', {
+    Api('fillupSupplyAPI/createPdf', {
       method: 'post',
       data: { html, date },
     })
@@ -140,12 +144,16 @@ const ConfirmationPage = (props) => {
       .catch((err) => console.log('axios post err ', err))
   }
   const downloadToLocal = async (url, date) => {
+    // date = date.format(`YYMMDDHH:MM:SS`)
+    // console.log(date)
     try {
       const { uri } = await FileSystem.downloadAsync(
         url,
-        FileSystem.documentDirectory + `${date}_invoice.pdf`
+        FileSystem.documentDirectory +
+          `${date}${selectedToValue.replace(/\s/g, '')}Invoice.pdf`
       )
       orderSuccessAlert(uri)
+      props.fetchOrderHistory()
     } catch (err) {
       console.log('downlaod err ', err)
     }
@@ -414,6 +422,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     resetOrder: () => dispatch(clearOrder()),
+    fetchOrderHistory: () => dispatch(getOrderHistory()),
   }
 }
 export default connect(mapState, mapDispatch)(ConfirmationPage)

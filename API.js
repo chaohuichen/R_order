@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 //for development call
-// export const serverUrl = 'http://cce7-216-158-137-35.ngrok.io'
+// export const serverUrl = 'https://8b2c-98-116-212-6.ngrok.io'
 
 //for production call
 export const serverUrl = 'https://www.fillupserve.com'

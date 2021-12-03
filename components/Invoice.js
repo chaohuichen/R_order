@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     padding: 8,
+    margin: 5,
     height: 150,
     width: 110,
     backgroundColor: '#ddd',
-    margin: 5,
     borderRadius: 3,
   },
 })
