@@ -15,7 +15,7 @@ const Item = (props) => {
 
   return (
     <Box style={styles.box}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={addItem}>
         <Text style={styles.orderTitle}>{order.name}</Text>
         <Text style={styles.orderSize}>{order.size}</Text>
       </TouchableOpacity>

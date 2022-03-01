@@ -8,7 +8,7 @@ import {
   Alert,
   View,
 } from 'react-native'
-import { Text } from 'native-base'
+import { Text, Box } from 'native-base'
 import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
@@ -21,6 +21,7 @@ import moment from 'moment'
 import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
 import { getOrderHistory } from '../../redux'
+import AppIcons from '../../components/AppIcons'
 
 const ConfirmationPage = (props) => {
   const { allOrder } = props
@@ -51,6 +52,13 @@ const ConfirmationPage = (props) => {
     })
     setOrders(copyData)
   }, [])
+
+  const removeItem = () => {
+    props.removeOnOrder(order, index, sectionTitle)
+  }
+  const addItem = () => {
+    props.addToOrder(order, index, sectionTitle)
+  }
 
   const openPickerStore = () => {
     setIsPicker(true)
@@ -184,29 +192,73 @@ const ConfirmationPage = (props) => {
   const renderItem = ({ item }) => {
     if (item.count > 0) {
       return (
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 20,
-            borderBottomWidth: 1,
-            borderBottomColor: 'rgba(211,211,211,0.5)',
-            flex: 1,
-          }}
-        >
-          <Text style={{ flexWrap: 'wrap', width: '70%', color: 'white' }}>
-            {item.name}
-          </Text>
-          <Text
+        <Box style={styles.box}>
+          <View
             style={{
-              width: '10%',
-              textAlign: 'center',
-              color: 'white',
+              flex: 1.5,
+              flexWrap: 'wrap',
+              flexDirection: 'row',
+              paddingRight: 15,
             }}
           >
-            {item.count}
-          </Text>
-        </View>
+            <Text style={{ color: 'white', fontSize: 25 }}>
+              {item.name}
+              {'\n'}
+              <Text sub={true} style={{ color: 'white', fontSize: 12 }}></Text>
+            </Text>
+          </View>
+          <View style={styles.actionBox}>
+            <TouchableOpacity
+              onPress={removeItem}
+              style={{
+                backgroundColor: 'white',
+                borderRadius: 50 / 2,
+                width: 50,
+                height: 50,
+                justifyContent: 'center',
+              }}
+            >
+              <AppIcons
+                type="AntDesign"
+                name="minus"
+                size={25}
+                color="black"
+                style={{ alignSelf: 'center' }}
+              />
+            </TouchableOpacity>
+            <View
+              style={{
+                // flex: 1,
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                bold
+                style={{ color: 'white', fontSize: 20, letterSpacing: 0.5 }}
+              >
+                {item.count}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={addItem}
+              style={{
+                backgroundColor: 'white',
+                borderRadius: 50 / 2,
+                width: 50,
+                height: 50,
+                justifyContent: 'center',
+              }}
+            >
+              <AppIcons
+                type="AntDesign"
+                name="plus"
+                size={25}
+                color="black"
+                style={{ alignSelf: 'center' }}
+              />
+            </TouchableOpacity>
+          </View>
+        </Box>
       )
     }
     return null
@@ -410,6 +462,23 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     height: 50,
     borderRadius: 5,
+  },
+  box: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(211,211,211,0.5)',
+    paddingLeft: 15,
+    width: '100%',
+    height: 90,
+  },
+  actionBox: {
+    marginRight: 10,
+    width: '40%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 })
 const mapState = (state) => {
