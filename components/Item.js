@@ -14,12 +14,10 @@ const Item = (props) => {
   }
 
   return (
-    <Box style={styles.box}>
-      <TouchableOpacity onPress={addItem}>
-        <Text style={styles.orderTitle}>{order.name}</Text>
-        <Text style={styles.orderSize}>{order.size}</Text>
-      </TouchableOpacity>
-    </Box>
+    <TouchableOpacity style={styles.box} onPress={addItem}>
+      <Text style={styles.orderTitle}>{order.name}</Text>
+      {/* <Text style={styles.orderSize}>{order.size}</Text> */}
+    </TouchableOpacity>
   )
 }
 
@@ -28,15 +26,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(211,211,211,0.5)',
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: 'rgba(211,211,211,0.5)',
     paddingLeft: 15,
     width: '100%',
     height: 120,
   },
   orderTitle: {
     color: 'white',
-    fontSize: 30,
+    fontSize: 20,
   },
   orderSize: {
     color: 'white',
