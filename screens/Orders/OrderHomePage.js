@@ -83,24 +83,25 @@ const OrderHomePage = (props) => {
           <View
             style={{
               padding: 12,
-              borderBottomColor: 'rgba(221,221,221,0.5)',
-              borderBottomWidth: 1,
+              // marginVertical: 10,
               backgroundColor: 'black',
             }}
           >
-            <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: '500',
+                color: 'white',
+                textTransform: 'capitalize',
+              }}
+            >
               {title}
             </Text>
           </View>
         )}
         stickySectionHeadersEnabled
         ListHeaderComponent={() => {
-          return (
-            <View style={styles.titleContainer}>
-              <Text style={styles.productDetails}>Product</Text>
-              <Text style={styles.productDetails}>Quanitity</Text>
-            </View>
-          )
+          return null
         }}
       />
       <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
@@ -122,8 +123,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 20,
     paddingRight: '10%',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(211,211,211,0.5)',
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'rgba(211,211,211,0.5)',
   },
   productDetails: {
     fontSize: 20,
