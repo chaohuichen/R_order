@@ -12,7 +12,11 @@ import { Text, Box } from 'native-base'
 import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
-import { clearOrder } from '../../redux/Reducers/orderReducer'
+import {
+  clearOrder,
+  addOrder,
+  removeOrder,
+} from '../../redux/Reducers/orderReducer'
 import { insertMultiPageHtml } from './CreateHtml'
 import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
@@ -28,7 +32,7 @@ const ConfirmationPage = (props) => {
   const [selectedToValue, setSelectedToValue] = useState('FDM Logistics')
   const [selectedFromValue, setSelectedFromValue] = useState('FDM NY1')
   const pickerItems = ['FDM Logistics', 'FDM MGT']
-  const pickerStores = ['FDM NY1', 'FDM NY2', 'FDM NY3']
+  const pickerStores = ['FDM1', 'FDM2', 'FDM3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
@@ -53,10 +57,10 @@ const ConfirmationPage = (props) => {
     setOrders(copyData)
   }, [])
 
-  const removeItem = () => {
+  const removeItem = (order, index, sectionTitle) => {
     props.removeOnOrder(order, index, sectionTitle)
   }
-  const addItem = () => {
+  const addItem = (order, index, sectionTitle) => {
     props.addToOrder(order, index, sectionTitle)
   }
 
@@ -189,7 +193,7 @@ const ConfirmationPage = (props) => {
       ])
     }, 200)
   }
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index, section }) => {
     if (item.count > 0) {
       return (
         <Box style={styles.box}>
@@ -209,7 +213,7 @@ const ConfirmationPage = (props) => {
           </View>
           <View style={styles.actionBox}>
             <TouchableOpacity
-              onPress={removeItem}
+              onPress={() => removeItem(item, index, section.title)}
               style={{
                 backgroundColor: 'white',
                 borderRadius: 50 / 2,
@@ -228,7 +232,6 @@ const ConfirmationPage = (props) => {
             </TouchableOpacity>
             <View
               style={{
-                // flex: 1,
                 alignItems: 'center',
               }}
             >
@@ -240,7 +243,7 @@ const ConfirmationPage = (props) => {
               </Text>
             </View>
             <TouchableOpacity
-              onPress={addItem}
+              onPress={() => addItem(item, index, section.title)}
               style={{
                 backgroundColor: 'white',
                 borderRadius: 50 / 2,
@@ -344,49 +347,16 @@ const ConfirmationPage = (props) => {
       </View>
       <SectionList
         style={{ flex: 1 }}
-        sections={orders}
+        sections={allOrder}
         renderItem={renderItem}
         keyExtractor={(item, index) => item + index}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section: { title } }) => {
-          return (
-            <View
-              style={{
-                padding: 20,
-                borderBottomColor: 'rgba(221,221,221,0.5)',
-                borderBottomWidth: 1,
-                flex: 1,
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
-                {title}
-              </Text>
-              <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
-                QTY
-              </Text>
-            </View>
-          )
-        }}
-      >
-        <View style={{ flex: 3 }}>
-          <Text
-            style={{
-              marginLeft: 20,
-              fontWeight: '600',
-              fontSize: 30,
-              color: 'white',
-            }}
-          >
-            Items
-          </Text>
-        </View>
-      </SectionList>
+        showsVerticalScrollIndicator={false}
+      />
+
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => createSmsMessage()}
+        // onPress={() => createSmsMessage()}
       >
         <Text style={styles.loginText}>Place Order</Text>
       </TouchableOpacity>
@@ -491,6 +461,10 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     resetOrder: () => dispatch(clearOrder()),
+    addToOrder: (name, index, sectionTitle) =>
+      dispatch(addOrder(name, index, sectionTitle)),
+    removeOnOrder: (name, index, orderIndex) =>
+      dispatch(removeOrder(name, index, orderIndex)),
     fetchOrderHistory: () => dispatch(getOrderHistory()),
   }
 }

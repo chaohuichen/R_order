@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import {
-  StyleSheet,
-  View,
-  // SectionList,
-  Text,
-  RefreshControl,
-} from 'react-native'
+import { StyleSheet, View, Text, RefreshControl } from 'react-native'
 import { Button } from 'native-base'
 import { removeUser } from '../../redux'
 import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
@@ -34,6 +28,7 @@ const OrderHomePage = (props) => {
     fetchData(props.fetchData)
     return () => {}
   }, [])
+
   const handleLoadMoreData = () => {
     setLoading(true)
     setTimeout(() => {
@@ -57,7 +52,6 @@ const OrderHomePage = (props) => {
       />
     )
   }
-
   return (
     <View style={styles.container}>
       {/* <View style={{ flex: 1}}> */}
@@ -65,15 +59,7 @@ const OrderHomePage = (props) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        // onEndReached={handleLoadMoreData}
         style={{ flex: 1 }}
-        // ListFooterComponent={
-        //   loading && (
-        //     <View style={{ marginTop: 20 }}>
-        //       <AppLoading />
-        //     </View>
-        //   )
-        // }
         renderTab={({ title, isActive }) => (
           <View
             style={[
@@ -108,7 +94,6 @@ const OrderHomePage = (props) => {
           <View
             style={{
               padding: 12,
-              // marginVertical: 10,
               backgroundColor: 'black',
             }}
           >
@@ -125,12 +110,9 @@ const OrderHomePage = (props) => {
           </View>
         )}
         stickySectionHeadersEnabled={false}
-        ListHeaderComponent={() => {
-          return null
-        }}
       />
       <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
-        <Button style={styles.loginButton} onPress={confirmOrder}>
+        <Button style={[styles.confirmButton]} onPress={confirmOrder}>
           <Text style={styles.loginButtonText}>Comfirm Order</Text>
         </Button>
       </View>
@@ -148,8 +130,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 20,
     paddingRight: '10%',
-    // borderBottomWidth: 1,
-    // borderBottomColor: 'rgba(211,211,211,0.5)',
   },
   productDetails: {
     fontSize: 20,
@@ -160,7 +140,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  loginButton: {
+  confirmButton: {
     justifyContent: 'center',
     height: 50,
     flex: 1,

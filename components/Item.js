@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
@@ -7,31 +7,31 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import * as Haptics from 'expo-haptics'
 import { Badge } from 'react-native-paper'
 
-const Item = (props) => {
-  const { sectionTitle, order, index } = props
-
+const Item = ({ order, index, sectionTitle, addToOrder }) => {
   const addItem = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    addToOrder(order, index, sectionTitle)
   }
 
   return (
     <TouchableOpacity style={styles.box} onPress={addItem}>
       <Text style={styles.orderTitle}>{order.name}</Text>
-      {/* <Text style={styles.orderSize}>{order.size}</Text> */}
-      <Badge
-        size={60}
-        style={{
-          alignSelf: 'center',
-          backgroundColor: '#BEAC74',
-          color: 'white',
-          marginRight: 20,
-          borderColor: 'black',
-          borderWidth: 1,
-          fontWeight: 'bold',
-        }}
-      >
-        3
-      </Badge>
+      {order.count > 0 && (
+        <Badge
+          size={60}
+          style={{
+            alignSelf: 'center',
+            backgroundColor: '#BEAC74',
+            color: 'white',
+            marginRight: 20,
+            borderColor: 'black',
+            borderWidth: 1,
+            fontWeight: 'bold',
+          }}
+        >
+          {order.count}
+        </Badge>
+      )}
     </TouchableOpacity>
   )
 }
