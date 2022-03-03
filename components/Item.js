@@ -1,13 +1,11 @@
 import React from 'react'
-import { Text, Box, View } from 'native-base'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import AppIcons from '../components/AppIcons'
 import { connect } from 'react-redux'
 import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import * as Haptics from 'expo-haptics'
 import { Badge } from 'react-native-paper'
-import { borderWidth } from 'styled-system'
 
 const Item = (props) => {
   const { sectionTitle, order, index } = props
@@ -29,6 +27,7 @@ const Item = (props) => {
           marginRight: 20,
           borderColor: 'black',
           borderWidth: 1,
+          fontWeight: 'bold',
         }}
       >
         3
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#262626',
     alignItems: 'center',
-    marginVertical: 0.5,
+    marginVertical: 1,
     // borderTopWidth: 0.5,
     // borderBottomWidth: 0.5,
     // borderColor: 'rgba(211,211,211,0.5)',
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
   },
   orderTitle: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 18,
   },
   orderSize: {
     color: 'white',

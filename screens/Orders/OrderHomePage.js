@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import {
   StyleSheet,
   View,
-  SectionList,
+  // SectionList,
   Text,
   RefreshControl,
 } from 'react-native'
@@ -12,6 +12,7 @@ import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { fetchData } from '../../API/databaseCall'
+import SectionList from 'react-native-tabs-section-list'
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
@@ -73,6 +74,30 @@ const OrderHomePage = (props) => {
         //     </View>
         //   )
         // }
+        renderTab={({ title, isActive }) => (
+          <View
+            style={[
+              {
+                borderBottomWidth: isActive ? 2 : 0,
+                borderBottomColor: 'white',
+              },
+            ]}
+          >
+            <Text
+              style={[
+                {
+                  color: isActive ? 'white' : '#9e9e9e',
+                  fontWeight: isActive ? 'bold' : '400',
+                  padding: 15,
+                  fontSize: 18,
+                  textTransform: 'capitalize',
+                },
+              ]}
+            >
+              {title}
+            </Text>
+          </View>
+        )}
         onEndReachedThreshold={0}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: '25%' }}
@@ -99,7 +124,7 @@ const OrderHomePage = (props) => {
             </Text>
           </View>
         )}
-        stickySectionHeadersEnabled
+        stickySectionHeadersEnabled={false}
         ListHeaderComponent={() => {
           return null
         }}
