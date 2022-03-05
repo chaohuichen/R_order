@@ -37,6 +37,7 @@
     "react-native": "0.64.3",
     "react-native-animatable": "^1.3.3",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-mask-text": "^0.4.0",
     "react-native-material-buttons": "^0.6.0",

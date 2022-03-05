@@ -14,7 +14,8 @@ import { getUser } from '../../redux'
 import DismissKeyboard from '../../components/DismissKeyboard'
 import firebase, { db } from '../../API/FirebaseDatabase'
 import { checkPhoneMap } from '../../API/databaseCall'
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
+// import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const SignInPage = (props) => {
   const [phoneNumber, setPhoneNumber] = useState('')
@@ -23,10 +24,13 @@ const SignInPage = (props) => {
   const [verificationCode, setVerificationCode] = useState('')
   const [verificationId, setVerificationId] = useState(null)
   const userPhoneNumber = '+1' + phoneNumber
-  const firebaseConfig = firebase.apps.length
-    ? firebase.app().options
-    : undefined
+  // const firebaseConfig = firebase.apps.length
+  //   ? firebase.app().options
+  //   : undefined
   const recaptchaVerifier = useRef(null)
+  // ........................................
+
+  const [password, setPassword] = useState('')
   useEffect(() => {
     if (userPhoneNumber.length < 11) {
       // setError('please enter correct phone number')
@@ -89,6 +93,9 @@ const SignInPage = (props) => {
       console.log(err)
     }
   }
+  const handleLogin = () => {
+    console.log(password)
+  }
   return (
     <SafeAreaView style={styles.container}>
       {/* <FirebaseRecaptchaVerifierModal
@@ -97,13 +104,14 @@ const SignInPage = (props) => {
         attemptInvisibleVerification={true}
       /> */}
       <DismissKeyboard>
-        <ScrollView
+        <KeyboardAwareScrollView
           contentContainerStyle={{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             marginBottom: 100,
           }}
+          extraScrollHeight={50}
         >
           <Text
             style={{
@@ -144,93 +152,19 @@ const SignInPage = (props) => {
               colors: { underlineColor: 'transparent', primary: 'black' },
             }}
             autoFocus
-            maxLength={10}
-            value={phoneNumber}
+            maxLength={14}
+            value={password}
             mode="outlined"
             placeholder="Password"
             autoCapitalize="none"
             keyboardType="phone-pad"
-            onChangeText={(number) => setPhoneNumber(number)}
+            onChangeText={(number) => setPassword(number)}
           />
-          {/* {confirm ? (
-            <>
-              <Text>Enter code sent to +1{phoneNumber}</Text>
 
-              <TextInput
-                style={{ width: 300, alignSelf: 'center' }}
-                theme={{
-                  colors: { underlineColor: 'transparent', primary: 'black' },
-                }}
-                autoFocus
-                maxLength={6}
-                value={verificationCode}
-                mode="outlined"
-                label="Code"
-                autoCapitalize="none"
-                keyboardType="phone-pad"
-                onChangeText={(code) => setVerificationCode(code)}
-              />
-
-              <TouchableOpacity
-                style={styles.loginButton}
-                onPress={() => confirmCode()}
-              >
-                <Text style={styles.loginText}>Comfirm</Text>
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              <Text style={{ color: 'red', fontSize: 10, letterSpacing: 0.5 }}>
-                {error}
-              </Text>
-              <TextInput
-                style={{ width: 300, alignSelf: 'center' }}
-                theme={{
-                  colors: { underlineColor: 'transparent', primary: 'black' },
-                }}
-                autoFocus
-                maxLength={10}
-                value={phoneNumber}
-                mode="outlined"
-                placeholder="Phone Number"
-                autoCapitalize="none"
-                keyboardType="phone-pad"
-                onChangeText={(number) => setPhoneNumber(number)}
-              />
-
-              <TouchableOpacity
-                style={styles.loginButton}
-                onPress={() => handleOnLogin()}
-              >
-                <Text style={styles.loginText}>Sign In</Text>
-              </TouchableOpacity>
-            </>
-          )}
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 5,
-            }}
-          >
-            <Text style={{ fontSize: 12, alignSelf: 'center', color: 'white' }}>
-              Don't have an account?
-            </Text>
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate('SignUpPage')}
-            >
-              <Text
-                style={{
-                  textDecorationLine: 'underline',
-                  color: 'white',
-                  fontSize: 12,
-                }}
-              >
-                {'  '} Sign up
-              </Text>
-            </TouchableOpacity>
-          </View> */}
-        </ScrollView>
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
       </DismissKeyboard>
     </SafeAreaView>
   )
@@ -249,11 +183,14 @@ const styles = StyleSheet.create({
     height: 40,
     alignSelf: 'center',
     marginTop: 30,
+    borderRadius: 5,
   },
   loginText: {
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
   },
 })
 
