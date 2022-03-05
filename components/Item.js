@@ -43,16 +43,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#262626',
     alignItems: 'center',
     marginVertical: 1,
-    // borderTopWidth: 0.5,
-    // borderBottomWidth: 0.5,
-    // borderColor: 'rgba(211,211,211,0.5)',
     paddingLeft: 15,
     width: '100%',
     height: 120,
   },
   orderTitle: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   orderSize: {
     color: 'white',

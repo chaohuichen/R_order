@@ -30,20 +30,20 @@ export const HeaderTitleAndIcon = (title, navigation) => {
       fontFamily: 'CrimsonText-Bold',
       color: 'white',
     },
-    // headerRight: () => {
-    //   return (
-    //     <AppIcons
-    //       type="FontAwesome"
-    //       name="user-circle-o"
-    //       size={30}
-    //       color="white"
-    //       style={{ marginRight: 20 }}
-    //       onPress={() => {
-    //         navigation.push('UserProfile')
-    //       }}
-    //     />
-    //   )
-    // },
+    headerRight: () => {
+      return (
+        <AppIcons
+          type="FontAwesome"
+          name="user-circle-o"
+          size={30}
+          color="white"
+          style={{ marginRight: 20 }}
+          onPress={() => {
+            navigation.push('UserProfile')
+          }}
+        />
+      )
+    },
     headerBackTitleVisible: false,
     headerTintColor: MainColors.primary,
   }

@@ -91,11 +91,11 @@ const SignInPage = (props) => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <FirebaseRecaptchaVerifierModal
+      {/* <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
         attemptInvisibleVerification={true}
-      />
+      /> */}
       <DismissKeyboard>
         <ScrollView
           contentContainerStyle={{
@@ -109,6 +109,7 @@ const SignInPage = (props) => {
             style={{
               color: '#BEAC74',
               fontSize: 25,
+
               fontFamily: 'CrimsonText-Bold',
             }}
           >
@@ -117,6 +118,7 @@ const SignInPage = (props) => {
           <Text
             style={{
               fontSize: 60,
+              lineHeight: 90,
               fontWeight: '600',
               textAlign: 'center',
               fontFamily: 'CrimsonText-Bold',
@@ -132,10 +134,25 @@ const SignInPage = (props) => {
               fontWeight: '600',
               textAlign: 'center',
             }}
+            numberOfLines={1}
           >
-            Sign in
+            Welcome,{'  ' + props.route.params.user}
           </Text>
-          {confirm ? (
+          <TextInput
+            style={{ width: 300, alignSelf: 'center' }}
+            theme={{
+              colors: { underlineColor: 'transparent', primary: 'black' },
+            }}
+            autoFocus
+            maxLength={10}
+            value={phoneNumber}
+            mode="outlined"
+            placeholder="Password"
+            autoCapitalize="none"
+            keyboardType="phone-pad"
+            onChangeText={(number) => setPhoneNumber(number)}
+          />
+          {/* {confirm ? (
             <>
               <Text>Enter code sent to +1{phoneNumber}</Text>
 
@@ -212,7 +229,7 @@ const SignInPage = (props) => {
                 {'  '} Sign up
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ScrollView>
       </DismissKeyboard>
     </SafeAreaView>

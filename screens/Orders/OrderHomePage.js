@@ -56,9 +56,9 @@ const OrderHomePage = (props) => {
     <View style={styles.container}>
       {/* <View style={{ flex: 1}}> */}
       <SectionList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        // refreshControl={
+        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        // }
         style={{ flex: 1 }}
         renderTab={({ title, isActive }) => (
           <View
@@ -113,7 +113,7 @@ const OrderHomePage = (props) => {
       />
       <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
         <Button style={[styles.confirmButton]} onPress={confirmOrder}>
-          <Text style={styles.loginButtonText}>Comfirm Order</Text>
+          <Text style={styles.orderConfirmText}>Comfirm Order</Text>
         </Button>
       </View>
     </View>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BEAC74',
     borderRadius: 0,
   },
-  loginButtonText: {
+  orderConfirmText: {
     color: 'white',
     textAlign: 'center',
     fontSize: 20,

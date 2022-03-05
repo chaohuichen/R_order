@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import SignInPage from '../screens/SignIn/SignInPage'
 import SignUpPage from '../screens/SignUp/SignUpPage'
+import SignInSelectionPage from '../screens/SignIn/SignInSelectionPage'
 import { createStackNavigator } from '@react-navigation/stack'
 import PhoneVerificationPage from '../auth/PhoneVerificationPage'
 import { HeaderShownNone, HeaderShownTrue } from './HeaderOptions'
@@ -23,9 +24,14 @@ const MainNavigation = (props) => {
       ) : (
         <Stack.Group>
           <Stack.Screen
+            name="SignInSelectionPage"
+            component={SignInSelectionPage}
+            options={HeaderShownNone()}
+          />
+          <Stack.Screen
             name="SignInPage"
             component={SignInPage}
-            options={HeaderShownNone()}
+            options={HeaderShownTrue('')}
           />
           <Stack.Screen
             name="SignUpPage"
