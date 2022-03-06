@@ -51,7 +51,7 @@ const AppStart = ({ user }) => {
   console.log(user.name)
   return (
     <NativeBaseProvider>
-      <StatusBar barStyle={styleStatusBar} />
+      <StatusBar barStyle={'light-content'} />
       {user.name !== undefined ? <BottomTabNavigator /> : <MainNavigation />}
     </NativeBaseProvider>
   )

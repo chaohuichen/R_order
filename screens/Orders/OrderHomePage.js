@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { fetchData } from '../../API/databaseCall'
 import SectionList from 'react-native-tabs-section-list'
-
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     justifyContent: 'center',
-    height: 50,
+    height: 80,
     flex: 1,
     alignSelf: 'center',
     backgroundColor: '#BEAC74',
