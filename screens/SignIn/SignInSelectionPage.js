@@ -11,6 +11,7 @@ const LeftContent = (props) => (
   />
 )
 const users = ['Jose Tso', 'Kennith Tso', 'Peter Chen', 'Land Liu']
+
 const SignInSelectionPage = ({ navigation }) => {
   return (
     <ScrollView

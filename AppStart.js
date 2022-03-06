@@ -9,10 +9,12 @@ import { NativeBaseProvider } from 'native-base'
 import { NavigationContainer } from '@react-navigation/native'
 import NavigationTheme from './constants/NavigationTheme'
 import MainNavigation from './navigation/MainNavigation'
+import BottomTabNavigator from './navigation/BottomTabNavigator'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { DefaultTheme, DarkTheme } from '@react-navigation/native'
+import { connect } from 'react-redux'
 
-export default () => {
+const AppStart = ({ user }) => {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
   const [styleStatusBar, setStyleStatusBar] = useState('default')
   // Load any resources or data that we need prior to rendering the app
@@ -34,7 +36,6 @@ export default () => {
       setStyleStatusBar('dark-content')
     }
   }
-
   if (!isLoadingComplete) {
     return (
       <AppLoading
@@ -46,14 +47,19 @@ export default () => {
         onError={(error) => console.log(error)}
       />
     )
-  } else {
-    return (
-      <NativeBaseProvider>
-        <StatusBar barStyle={'light-content'} />
-        <NavigationContainer theme={DarkTheme}>
-          <MainNavigation />
-        </NavigationContainer>
-      </NativeBaseProvider>
-    )
+  }
+  console.log(user.name)
+  return (
+    <NativeBaseProvider>
+      <StatusBar barStyle={styleStatusBar} />
+      {user.name !== undefined ? <BottomTabNavigator /> : <MainNavigation />}
+    </NativeBaseProvider>
+  )
+}
+
+const mapState = (state) => {
+  return {
+    user: state.user,
   }
 }
+export default connect(mapState, null)(AppStart)

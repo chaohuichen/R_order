@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { getUser } from '../../redux'
 import DismissKeyboard from '../../components/DismissKeyboard'
 import firebase, { db } from '../../API/FirebaseDatabase'
-import { checkPhoneMap, userLogin } from '../../API/databaseCall'
+import { userLogin } from '../../API/databaseCall'
 // import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -32,70 +32,81 @@ const SignInPage = (props) => {
 
   const [password, setPassword] = useState('')
   useEffect(() => {
-    if (userPhoneNumber.length < 11) {
-      // setError('please enter correct phone number')
-    } else {
-      setError('')
-    }
+    // if (userPhoneNumber.length < 11) {
+    //   // setError('please enter correct phone number')
+    // } else {
+    //   setError('')
+    // }
     return () => {}
   }, [])
-  const handleOnLogin = async () => {
-    const check = await checkPhoneMap(userPhoneNumber)
-    if (check === true && error !== '') {
-      //login
-      sendVerification()
-    } else {
-      //user not register go register page
-      Alert.alert('User not registered', 'navigate to sign up page', [
-        { text: 'OK', onPress: () => props.navigation.navigate('SignUpPage') },
-      ])
-    }
-  }
-  const firebasePhoneSignIn = (credential) => {
-    firebase
-      .auth()
-      .signInWithCredential(credential)
-      .then((res) => {
-        db.ref(`/users/${res.user.uid}/userSharedData/`).once(
-          'value',
-          (snapShot) => {
-            if (snapShot.exists()) {
-              props.fetchData(snapShot.val())
-            } else {
-              console.log('user dont exist ')
-            }
-          }
-        )
-      })
-      .catch((err) => console.log('phone sign in ', err))
-  }
-  const sendVerification = async () => {
+  // const handleOnLogin = async () => {
+  //   const check = await checkPhoneMap(userPhoneNumber)
+  //   if (check === true && error !== '') {
+  //     //login
+  //     sendVerification()
+  //   } else {
+  //     //user not register go register page
+  //     Alert.alert('User not registered', 'navigate to sign up page', [
+  //       { text: 'OK', onPress: () => props.navigation.navigate('SignUpPage') },
+  //     ])
+  //   }
+  // }
+  // const firebasePhoneSignIn = (credential) => {
+  //   firebase
+  //     .auth()
+  //     .signInWithCredential(credential)
+  //     .then((res) => {
+  //       db.ref(`/users/${res.user.uid}/userSharedData/`).once(
+  //         'value',
+  //         (snapShot) => {
+  //           if (snapShot.exists()) {
+  //             props.fetchData(snapShot.val())
+  //           } else {
+  //             console.log('user dont exist ')
+  //           }
+  //         }
+  //       )
+  //     })
+  //     .catch((err) => console.log('phone sign in ', err))
+  // }
+  // const sendVerification = async () => {
+  //   try {
+  //     const phoneProvider = new firebase.auth.PhoneAuthProvider()
+  //     const verificationId = await phoneProvider.verifyPhoneNumber(
+  //       userPhoneNumber,
+  //       recaptchaVerifier.current
+  //     )
+  //     setVerificationId(verificationId)
+  //     setConfirm(true)
+  //   } catch (err) {
+  //     console.log('error message ' + err)
+  //   }
+  // }
+  // const confirmCode = async () => {
+  //   try {
+  //     const credential = await firebase.auth.PhoneAuthProvider.credential(
+  //       verificationId,
+  //       verificationCode
+  //     )
+  //     firebasePhoneSignIn(credential)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+  const handleLogin = async () => {
     try {
-      const phoneProvider = new firebase.auth.PhoneAuthProvider()
-      const verificationId = await phoneProvider.verifyPhoneNumber(
-        userPhoneNumber,
-        recaptchaVerifier.current
-      )
-      setVerificationId(verificationId)
-      setConfirm(true)
-    } catch (err) {
-      console.log('error message ' + err)
-    }
-  }
-  const confirmCode = async () => {
-    try {
-      const credential = await firebase.auth.PhoneAuthProvider.credential(
-        verificationId,
-        verificationCode
-      )
-      firebasePhoneSignIn(credential)
+      const result = await userLogin(props.route.params.user, password)
+      if (result.val().name) {
+        props.logInUser(result.val())
+        // props.navigation.navigate('BottomTabNavigator')
+      } else {
+        Alert.alert('Ops', 'the password you input is not correct.')
+      }
     } catch (err) {
       console.log(err)
     }
   }
-  const handleLogin = async () => {
-    const result = await userLogin(props.route.params.user, password)
-  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <FirebaseRecaptchaVerifierModal
@@ -196,7 +207,7 @@ const styles = StyleSheet.create({
 
 const mapDispatch = (dispatch) => {
   return {
-    fetchData: (user) => dispatch(getUser(user)),
+    logInUser: (user) => dispatch(getUser(user)),
   }
 }
 const mapState = (state) => {
