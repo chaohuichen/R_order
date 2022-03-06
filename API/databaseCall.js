@@ -82,3 +82,13 @@ export const fetchData = (setDataFun, offset) => {
       setDataFun([])
     })
 }
+
+export const userLogin = async (userName, password) => {
+  const ref = db.ref(`/users/${userName}`)
+  const result = await ref.once('value')
+  if (result.exists() && result.val().password === password) {
+    return result
+  } else {
+    return false
+  }
+}
