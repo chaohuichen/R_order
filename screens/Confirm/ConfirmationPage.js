@@ -287,7 +287,7 @@ const ConfirmationPage = (props) => {
           }
         />
       )}
-
+      {/* 
       <Text
         style={{
           fontWeight: '500',
@@ -322,7 +322,7 @@ const ConfirmationPage = (props) => {
             {selectedFromValue ? selectedFromValue : 'From'}
           </Text>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
 
       <View
         style={{

@@ -25,7 +25,7 @@ const OrderHomePage = (props) => {
   const [refreshing, setRefreshing] = useState(false)
   // const [offset, setOffset] = useState(1)
   const [loading, setLoading] = useState(false)
-  const [firstBoxPosition, setFirstBoxPosition] = useState('up')
+  const [firstBoxPosition, setFirstBoxPosition] = useState('down')
   const [offset, setOffset] = useState(0)
 
   // const onRefresh = useCallback(() => {
@@ -40,15 +40,27 @@ const OrderHomePage = (props) => {
   }, [])
 
   const actionButtonVisibilityHandler = (event) => {
-    var currentOffset = event.nativeEvent.contentOffset.y
-    var direction = currentOffset > offset ? 'down' : 'up'
+    let currentOffset = event.nativeEvent.contentOffset.y
+    let direction = currentOffset > offset ? 'down' : 'up'
     setOffset(currentOffset)
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    if (direction == 'up') {
+    if (currentOffset === 0) {
       setFirstBoxPosition('down')
-    } else {
+    } else if (direction === 'down') {
       setFirstBoxPosition('up')
+    } else {
+      setFirstBoxPosition('down')
     }
+    // console.log(direction)
+    // const dif = currentOffset - (offset || 0)
+
+    // if (Math.abs(dif) < 3) {
+    //   setFirstBoxPosition('down')
+    // } else if (dif < 0) {
+    //   setFirstBoxPosition('down')
+    // } else {
+    //   setFirstBoxPosition('up')
+    // }
   }
 
   const handleLoadMoreData = () => {
@@ -175,7 +187,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     justifyContent: 'center',
-    height: 100,
+    height: 90,
     flex: 1,
     alignSelf: 'center',
     backgroundColor: '#BEAC74',
