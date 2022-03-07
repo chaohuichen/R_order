@@ -7,6 +7,15 @@ import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { fetchData } from '../../API/databaseCall'
 import SectionList from 'react-native-tabs-section-list'
+
+import { LayoutAnimation, Platform, UIManager } from 'react-native'
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true)
+}
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
@@ -16,17 +25,31 @@ const OrderHomePage = (props) => {
   const [refreshing, setRefreshing] = useState(false)
   // const [offset, setOffset] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [firstBoxPosition, setFirstBoxPosition] = useState('up')
+  const [offset, setOffset] = useState(0)
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true)
-    fetchData(props.fetchData)
-    wait(2000).then(() => setRefreshing(false))
-  }, [])
+  // const onRefresh = useCallback(() => {
+  //   setRefreshing(true)
+  //   fetchData(props.fetchData)
+  //   wait(2000).then(() => setRefreshing(false))
+  // }, [])
 
   useEffect(() => {
     fetchData(props.fetchData)
     return () => {}
   }, [])
+
+  const actionButtonVisibilityHandler = (event) => {
+    var currentOffset = event.nativeEvent.contentOffset.y
+    var direction = currentOffset > offset ? 'down' : 'up'
+    setOffset(currentOffset)
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    if (direction == 'up') {
+      setFirstBoxPosition('down')
+    } else {
+      setFirstBoxPosition('up')
+    }
+  }
 
   const handleLoadMoreData = () => {
     setLoading(true)
@@ -58,6 +81,7 @@ const OrderHomePage = (props) => {
         // refreshControl={
         //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         // }
+        onScroll={(event) => actionButtonVisibilityHandler(event)}
         style={{ flex: 1 }}
         renderTab={({ title, isActive }) => (
           <View
@@ -110,9 +134,19 @@ const OrderHomePage = (props) => {
         )}
         stickySectionHeadersEnabled={false}
       />
-      <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
+      {/* <Button style={[styles.confirmButton]} onPress={toggleFirstBox}>
+        <Text style={styles.orderConfirmText}>
+          Confirm Order{firstBoxPosition}
+        </Text>
+      </Button> */}
+      <View
+        style={[
+          { flexDirection: 'row', position: 'absolute', bottom: 0 },
+          firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
+        ]}
+      >
         <Button style={[styles.confirmButton]} onPress={confirmOrder}>
-          <Text style={styles.orderConfirmText}>Comfirm Order</Text>
+          <Text style={styles.orderConfirmText}>Confirm Order</Text>
         </Button>
       </View>
     </View>
@@ -141,7 +175,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     justifyContent: 'center',
-    height: 80,
+    height: 100,
     flex: 1,
     alignSelf: 'center',
     backgroundColor: '#BEAC74',
@@ -150,8 +184,14 @@ const styles = StyleSheet.create({
   orderConfirmText: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
+  },
+  moveDown: {
+    bottom: -100,
+  },
+  moveUp: {
+    bottom: 0,
   },
 })
 const mapDispatch = (dispatch) => {
