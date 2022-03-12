@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { StyleSheet, View, Text, RefreshControl } from 'react-native'
-import { Button } from 'native-base'
+
 import { removeUser } from '../../redux'
 import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { fetchData } from '../../API/databaseCall'
 import SectionList from 'react-native-tabs-section-list'
-
+import ConfirmBtn from './ConfirmBtn'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
 
 if (
@@ -42,25 +42,19 @@ const OrderHomePage = (props) => {
   const actionButtonVisibilityHandler = (event) => {
     let currentOffset = event.nativeEvent.contentOffset.y
     let direction = currentOffset > offset ? 'down' : 'up'
+
     setOffset(currentOffset)
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    if (currentOffset === 0) {
+
+    if ((currentOffset < 200 && currentOffset >= 0) || currentOffset < 0) {
+      setFirstBoxPosition('down')
+    } else if (currentOffset === 0) {
       setFirstBoxPosition('down')
     } else if (direction === 'down') {
       setFirstBoxPosition('up')
     } else {
       setFirstBoxPosition('down')
     }
-    // console.log(direction)
-    // const dif = currentOffset - (offset || 0)
-
-    // if (Math.abs(dif) < 3) {
-    //   setFirstBoxPosition('down')
-    // } else if (dif < 0) {
-    //   setFirstBoxPosition('down')
-    // } else {
-    //   setFirstBoxPosition('up')
-    // }
   }
 
   const handleLoadMoreData = () => {
@@ -88,7 +82,6 @@ const OrderHomePage = (props) => {
   }
   return (
     <View style={styles.container}>
-      {/* <View style={{ flex: 1}}> */}
       <SectionList
         // refreshControl={
         //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -146,20 +139,14 @@ const OrderHomePage = (props) => {
         )}
         stickySectionHeadersEnabled={false}
       />
-      {/* <Button style={[styles.confirmButton]} onPress={toggleFirstBox}>
-        <Text style={styles.orderConfirmText}>
-          Confirm Order{firstBoxPosition}
-        </Text>
-      </Button> */}
+
       <View
         style={[
           { flexDirection: 'row', position: 'absolute', bottom: 0 },
           firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
         ]}
       >
-        <Button style={[styles.confirmButton]} onPress={confirmOrder}>
-          <Text style={styles.orderConfirmText}>Confirm Order</Text>
-        </Button>
+        <ConfirmBtn confirmOrder={confirmOrder} />
       </View>
     </View>
   )
@@ -185,20 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  confirmButton: {
-    justifyContent: 'center',
-    height: 90,
-    flex: 1,
-    alignSelf: 'center',
-    backgroundColor: '#BEAC74',
-    borderRadius: 0,
-  },
-  orderConfirmText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
+
   moveDown: {
     bottom: -100,
   },
