@@ -48,7 +48,6 @@ const AppStart = ({ user }) => {
       />
     )
   }
-  console.log(user.name)
   return (
     <NativeBaseProvider>
       <StatusBar barStyle={'light-content'} />
