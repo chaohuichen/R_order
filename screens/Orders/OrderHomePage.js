@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { StyleSheet, View, Text, RefreshControl } from 'react-native'
-
 import { removeUser } from '../../redux'
-import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
+import {
+  getOrder,
+  clearOrder,
+  addOrder,
+  removeOrder,
+} from '../../redux/Reducers/orderReducer'
+// import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
+
 import { connect } from 'react-redux'
 import Item from '../../components/Item'
 import { fetchData } from '../../API/databaseCall'
 import SectionList from 'react-native-tabs-section-list'
 import ConfirmBtn from './ConfirmBtn'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
+import * as Haptics from 'expo-haptics'
 
 if (
   Platform.OS === 'android' &&
@@ -69,13 +76,25 @@ const OrderHomePage = (props) => {
   const confirmOrder = () => {
     props.navigation.navigate('ConfirmationPage')
   }
-
+  const removeItem = useCallback((order, index, sectionTitle) => {
+    props.removeOnOrder(order, index, sectionTitle)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+  })
+  const addItem = useCallback((order, index, sectionTitle) => {
+    props.addToOrder(order, index, sectionTitle)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+  })
   const renderItem = ({ item, index, section }) => {
     return (
       <Item
         key={index}
-        index={index}
         order={item}
+        removeItem={() => {
+          removeItem(item, index, section.title)
+        }}
+        addItem={() => {
+          addItem(item, index, section.title)
+        }}
         sectionTitle={section.title}
       />
     )
@@ -115,7 +134,7 @@ const OrderHomePage = (props) => {
         onEndReachedThreshold={0}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: '25%' }}
-        sections={[...props.order] || []}
+        sections={props.order || []}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
         renderSectionHeader={({ section: { title } }) => (
@@ -185,6 +204,10 @@ const mapDispatch = (dispatch) => {
     fetchData: (order) => dispatch(getOrder(order)),
     resetOrder: () => dispatch(clearOrder()),
     removeUserData: () => dispatch(removeUser()),
+    addToOrder: (name, index, sectionTitle) =>
+      dispatch(addOrder(name, index, sectionTitle)),
+    removeOnOrder: (name, index, orderIndex) =>
+      dispatch(removeOrder(name, index, orderIndex)),
   }
 }
 const mapState = (state) => {

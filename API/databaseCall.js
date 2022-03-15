@@ -71,8 +71,6 @@ export const fetchData = (setDataFun, offset) => {
             productsData.push(payload)
           }
         }
-        // console.log(Object.values(snapshot.val()).length)
-        // setData(productsData)
 
         setDataFun(productsData)
       }
