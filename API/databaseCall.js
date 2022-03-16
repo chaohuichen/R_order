@@ -7,7 +7,6 @@ phoneNumber:String
 return:nothing 
 des:
 */
-
 export const setPhoneMap = async (phoneNumber, userUid) => {
   await db.ref(`/phoneMap/${phoneNumber}/`).set(userUid)
 }

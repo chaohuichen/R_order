@@ -103,6 +103,7 @@ const SignInPage = (props) => {
         Alert.alert('Ops', 'the password you input is not correct.')
       }
     } catch (err) {
+      Alert.alert('Ops', 'the password you input is not correct.')
       console.log(err)
     }
   }

@@ -211,7 +211,11 @@ const ConfirmationPage = (props) => {
         />
       )
     }
-    return null
+    return (
+      <View>
+        <Text>{JSON.stringify(allOrder)}</Text>
+      </View>
+    )
   }
   return (
     <SafeAreaView style={styles.container}>
