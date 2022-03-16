@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, ScrollView } from 'react-native'
 import * as FileSystem from 'expo-file-system'
-import Invoice from './Invoice'
+import Invoice from '../UserProfile/Invoice'
 import { getOrderHistory } from '../../redux'
 import { connect } from 'react-redux'
 

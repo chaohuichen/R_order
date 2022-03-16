@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Box } from 'native-base'
-import AppIcons from '../components/AppIcons'
+import AppIcons from './AppIcons'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 const Item = memo(

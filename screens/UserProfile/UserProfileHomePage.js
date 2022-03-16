@@ -1,11 +1,24 @@
-import React, { useState } from 'react'
-import { Text, View, Image, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Text, View, Image, StyleSheet, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import { Button } from 'native-base'
-import { removeUser } from '../../redux'
-
-const UserProfileHomePage = ({ user, logOut, navigation }) => {
+import { removeUser, getOrderHistory } from '../../redux'
+import * as FileSystem from 'expo-file-system'
+import Invoice from './Invoice'
+const localCacheDir = FileSystem.documentDirectory
+const UserProfileHomePage = ({
+  user,
+  logOut,
+  navigation,
+  orderHistory,
+  fetchOrderHistory,
+}) => {
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    fetchOrderHistory()
+  }, [])
+
   const handleLogout = () => {
     logOut()
     // setTimeout(() => {
@@ -14,27 +27,31 @@ const UserProfileHomePage = ({ user, logOut, navigation }) => {
     console.log(user)
   }
   return (
-    <View
-      style={{
-        flex: 1,
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
         flexDirection: 'column',
-        justifyContent: 'space-between',
       }}
     >
       <View>
         <Image
           source={require('../../assets/profilePic.png')}
-          style={{ height: 450, width: '100%', resizeMode: 'stretch' }}
+          style={{ height: 350, width: '100%', resizeMode: 'stretch' }}
           // resizeMethod="resize"
         />
         {/* <Text>{JSON.stringify(user)}</Text> */}
-        <View style={{ marginHorizontal: 25 }}>
+        <View style={{ marginHorizontal: 10 }}>
           <Text
-            style={{ fontWeight: 'bold', fontSize: 18, marginVertical: 20 }}
+            style={{
+              fontWeight: 'bold',
+              fontSize: 25,
+              marginVertical: 20,
+              color: 'white',
+            }}
           >
             {user.name}
           </Text>
-          <Text
+          {/* <Text
             style={{
               fontWeight: 'bold',
               fontSize: 18,
@@ -42,33 +59,60 @@ const UserProfileHomePage = ({ user, logOut, navigation }) => {
             }}
           >
             Account Type: {user.userType}
-          </Text>
+          </Text> */}
         </View>
       </View>
-      <Button
+      <Text
         style={{
-          backgroundColor: '#e3e3e3',
-          marginHorizontal: 25,
-          marginBottom: 10,
+          color: 'white',
+          fontSize: 20,
+          marginVertical: 10,
+          marginHorizontal: 10,
         }}
-        onPress={handleLogout}
       >
+        Your order history:
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          // justifyContent: 'center',
+        }}
+      >
+        {orderHistory.map((fileName, index) => (
+          <Invoice
+            key={index}
+            uri={localCacheDir + fileName}
+            name={fileName}
+            navigation={navigation}
+          />
+        ))}
+      </View>
+      <Button style={styles.logOutBtn} onPress={handleLogout}>
         <Text>Log out</Text>
       </Button>
-    </View>
+    </ScrollView>
   )
 }
 
-const Styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  logOutBtn: {
+    backgroundColor: '#e3e3e3',
+    marginHorizontal: 25,
+    marginVertical: 15,
+  },
+})
 
 const mapState = (state) => {
   return {
     user: state.user,
+    orderHistory: state.orderHistory,
   }
 }
 const mapDispatch = (dispatch) => {
   return {
     logOut: () => dispatch(removeUser()),
+    fetchOrderHistory: () => dispatch(getOrderHistory()),
   }
 }
 

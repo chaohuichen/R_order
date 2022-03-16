@@ -3,12 +3,11 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   SectionList,
   Alert,
   View,
+  Text,
 } from 'react-native'
-import { Text, Box } from 'native-base'
 import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
@@ -25,9 +24,7 @@ import moment from 'moment'
 import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
 import { getOrderHistory } from '../../redux'
-import AppIcons from '../../components/AppIcons'
-import Item from '../../components/Item'
-
+import ProduceSingleItem from '../../components/ProduceSingleItem'
 import * as Haptics from 'expo-haptics'
 
 const ConfirmationPage = (props) => {
@@ -178,7 +175,7 @@ const ConfirmationPage = (props) => {
     props.resetOrder()
     setOrders([])
     setTimeout(() => {
-      Alert.alert('Ordered Success', 'press ok to view invoice', [
+      Alert.alert('Ordered Success', 'Please press Ok to view invoice file', [
         {
           text: 'Ok',
           onPress: () =>
@@ -199,7 +196,7 @@ const ConfirmationPage = (props) => {
   const renderItem = ({ item, index, section }) => {
     if (item.count > 0) {
       return (
-        <Item
+        <ProduceSingleItem
           key={index}
           order={item}
           removeItem={() => {

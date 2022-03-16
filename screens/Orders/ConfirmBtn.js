@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { View, TouchableWithoutFeedback, StyleSheet, Text } from 'react-native'
 import { Badge } from 'react-native-paper'
 import AppIcons from '../../components/AppIcons'
-import { bottom } from 'styled-system'
 
 const ConfirmBtn = ({ confirmOrder, order }) => {
   const [orderNum, setOrderNum] = useState(0)

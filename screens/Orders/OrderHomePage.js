@@ -7,10 +7,8 @@ import {
   addOrder,
   removeOrder,
 } from '../../redux/Reducers/orderReducer'
-// import { addOrder, removeOrder } from '../redux/Reducers/orderReducer'
-
 import { connect } from 'react-redux'
-import Item from '../../components/Item'
+import ProduceSingleItem from '../../components/ProduceSingleItem'
 import { fetchData } from '../../API/databaseCall'
 import SectionList from 'react-native-tabs-section-list'
 import ConfirmBtn from './ConfirmBtn'
@@ -86,7 +84,7 @@ const OrderHomePage = (props) => {
   })
   const renderItem = ({ item, index, section }) => {
     return (
-      <Item
+      <ProduceSingleItem
         key={index}
         order={item}
         removeItem={() => {

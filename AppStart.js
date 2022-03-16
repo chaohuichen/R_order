@@ -6,12 +6,8 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
 import { Appearance, StatusBar } from 'react-native'
 import AppLoading from 'expo-app-loading'
 import { NativeBaseProvider } from 'native-base'
-import { NavigationContainer } from '@react-navigation/native'
-import NavigationTheme from './constants/NavigationTheme'
 import MainNavigation from './navigation/MainNavigation'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { DefaultTheme, DarkTheme } from '@react-navigation/native'
 import { connect } from 'react-redux'
 
 const AppStart = ({ user }) => {
