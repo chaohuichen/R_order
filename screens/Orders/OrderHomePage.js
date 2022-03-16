@@ -161,7 +161,13 @@ const OrderHomePage = (props) => {
 
       <View
         style={[
-          { flexDirection: 'row', position: 'absolute', bottom: 0 },
+          {
+            flexDirection: 'row',
+            position: 'absolute',
+            bottom: 0,
+            width: '90%',
+            alignSelf: 'center',
+          },
           firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
         ]}
       >

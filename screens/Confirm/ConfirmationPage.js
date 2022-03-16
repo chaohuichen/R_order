@@ -26,6 +26,9 @@ import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
 import { getOrderHistory } from '../../redux'
 import AppIcons from '../../components/AppIcons'
+import Item from '../../components/Item'
+
+import * as Haptics from 'expo-haptics'
 
 const ConfirmationPage = (props) => {
   const { allOrder } = props
@@ -126,13 +129,13 @@ const ConfirmationPage = (props) => {
         selectedToValue
       )
       const newHtml = html.replaceAll('undefined', ' ')
-      Api.post('fdmSupplyAPI/sendSms', {
-        phoneNumber: props.user.userPhoneNumber,
-        orderString,
-        orders,
-      }).catch(function (error) {
-        console.log('axios post send sms ', error)
-      })
+      // Api.post('fdmSupplyAPI/sendSms', {
+      //   phoneNumber: props.user.userPhoneNumber,
+      //   orderString,
+      //   orders,
+      // }).catch(function (error) {
+      //   console.log('axios post send sms ', error)
+      // })
       createPdf(newHtml)
     } else {
       Alert.alert('Nothing in cart', 'add order to cart', {
@@ -196,72 +199,19 @@ const ConfirmationPage = (props) => {
   const renderItem = ({ item, index, section }) => {
     if (item.count > 0) {
       return (
-        <Box style={styles.box}>
-          <View
-            style={{
-              flex: 1.5,
-              flexWrap: 'wrap',
-              flexDirection: 'row',
-              paddingRight: 15,
-            }}
-          >
-            <Text style={{ color: 'white', fontSize: 25 }}>
-              {item.name}
-              {'\n'}
-              <Text sub={true} style={{ color: 'white', fontSize: 12 }}></Text>
-            </Text>
-          </View>
-          <View style={styles.actionBox}>
-            <TouchableOpacity
-              onPress={() => removeItem(item, index, section.title)}
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 50 / 2,
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-              }}
-            >
-              <AppIcons
-                type="AntDesign"
-                name="minus"
-                size={25}
-                color="black"
-                style={{ alignSelf: 'center' }}
-              />
-            </TouchableOpacity>
-            <View
-              style={{
-                alignItems: 'center',
-              }}
-            >
-              <Text
-                bold
-                style={{ color: 'white', fontSize: 20, letterSpacing: 0.5 }}
-              >
-                {item.count}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => addItem(item, index, section.title)}
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 50 / 2,
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-              }}
-            >
-              <AppIcons
-                type="AntDesign"
-                name="plus"
-                size={25}
-                color="black"
-                style={{ alignSelf: 'center' }}
-              />
-            </TouchableOpacity>
-          </View>
-        </Box>
+        <Item
+          key={index}
+          order={item}
+          removeItem={() => {
+            removeItem(item, index, section.title)
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+          }}
+          addItem={() => {
+            addItem(item, index, section.title)
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+          }}
+          sectionTitle={section.title}
+        />
       )
     }
     return null
@@ -356,7 +306,7 @@ const ConfirmationPage = (props) => {
 
       <TouchableOpacity
         style={styles.loginButton}
-        // onPress={() => createSmsMessage()}
+        onPress={() => createSmsMessage()}
       >
         <Text style={styles.loginText}>Place Order</Text>
       </TouchableOpacity>
@@ -410,11 +360,13 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     justifyContent: 'center',
-    height: 50,
+    alignItems: 'center',
+    height: 70,
     alignSelf: 'center',
+    width: '90%',
     backgroundColor: '#BEAC74',
-    borderRadius: 0,
-    width: '100%',
+    borderRadius: 25,
+    marginBottom: 0,
   },
   loginText: {
     color: 'white',

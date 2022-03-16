@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Text, View } from 'native-base'
 import { StyleSheet } from 'react-native'
-import AppIcons from '../components/AppIcons'
+import AppIcons from '../../components/AppIcons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import * as FileSystem from 'expo-file-system'
 

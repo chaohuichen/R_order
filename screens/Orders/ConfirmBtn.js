@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { View, TouchableWithoutFeedback, StyleSheet, Text } from 'react-native'
 import { Badge } from 'react-native-paper'
 import AppIcons from '../../components/AppIcons'
+import { bottom } from 'styled-system'
 
 const ConfirmBtn = ({ confirmOrder, order }) => {
   const [orderNum, setOrderNum] = useState(0)
@@ -33,7 +34,7 @@ const ConfirmBtn = ({ confirmOrder, order }) => {
         >
           {orderNum !== 0 && (
             <Badge
-              size={50}
+              size={45}
               style={{
                 position: 'absolute',
                 bottom: 15,
@@ -66,19 +67,19 @@ const styles = StyleSheet.create({
   confirmButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 90,
+    height: 70,
     flexGrow: 1,
     flexDirection: 'row',
-    width: '100%',
+    width: 90,
     backgroundColor: '#BEAC74',
-    borderRadius: 0,
+    borderRadius: 25,
+    marginBottom: 20,
   },
   orderConfirmText: {
     color: 'white',
     textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 20,
     textTransform: 'capitalize',
   },
 })
