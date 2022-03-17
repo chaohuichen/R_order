@@ -7,7 +7,6 @@ phoneNumber:String
 return:nothing 
 des:
 */
-
 export const setPhoneMap = async (phoneNumber, userUid) => {
   await db.ref(`/phoneMap/${phoneNumber}/`).set(userUid)
 }
@@ -71,8 +70,6 @@ export const fetchData = (setDataFun, offset) => {
             productsData.push(payload)
           }
         }
-        // console.log(Object.values(snapshot.val()).length)
-        // setData(productsData)
 
         setDataFun(productsData)
       }
@@ -81,4 +78,15 @@ export const fetchData = (setDataFun, offset) => {
       console.log(err)
       setDataFun([])
     })
+}
+
+export const userLogin = async (userName, password) => {
+  const ref = db.ref(`/users/${userName}`)
+  const result = await ref.once('value')
+
+  if (result.exists() && String(result.val().password) === String(password)) {
+    return result
+  } else {
+    return false
+  }
 }

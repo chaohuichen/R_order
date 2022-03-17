@@ -13,8 +13,9 @@ import { connect } from 'react-redux'
 import { getUser } from '../../redux'
 import DismissKeyboard from '../../components/DismissKeyboard'
 import firebase, { db } from '../../API/FirebaseDatabase'
-import { checkPhoneMap } from '../../API/databaseCall'
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
+import { userLogin } from '../../API/databaseCall'
+// import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const SignInPage = (props) => {
   const [phoneNumber, setPhoneNumber] = useState('')
@@ -23,92 +24,112 @@ const SignInPage = (props) => {
   const [verificationCode, setVerificationCode] = useState('')
   const [verificationId, setVerificationId] = useState(null)
   const userPhoneNumber = '+1' + phoneNumber
-  const firebaseConfig = firebase.apps.length
-    ? firebase.app().options
-    : undefined
+  // const firebaseConfig = firebase.apps.length
+  //   ? firebase.app().options
+  //   : undefined
   const recaptchaVerifier = useRef(null)
+  // ........................................
+
+  const [password, setPassword] = useState('')
   useEffect(() => {
-    if (userPhoneNumber.length < 11) {
-      // setError('please enter correct phone number')
-    } else {
-      setError('')
-    }
+    // if (userPhoneNumber.length < 11) {
+    //   // setError('please enter correct phone number')
+    // } else {
+    //   setError('')
+    // }
     return () => {}
   }, [])
-  const handleOnLogin = async () => {
-    const check = await checkPhoneMap(userPhoneNumber)
-    if (check === true && error !== '') {
-      //login
-      sendVerification()
-    } else {
-      //user not register go register page
-      Alert.alert('User not registered', 'navigate to sign up page', [
-        { text: 'OK', onPress: () => props.navigation.navigate('SignUpPage') },
-      ])
-    }
-  }
-  const firebasePhoneSignIn = (credential) => {
-    firebase
-      .auth()
-      .signInWithCredential(credential)
-      .then((res) => {
-        db.ref(`/users/${res.user.uid}/userSharedData/`).once(
-          'value',
-          (snapShot) => {
-            if (snapShot.exists()) {
-              props.fetchData(snapShot.val())
-            } else {
-              console.log('user dont exist ')
-            }
-          }
-        )
-      })
-      .catch((err) => console.log('phone sign in ', err))
-  }
-  const sendVerification = async () => {
+  // const handleOnLogin = async () => {
+  //   const check = await checkPhoneMap(userPhoneNumber)
+  //   if (check === true && error !== '') {
+  //     //login
+  //     sendVerification()
+  //   } else {
+  //     //user not register go register page
+  //     Alert.alert('User not registered', 'navigate to sign up page', [
+  //       { text: 'OK', onPress: () => props.navigation.navigate('SignUpPage') },
+  //     ])
+  //   }
+  // }
+  // const firebasePhoneSignIn = (credential) => {
+  //   firebase
+  //     .auth()
+  //     .signInWithCredential(credential)
+  //     .then((res) => {
+  //       db.ref(`/users/${res.user.uid}/userSharedData/`).once(
+  //         'value',
+  //         (snapShot) => {
+  //           if (snapShot.exists()) {
+  //             props.fetchData(snapShot.val())
+  //           } else {
+  //             console.log('user dont exist ')
+  //           }
+  //         }
+  //       )
+  //     })
+  //     .catch((err) => console.log('phone sign in ', err))
+  // }
+  // const sendVerification = async () => {
+  //   try {
+  //     const phoneProvider = new firebase.auth.PhoneAuthProvider()
+  //     const verificationId = await phoneProvider.verifyPhoneNumber(
+  //       userPhoneNumber,
+  //       recaptchaVerifier.current
+  //     )
+  //     setVerificationId(verificationId)
+  //     setConfirm(true)
+  //   } catch (err) {
+  //     console.log('error message ' + err)
+  //   }
+  // }
+  // const confirmCode = async () => {
+  //   try {
+  //     const credential = await firebase.auth.PhoneAuthProvider.credential(
+  //       verificationId,
+  //       verificationCode
+  //     )
+  //     firebasePhoneSignIn(credential)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+  const handleLogin = async () => {
     try {
-      const phoneProvider = new firebase.auth.PhoneAuthProvider()
-      const verificationId = await phoneProvider.verifyPhoneNumber(
-        userPhoneNumber,
-        recaptchaVerifier.current
-      )
-      setVerificationId(verificationId)
-      setConfirm(true)
+      const result = await userLogin(props.route.params.user, password)
+      if (result.val().name) {
+        props.logInUser(result.val())
+        // props.navigation.navigate('BottomTabNavigator')
+      } else {
+        Alert.alert('Ops', 'the password you input is not correct.')
+      }
     } catch (err) {
-      console.log('error message ' + err)
-    }
-  }
-  const confirmCode = async () => {
-    try {
-      const credential = await firebase.auth.PhoneAuthProvider.credential(
-        verificationId,
-        verificationCode
-      )
-      firebasePhoneSignIn(credential)
-    } catch (err) {
+      Alert.alert('Ops', 'the password you input is not correct.')
       console.log(err)
     }
   }
+
   return (
     <SafeAreaView style={styles.container}>
-      <FirebaseRecaptchaVerifierModal
+      {/* <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
         attemptInvisibleVerification={true}
-      />
+      /> */}
       <DismissKeyboard>
-        <ScrollView
+        <KeyboardAwareScrollView
           contentContainerStyle={{
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             marginBottom: 100,
           }}
+          extraScrollHeight={50}
         >
           <Text
             style={{
               color: '#BEAC74',
               fontSize: 25,
+
               fontFamily: 'CrimsonText-Bold',
             }}
           >
@@ -117,6 +138,7 @@ const SignInPage = (props) => {
           <Text
             style={{
               fontSize: 60,
+              lineHeight: 90,
               fontWeight: '600',
               textAlign: 'center',
               fontFamily: 'CrimsonText-Bold',
@@ -132,88 +154,29 @@ const SignInPage = (props) => {
               fontWeight: '600',
               textAlign: 'center',
             }}
+            numberOfLines={1}
           >
-            Sign in
+            Welcome,{'  ' + props.route.params.user}
           </Text>
-          {confirm ? (
-            <>
-              <Text>Enter code sent to +1{phoneNumber}</Text>
-
-              <TextInput
-                style={{ width: 300, alignSelf: 'center' }}
-                theme={{
-                  colors: { underlineColor: 'transparent', primary: 'black' },
-                }}
-                autoFocus
-                maxLength={6}
-                value={verificationCode}
-                mode="outlined"
-                label="Code"
-                autoCapitalize="none"
-                keyboardType="phone-pad"
-                onChangeText={(code) => setVerificationCode(code)}
-              />
-
-              <TouchableOpacity
-                style={styles.loginButton}
-                onPress={() => confirmCode()}
-              >
-                <Text style={styles.loginText}>Comfirm</Text>
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              <Text style={{ color: 'red', fontSize: 10, letterSpacing: 0.5 }}>
-                {error}
-              </Text>
-              <TextInput
-                style={{ width: 300, alignSelf: 'center' }}
-                theme={{
-                  colors: { underlineColor: 'transparent', primary: 'black' },
-                }}
-                autoFocus
-                maxLength={10}
-                value={phoneNumber}
-                mode="outlined"
-                placeholder="Phone Number"
-                autoCapitalize="none"
-                keyboardType="phone-pad"
-                onChangeText={(number) => setPhoneNumber(number)}
-              />
-
-              <TouchableOpacity
-                style={styles.loginButton}
-                onPress={() => handleOnLogin()}
-              >
-                <Text style={styles.loginText}>Sign In</Text>
-              </TouchableOpacity>
-            </>
-          )}
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 5,
+          <TextInput
+            style={{ width: 300, alignSelf: 'center' }}
+            theme={{
+              colors: { underlineColor: 'transparent', primary: 'black' },
             }}
-          >
-            <Text style={{ fontSize: 12, alignSelf: 'center', color: 'white' }}>
-              Don't have an account?
-            </Text>
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate('SignUpPage')}
-            >
-              <Text
-                style={{
-                  textDecorationLine: 'underline',
-                  color: 'white',
-                  fontSize: 12,
-                }}
-              >
-                {'  '} Sign up
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+            autoFocus
+            maxLength={14}
+            value={password}
+            mode="outlined"
+            placeholder="Password"
+            autoCapitalize="none"
+            keyboardType="phone-pad"
+            onChangeText={(number) => setPassword(number)}
+          />
+
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
       </DismissKeyboard>
     </SafeAreaView>
   )
@@ -232,17 +195,20 @@ const styles = StyleSheet.create({
     height: 40,
     alignSelf: 'center',
     marginTop: 30,
+    borderRadius: 5,
   },
   loginText: {
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
   },
 })
 
 const mapDispatch = (dispatch) => {
   return {
-    fetchData: (user) => dispatch(getUser(user)),
+    logInUser: (user) => dispatch(getUser(user)),
   }
 }
 const mapState = (state) => {

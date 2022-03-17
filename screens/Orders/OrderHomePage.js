@@ -1,18 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import {
-  StyleSheet,
-  View,
-  SectionList,
-  Text,
-  RefreshControl,
-} from 'react-native'
-import { Button } from 'native-base'
+import { StyleSheet, View, Text, RefreshControl } from 'react-native'
 import { removeUser } from '../../redux'
-import { getOrder, clearOrder } from '../../redux/Reducers/orderReducer'
+import {
+  getOrder,
+  clearOrder,
+  addOrder,
+  removeOrder,
+} from '../../redux/Reducers/orderReducer'
 import { connect } from 'react-redux'
-import Item from '../../components/Item'
+import ProduceSingleItem from '../../components/ProduceSingleItem'
 import { fetchData } from '../../API/databaseCall'
+import SectionList from 'react-native-tabs-section-list'
+import ConfirmBtn from './ConfirmBtn'
+import { LayoutAnimation, Platform, UIManager } from 'react-native'
+import * as Haptics from 'expo-haptics'
 
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true)
+}
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
@@ -22,17 +30,38 @@ const OrderHomePage = (props) => {
   const [refreshing, setRefreshing] = useState(false)
   // const [offset, setOffset] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [firstBoxPosition, setFirstBoxPosition] = useState('down')
+  const [offset, setOffset] = useState(0)
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true)
-    fetchData(props.fetchData)
-    wait(2000).then(() => setRefreshing(false))
-  }, [])
+  // const onRefresh = useCallback(() => {
+  //   setRefreshing(true)
+  //   fetchData(props.fetchData)
+  //   wait(2000).then(() => setRefreshing(false))
+  // }, [])
 
   useEffect(() => {
     fetchData(props.fetchData)
     return () => {}
   }, [])
+
+  const actionButtonVisibilityHandler = (event) => {
+    let currentOffset = event.nativeEvent.contentOffset.y
+    let direction = currentOffset > offset ? 'down' : 'up'
+
+    setOffset(currentOffset)
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+
+    if ((currentOffset < 200 && currentOffset >= 0) || currentOffset < 0) {
+      setFirstBoxPosition('down')
+    } else if (currentOffset === 0) {
+      setFirstBoxPosition('down')
+    } else if (direction === 'down') {
+      setFirstBoxPosition('up')
+    } else {
+      setFirstBoxPosition('down')
+    }
+  }
+
   const handleLoadMoreData = () => {
     setLoading(true)
     setTimeout(() => {
@@ -45,68 +74,102 @@ const OrderHomePage = (props) => {
   const confirmOrder = () => {
     props.navigation.navigate('ConfirmationPage')
   }
-
+  const removeItem = useCallback((order, index, sectionTitle) => {
+    props.removeOnOrder(order, index, sectionTitle)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+  })
+  const addItem = useCallback((order, index, sectionTitle) => {
+    props.addToOrder(order, index, sectionTitle)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+  })
   const renderItem = ({ item, index, section }) => {
     return (
-      <Item
+      <ProduceSingleItem
         key={index}
-        index={index}
         order={item}
+        removeItem={() => {
+          removeItem(item, index, section.title)
+        }}
+        addItem={() => {
+          addItem(item, index, section.title)
+        }}
         sectionTitle={section.title}
       />
     )
   }
-
   return (
     <View style={styles.container}>
-      {/* <View style={{ flex: 1}}> */}
       <SectionList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        // onEndReached={handleLoadMoreData}
-        style={{ flex: 1 }}
-        // ListFooterComponent={
-        //   loading && (
-        //     <View style={{ marginTop: 20 }}>
-        //       <AppLoading />
-        //     </View>
-        //   )
+        // refreshControl={
+        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         // }
+        onScroll={(event) => actionButtonVisibilityHandler(event)}
+        style={{ flex: 1 }}
+        renderTab={({ title, isActive }) => (
+          <View
+            style={[
+              {
+                borderBottomWidth: isActive ? 2 : 0,
+                borderBottomColor: 'white',
+              },
+            ]}
+          >
+            <Text
+              style={[
+                {
+                  color: isActive ? 'white' : '#9e9e9e',
+                  fontWeight: isActive ? 'bold' : '400',
+                  padding: 15,
+                  fontSize: 18,
+                  textTransform: 'capitalize',
+                },
+              ]}
+            >
+              {title}
+            </Text>
+          </View>
+        )}
         onEndReachedThreshold={0}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: '25%' }}
-        sections={[...props.order] || []}
+        sections={props.order || []}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
         renderSectionHeader={({ section: { title } }) => (
           <View
             style={{
               padding: 12,
-              borderBottomColor: 'rgba(221,221,221,0.5)',
-              borderBottomWidth: 1,
               backgroundColor: 'black',
             }}
           >
-            <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: '500',
+                color: 'white',
+                textTransform: 'capitalize',
+              }}
+            >
               {title}
             </Text>
           </View>
         )}
-        stickySectionHeadersEnabled
-        ListHeaderComponent={() => {
-          return (
-            <View style={styles.titleContainer}>
-              <Text style={styles.productDetails}>Product</Text>
-              <Text style={styles.productDetails}>Quanitity</Text>
-            </View>
-          )
-        }}
+        stickySectionHeadersEnabled={false}
       />
-      <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
-        <Button style={styles.loginButton} onPress={confirmOrder}>
-          <Text style={styles.loginButtonText}>Comfirm Order</Text>
-        </Button>
+
+      <View
+        style={[
+          {
+            flexDirection: 'row',
+            position: 'absolute',
+            bottom: 0,
+            width: '90%',
+            alignSelf: 'center',
+          },
+          firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
+        ]}
+      >
+        <ConfirmBtn confirmOrder={confirmOrder} />
       </View>
     </View>
   )
@@ -122,8 +185,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 20,
     paddingRight: '10%',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(211,211,211,0.5)',
   },
   productDetails: {
     fontSize: 20,
@@ -134,19 +195,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  loginButton: {
-    justifyContent: 'center',
-    height: 50,
-    flex: 1,
-    alignSelf: 'center',
-    backgroundColor: '#BEAC74',
-    borderRadius: 0,
+
+  moveDown: {
+    bottom: -100,
   },
-  loginButtonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
+  moveUp: {
+    bottom: 0,
   },
 })
 const mapDispatch = (dispatch) => {
@@ -154,6 +208,10 @@ const mapDispatch = (dispatch) => {
     fetchData: (order) => dispatch(getOrder(order)),
     resetOrder: () => dispatch(clearOrder()),
     removeUserData: () => dispatch(removeUser()),
+    addToOrder: (name, index, sectionTitle) =>
+      dispatch(addOrder(name, index, sectionTitle)),
+    removeOnOrder: (name, index, orderIndex) =>
+      dispatch(removeOrder(name, index, orderIndex)),
   }
 }
 const mapState = (state) => {

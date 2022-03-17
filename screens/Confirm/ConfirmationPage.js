@@ -3,16 +3,19 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   SectionList,
   Alert,
   View,
+  Text,
 } from 'react-native'
-import { Text, Box } from 'native-base'
 import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
 import RBSheet from 'react-native-raw-bottom-sheet'
-import { clearOrder } from '../../redux/Reducers/orderReducer'
+import {
+  clearOrder,
+  addOrder,
+  removeOrder,
+} from '../../redux/Reducers/orderReducer'
 import { insertMultiPageHtml } from './CreateHtml'
 import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
@@ -21,14 +24,15 @@ import moment from 'moment'
 import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
 import { getOrderHistory } from '../../redux'
-import AppIcons from '../../components/AppIcons'
+import ProduceSingleItem from '../../components/ProduceSingleItem'
+import * as Haptics from 'expo-haptics'
 
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('FDM Logistics')
   const [selectedFromValue, setSelectedFromValue] = useState('FDM NY1')
   const pickerItems = ['FDM Logistics', 'FDM MGT']
-  const pickerStores = ['FDM NY1', 'FDM NY2', 'FDM NY3']
+  const pickerStores = ['FDM1', 'FDM2', 'FDM3']
   const [isPicker, setIsPicker] = useState(false)
   const rbsheetRef = useRef()
   const [orders, setOrders] = useState([])
@@ -53,10 +57,10 @@ const ConfirmationPage = (props) => {
     setOrders(copyData)
   }, [])
 
-  const removeItem = () => {
+  const removeItem = (order, index, sectionTitle) => {
     props.removeOnOrder(order, index, sectionTitle)
   }
-  const addItem = () => {
+  const addItem = (order, index, sectionTitle) => {
     props.addToOrder(order, index, sectionTitle)
   }
 
@@ -122,13 +126,13 @@ const ConfirmationPage = (props) => {
         selectedToValue
       )
       const newHtml = html.replaceAll('undefined', ' ')
-      Api.post('fdmSupplyAPI/sendSms', {
-        phoneNumber: props.user.userPhoneNumber,
-        orderString,
-        orders,
-      }).catch(function (error) {
-        console.log('axios post send sms ', error)
-      })
+      // Api.post('fdmSupplyAPI/sendSms', {
+      //   phoneNumber: props.user.userPhoneNumber,
+      //   orderString,
+      //   orders,
+      // }).catch(function (error) {
+      //   console.log('axios post send sms ', error)
+      // })
       createPdf(newHtml)
     } else {
       Alert.alert('Nothing in cart', 'add order to cart', {
@@ -171,7 +175,7 @@ const ConfirmationPage = (props) => {
     props.resetOrder()
     setOrders([])
     setTimeout(() => {
-      Alert.alert('Ordered Success', 'press ok to view invoice', [
+      Alert.alert('Ordered Success', 'Please press Ok to view invoice file', [
         {
           text: 'Ok',
           onPress: () =>
@@ -189,79 +193,29 @@ const ConfirmationPage = (props) => {
       ])
     }, 200)
   }
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index, section }) => {
     if (item.count > 0) {
       return (
-        <Box style={styles.box}>
-          <View
-            style={{
-              flex: 1.5,
-              flexWrap: 'wrap',
-              flexDirection: 'row',
-              paddingRight: 15,
-            }}
-          >
-            <Text style={{ color: 'white', fontSize: 25 }}>
-              {item.name}
-              {'\n'}
-              <Text sub={true} style={{ color: 'white', fontSize: 12 }}></Text>
-            </Text>
-          </View>
-          <View style={styles.actionBox}>
-            <TouchableOpacity
-              onPress={removeItem}
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 50 / 2,
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-              }}
-            >
-              <AppIcons
-                type="AntDesign"
-                name="minus"
-                size={25}
-                color="black"
-                style={{ alignSelf: 'center' }}
-              />
-            </TouchableOpacity>
-            <View
-              style={{
-                // flex: 1,
-                alignItems: 'center',
-              }}
-            >
-              <Text
-                bold
-                style={{ color: 'white', fontSize: 20, letterSpacing: 0.5 }}
-              >
-                {item.count}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={addItem}
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 50 / 2,
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-              }}
-            >
-              <AppIcons
-                type="AntDesign"
-                name="plus"
-                size={25}
-                color="black"
-                style={{ alignSelf: 'center' }}
-              />
-            </TouchableOpacity>
-          </View>
-        </Box>
+        <ProduceSingleItem
+          key={index}
+          order={item}
+          removeItem={() => {
+            removeItem(item, index, section.title)
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+          }}
+          addItem={() => {
+            addItem(item, index, section.title)
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+          }}
+          sectionTitle={section.title}
+        />
       )
     }
-    return null
+    return (
+      <View>
+        <Text>{JSON.stringify(allOrder)}</Text>
+      </View>
+    )
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -284,7 +238,7 @@ const ConfirmationPage = (props) => {
           }
         />
       )}
-
+      {/* 
       <Text
         style={{
           fontWeight: '500',
@@ -319,7 +273,7 @@ const ConfirmationPage = (props) => {
             {selectedFromValue ? selectedFromValue : 'From'}
           </Text>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
 
       <View
         style={{
@@ -344,46 +298,13 @@ const ConfirmationPage = (props) => {
       </View>
       <SectionList
         style={{ flex: 1 }}
-        sections={orders}
+        sections={allOrder}
         renderItem={renderItem}
         keyExtractor={(item, index) => item + index}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section: { title } }) => {
-          return (
-            <View
-              style={{
-                padding: 20,
-                borderBottomColor: 'rgba(221,221,221,0.5)',
-                borderBottomWidth: 1,
-                flex: 1,
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
-                {title}
-              </Text>
-              <Text style={{ fontSize: 20, fontWeight: '500', color: 'white' }}>
-                QTY
-              </Text>
-            </View>
-          )
-        }}
-      >
-        <View style={{ flex: 3 }}>
-          <Text
-            style={{
-              marginLeft: 20,
-              fontWeight: '600',
-              fontSize: 30,
-              color: 'white',
-            }}
-          >
-            Items
-          </Text>
-        </View>
-      </SectionList>
+        showsVerticalScrollIndicator={false}
+      />
+
       <TouchableOpacity
         style={styles.loginButton}
         onPress={() => createSmsMessage()}
@@ -440,11 +361,13 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     justifyContent: 'center',
-    height: 50,
+    alignItems: 'center',
+    height: 70,
     alignSelf: 'center',
+    width: '90%',
     backgroundColor: '#BEAC74',
-    borderRadius: 0,
-    width: '100%',
+    borderRadius: 25,
+    marginBottom: 0,
   },
   loginText: {
     color: 'white',
@@ -491,6 +414,10 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     resetOrder: () => dispatch(clearOrder()),
+    addToOrder: (name, index, sectionTitle) =>
+      dispatch(addOrder(name, index, sectionTitle)),
+    removeOnOrder: (name, index, orderIndex) =>
+      dispatch(removeOrder(name, index, orderIndex)),
     fetchOrderHistory: () => dispatch(getOrderHistory()),
   }
 }
