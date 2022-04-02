@@ -62,15 +62,6 @@ const OrderHomePage = (props) => {
     }
   }
 
-  const handleLoadMoreData = () => {
-    setLoading(true)
-    setTimeout(() => {
-      count++
-      fetchData(props.fetchData, count)
-      setLoading(false)
-    }, 2000)
-  }
-
   const confirmOrder = () => {
     props.navigation.navigate('ConfirmationPage')
   }
@@ -100,9 +91,6 @@ const OrderHomePage = (props) => {
   return (
     <View style={styles.container}>
       <SectionList
-        // refreshControl={
-        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        // }
         onScroll={(event) => actionButtonVisibilityHandler(event)}
         style={{ flex: 1 }}
         renderTab={({ title, isActive }) => (
@@ -166,7 +154,7 @@ const OrderHomePage = (props) => {
             width: '90%',
             alignSelf: 'center',
           },
-          firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
+          // firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
         ]}
       >
         <ConfirmBtn confirmOrder={confirmOrder} />
@@ -179,6 +167,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'black',
+    // paddingBottom: '20%',
   },
   titleContainer: {
     flexDirection: 'row',

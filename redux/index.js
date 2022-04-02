@@ -18,3 +18,5 @@ export const store = createStore(persistedReducer, middleware)
 export * from './Reducers/userReducer'
 export * from './Reducers/orderHistoryReducer'
 export * from './Reducers/orderReducer'
+export * from './Reducers/instructionReducer'
+export * from './Reducers/locationReducer'

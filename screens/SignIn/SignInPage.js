@@ -125,7 +125,7 @@ const SignInPage = (props) => {
           }}
           extraScrollHeight={50}
         >
-          <Text
+          {/* <Text
             style={{
               color: '#BEAC74',
               fontSize: 25,
@@ -134,7 +134,7 @@ const SignInPage = (props) => {
             }}
           >
             SINCE {'  '}|{'  '} 1977
-          </Text>
+          </Text> */}
           <Text
             style={{
               fontSize: 60,
@@ -145,12 +145,12 @@ const SignInPage = (props) => {
               color: 'white',
             }}
           >
-            Flor De Mayo
+            TG GHQ
           </Text>
           <Text
             style={{
               color: 'white',
-              fontSize: 30,
+              fontSize: 20,
               fontWeight: '600',
               textAlign: 'center',
             }}

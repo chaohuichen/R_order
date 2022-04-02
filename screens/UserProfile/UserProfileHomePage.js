@@ -3,9 +3,7 @@ import { Text, View, Image, StyleSheet, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import { Button } from 'native-base'
 import { removeUser, getOrderHistory } from '../../redux'
-import * as FileSystem from 'expo-file-system'
-import Invoice from './Invoice'
-const localCacheDir = FileSystem.documentDirectory
+
 const UserProfileHomePage = ({
   user,
   logOut,
@@ -24,7 +22,6 @@ const UserProfileHomePage = ({
     // setTimeout(() => {
     //   navigation.navigate('SignInSelectionPage')
     // }, 1000)
-    console.log(user)
   }
   return (
     <ScrollView
@@ -72,22 +69,7 @@ const UserProfileHomePage = ({
       >
         Your order history:
       </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          // justifyContent: 'center',
-        }}
-      >
-        {orderHistory.map((fileName, index) => (
-          <Invoice
-            key={index}
-            uri={localCacheDir + fileName}
-            name={fileName}
-            navigation={navigation}
-          />
-        ))}
-      </View>
+
       <Button style={styles.logOutBtn} onPress={handleLogout}>
         <Text>Log out</Text>
       </Button>
@@ -100,6 +82,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#e3e3e3',
     marginHorizontal: 25,
     marginVertical: 15,
+    width: 350,
+    height: 50,
+    position: 'absolute',
+    bottom: 20,
   },
 })
 

@@ -1,34 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react'
 import {
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
-  SectionList,
   Alert,
   View,
   Text,
   ScrollView,
 } from 'react-native'
 import { connect } from 'react-redux'
-import ComfirmationPicker from './ComfirmationPicker'
-import RBSheet from 'react-native-raw-bottom-sheet'
+
 import {
   clearOrder,
   addOrder,
   removeOrder,
 } from '../../redux/Reducers/orderReducer'
-import { insertMultiPageHtml } from './CreateHtml'
 import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
 import moment from 'moment'
 import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
-import { getOrderHistory } from '../../redux'
+import { getOrderHistory, editLocation, editInstruction } from '../../redux'
 import ProduceSingleItem from '../../components/ProduceSingleItem'
 import * as Haptics from 'expo-haptics'
 import AppButton from '../../components/AppButton'
+import InstructionInput from './InstructionInput'
 
+import DismissKeyboard from '../../components/DismissKeyboard'
 const locations = [
   'CHAIRMAN',
   'SECRETARY',
@@ -42,30 +40,39 @@ const locations = [
   'ACCOUNTANT',
 ]
 
-const locations1 = ['CHAIRMAN', 'SECRETARY', 'DIRECTOR']
-const locations2 = [
-  'CONFERENCE',
-  'LEGAL',
-  'MEETING',
-  'CEO',
-  'CONSULTANT',
-  'IT',
-  'ACCOUNTANT',
-]
-const locations3 = ['CONSULTANT', 'IT', 'ACCOUNTANT']
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-  const [selectedToValue, setSelectedToValue] = useState('FDM Logistics')
-  const [selectedFromValue, setSelectedFromValue] = useState('FDM NY1')
-  const pickerItems = ['FDM Logistics', 'FDM MGT']
-  const pickerStores = ['FDM1', 'FDM2', 'FDM3']
-  const [isPicker, setIsPicker] = useState(false)
-  const rbsheetRef = useRef()
+
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    // map all the data from redux
+    // // map all the data from redux
+    // const copyData = []
+    // allOrder.forEach((singleOrder) => {
+    //   let copySingleOrder = []
+    //   // filter out / push in if any item count >0
+    //   singleOrder.data.forEach((singleItem) => {
+    //     if (singleItem.count > 0) {
+    //       copySingleOrder.push(singleItem)
+    //     }
+    //   })
+    //   //check the size of the items
+    //   if (copySingleOrder.length > 0) {
+    //     copyData.push({ data: copySingleOrder, title: singleOrder.title })
+    //   }
+    // })
+    // setOrders(copyData)
+  }, [])
+
+  const removeItem = (order, index, sectionTitle) => {
+    props.removeOnOrder(order, index, sectionTitle)
+  }
+  const addItem = (order, index, sectionTitle) => {
+    props.addToOrder(order, index, sectionTitle)
+  }
+
+  const handlePlaceOrder = () => {
     const copyData = []
     allOrder.forEach((singleOrder) => {
       let copySingleOrder = []
@@ -80,289 +87,167 @@ const ConfirmationPage = (props) => {
         copyData.push({ data: copySingleOrder, title: singleOrder.title })
       }
     })
-    setOrders(copyData)
-  }, [])
-
-  const removeItem = (order, index, sectionTitle) => {
-    props.removeOnOrder(order, index, sectionTitle)
-  }
-  const addItem = (order, index, sectionTitle) => {
-    props.addToOrder(order, index, sectionTitle)
-  }
-
-  const openPickerStore = () => {
-    setIsPicker(true)
-    rbsheetRef.current.open()
-  }
-  const openPickerItem = () => {
-    setIsPicker(false)
-    rbsheetRef.current.open()
-  }
-  const updateSelectedValue = (value) => {
-    if (isPicker) {
-      setSelectedFromValue(value)
-    } else {
-      setSelectedToValue(value)
-    }
-  }
-
-  const createOrderString = () => {
-    let orderString = ''
-    let dividerLine = '------------'
-    if (selectedFromValue !== 'none' && selectedToValue !== 'none') {
-      for (const order of orders) {
-        let tempStr = ''
-        let title = order.title
-        tempStr = '\n' + title + '\n' + dividerLine + '\n'
-        let itemStr = ''
-        for (let item of order.data) {
-          itemStr += `(${item.count})\t` + item.name + '\n'
-        }
-        tempStr += itemStr + '\n'
-        orderString += tempStr
-      }
-
-      orderString =
-        'From\n ' +
-        `${selectedToValue}\n` +
-        '646-552-8898\n' +
-        '530 5th Ave, New York, NY 10036\n' +
-        'To\n' +
-        'Kenny Cho\n' +
-        `${selectedFromValue}\n` +
-        '636-469-9628\n' +
-        '2651 Broadway, New York, NY 10025 \n' +
-        orderString
-      return orderString
-    } else {
-      Alert.alert('Location is not selected', 'Please select location', {
-        text: 'Ok',
-        style: 'cancel',
-      })
-    }
-  }
-  const createSmsMessage = async () => {
-    const orderString = createOrderString()
-    setLoading(true)
-
-    if (orders.length !== 0) {
-      const html = insertMultiPageHtml(
-        orders,
-        selectedFromValue,
-        selectedToValue
+    if (copyData.length === 0) {
+      Alert.alert(
+        'Oops',
+        'Your cart seems empty, please add more to your order',
+        [
+          {
+            text: 'Ok',
+            onPress: () => props.navigation.goBack(),
+          },
+        ]
       )
-      const newHtml = html.replaceAll('undefined', ' ')
-      // Api.post('fdmSupplyAPI/sendSms', {
-      //   phoneNumber: props.user.userPhoneNumber,
-      //   orderString,
-      //   orders,
-      // }).catch(function (error) {
-      //   console.log('axios post send sms ', error)
-      // })
-      createPdf(newHtml)
     } else {
-      Alert.alert('Nothing in cart', 'add order to cart', {
-        text: 'Ok',
-        style: 'cancel',
+      setLoading(true)
+      Api.post('/tgghqOrder/messages', {
+        cart: copyData,
+        location: props.location,
+        userNotes: props.userInsturction,
       })
-    }
-  }
-  const createPdf = async (html) => {
-    let now = moment().utc()
-    // let date = now.format(`YY MM DD HH MM SS ${selectedToValue}Invoice`)
-    const date = now
-
-    Api('fillupSupplyAPI/createPdf', {
-      method: 'post',
-      data: { html, date },
-    })
-      .then((res) => {
-        downloadToLocal(res.data, date)
-      })
-      .catch((err) => console.log('axios post err ', err))
-  }
-  const downloadToLocal = async (url, date) => {
-    // date = date.format(`YYMMDDHH:MM:SS`)
-    // console.log(date)
-    try {
-      const { uri } = await FileSystem.downloadAsync(
-        url,
-        FileSystem.documentDirectory +
-          `${date}${selectedToValue.replace(/\s/g, '')}Invoice.pdf`
-      )
-      orderSuccessAlert(uri)
-      props.fetchOrderHistory()
-    } catch (err) {
-      console.log('downlaod err ', err)
-    }
-  }
-  const orderSuccessAlert = (uri) => {
-    setLoading(false)
-    props.resetOrder()
-    setOrders([])
-    setTimeout(() => {
-      Alert.alert('Ordered Success', 'Please press Ok to view invoice file', [
-        {
-          text: 'Ok',
-          onPress: () =>
-            props.navigation.dispatch(
-              StackActions.replace('PdfView', {
-                uri,
-              })
-            ),
-          style: 'cancel',
-        },
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-      ])
-    }, 200)
-  }
-  const renderItem = ({ item, index, section }) => {
-    if (item.count > 0) {
-      return (
-        <ProduceSingleItem
-          key={index}
-          order={item}
-          removeItem={() => {
-            removeItem(item, index, section.title)
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-          }}
-          addItem={() => {
-            addItem(item, index, section.title)
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-          }}
-          sectionTitle={section.title}
-        />
-      )
-    }
-    return <View></View>
-  }
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {loading && (
-        <Spinner
-          color="black"
-          visible={true}
-          // textContent={'signing in....'}
-          customIndicator={
-            <View
-              style={{
-                borderRadius: 25,
-                height: 100,
-                width: 100,
-                backgroundColor: 'rgba(0,0,0,0.8)',
-              }}
-            >
-              <AppLoading color="white" />
-            </View>
-          }
-        />
-      )}
-      <View
-        style={{
-          padding: 10,
-
-          justifyContent: 'space-between',
-          // alignItems: 'center',
-        }}
-      >
-        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
-          Room Location:
-        </Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {locations.map((singleLocation, index) => {
-            return (
-              <AppButton
-                key={index}
-                onPress={() => {
-                  // if (moreSelection) {
-                  //   handleChangeMoreSelection(singleChocies)
-                  // } else {
-                  //   handleChangeOneSelection(singleChocies)
-                  // }
-                }}
-                style={{
-                  marginHorizontal: 5,
-                  marginVertical: 7,
-                  // backgroundColor: changeBtnColor(
-                  //   singleChocies.modifierChoiceTitle
-                  // ),
-                  backgroundColor: '#ebecf0',
-                }}
-              >
-                <Text
-                  style={{
-                    // color: changeTextColor(singleChocies.modifierChoiceTitle),
-                    // textTransform: 'capitalize',
-                    fontWeight: 'bold',
-                    fontSize: 14,
-                  }}
-                >
-                  {singleLocation}
-                </Text>
-              </AppButton>
-            )
-          })}
-        </View>
-      </View>
-      <View
-        style={{
-          padding: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
-          {' '}
-          Your Orders:{' '}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
+        .then((res) => {
+          //reset cart and reset note, location?
+          if (res.data.success) {
             props.resetOrder()
-            setOrders([])
-          }}
-        >
-          <Text style={{ color: 'red' }}>Clear All</Text>
-        </TouchableOpacity>
-      </View>
-      {allOrder.map((section) => {
-        return section.data.map((item, index) => {
-          if (item.count > 0) {
-            return (
-              <ProduceSingleItem
-                key={index}
-                order={item}
-                removeItem={() => {
-                  removeItem(item, index, section.title)
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-                }}
-                addItem={() => {
-                  addItem(item, index, section.title)
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-                }}
-                sectionTitle={section.title}
-              />
+            props.clearInstruction()
+            setTimeout(() => {
+              setLoading(false)
+              props.navigation.dispatch(
+                StackActions.replace('OrderSuccessPage', {})
+              )
+            }, 500)
+          } else {
+            Alert.alert(
+              'Oops',
+              'There is an error on your order, please try again.'
             )
           }
         })
-      })}
+        .catch((err) => {
+          console.log(err)
+          setLoading(true)
+        })
+    }
+  }
 
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => createSmsMessage()}
-      >
+  return (
+    <>
+      <DismissKeyboard>
+        <ScrollView contentContainerStyle={styles.container}>
+          <InstructionInput />
+          {loading && (
+            <Spinner
+              color="black"
+              visible={true}
+              // textContent={'signing in....'}
+              customIndicator={
+                <View
+                  style={{
+                    borderRadius: 25,
+                    height: 100,
+                    width: 100,
+                    backgroundColor: 'rgba(0,0,0,0.8)',
+                  }}
+                >
+                  <AppLoading color="white" />
+                </View>
+              }
+            />
+          )}
+          <View
+            style={{
+              padding: 10,
+              justifyContent: 'space-between',
+            }}
+          >
+            <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
+              Room Location:
+            </Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              {locations.map((singleLocation, index) => {
+                return (
+                  <AppButton
+                    key={index}
+                    onPress={() => {
+                      props.changeLocation(singleLocation)
+                    }}
+                    style={{
+                      marginHorizontal: 5,
+                      marginVertical: 7,
+                      backgroundColor:
+                        props.location === singleLocation ? 'green' : '#ebecf0',
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color:
+                          props.location === singleLocation ? 'white' : 'black',
+                        fontWeight: 'bold',
+                        fontSize: 14,
+                      }}
+                    >
+                      {singleLocation}
+                    </Text>
+                  </AppButton>
+                )
+              })}
+            </View>
+          </View>
+          <View
+            style={{
+              padding: 10,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
+              {' '}
+              Your Orders:{' '}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                props.resetOrder()
+                setOrders([])
+              }}
+            >
+              <Text style={{ color: 'red' }}>Clear All</Text>
+            </TouchableOpacity>
+          </View>
+          {allOrder.map((section) => {
+            return section.data.map((item, index) => {
+              if (item.count > 0) {
+                return (
+                  <ProduceSingleItem
+                    key={index}
+                    order={item}
+                    removeItem={() => {
+                      removeItem(item, index, section.title)
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                    }}
+                    addItem={() => {
+                      addItem(item, index, section.title)
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                    }}
+                    sectionTitle={section.title}
+                  />
+                )
+              }
+            })
+          })}
+        </ScrollView>
+      </DismissKeyboard>
+      <TouchableOpacity style={styles.loginButton} onPress={handlePlaceOrder}>
         <Text style={styles.loginText}>Place Order</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </>
   )
 }
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'black',
+    paddingBottom: '25%',
   },
   loginButton: {
     position: 'absolute',
@@ -415,6 +300,8 @@ const mapState = (state) => {
   return {
     allOrder: state.order,
     user: state.user,
+    location: state.location,
+    userInsturction: state.instruction,
   }
 }
 
@@ -426,6 +313,8 @@ const mapDispatch = (dispatch) => {
     removeOnOrder: (name, index, orderIndex) =>
       dispatch(removeOrder(name, index, orderIndex)),
     fetchOrderHistory: () => dispatch(getOrderHistory()),
+    changeLocation: (location) => dispatch(editLocation(location)),
+    clearInstruction: () => dispatch(editInstruction('')),
   }
 }
 export default connect(mapState, mapDispatch)(ConfirmationPage)

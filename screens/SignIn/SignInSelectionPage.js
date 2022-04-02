@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { Avatar, Card } from 'react-native-paper'
 import * as Animatable from 'react-native-animatable'
-
+import { getUsers } from '../../API/databaseCall'
 const LeftContent = (props) => (
   <Avatar.Icon
     {...props}
@@ -10,9 +11,14 @@ const LeftContent = (props) => (
     style={{ backgroundColor: 'white', size: 50 }}
   />
 )
-const users = ['Jose Tso', 'Kennith Tso', 'Peter Chen', 'Land Liu']
 
 const SignInSelectionPage = ({ navigation }) => {
+  const [users, setUsers] = useState([])
+  useEffect(() => {
+    getUsers().then((res) => {
+      setUsers(Object.keys(res.val()))
+    })
+  }, [])
   return (
     <ScrollView
       contentContainerStyle={{
@@ -25,15 +31,6 @@ const SignInSelectionPage = ({ navigation }) => {
       <View style={{ alignItems: 'center', marginTop: 100 }}>
         <Text
           style={{
-            color: '#BEAC74',
-            fontSize: 25,
-            fontFamily: 'CrimsonText-Bold',
-          }}
-        >
-          SINCE {'  '}|{'  '} 1977
-        </Text>
-        <Text
-          style={{
             fontSize: 60,
             lineHeight: 90,
             fontWeight: '600',
@@ -42,7 +39,7 @@ const SignInSelectionPage = ({ navigation }) => {
             color: 'white',
           }}
         >
-          Flor De Mayo
+          TG GHQ
         </Text>
         {users.map((singleUser, index) => {
           return (
@@ -53,7 +50,7 @@ const SignInSelectionPage = ({ navigation }) => {
               iterationDelay={100 * index}
             >
               <Card
-                style={{ width: 350, marginVertical: 10 }}
+                style={{ width: 360, marginVertical: 10 }}
                 onPress={() =>
                   navigation.push('SignInPage', { user: singleUser })
                 }

@@ -90,3 +90,17 @@ export const userLogin = async (userName, password) => {
     return false
   }
 }
+
+export const getUsers = async () => {
+  try {
+    const ref = db.ref(`/users/`)
+    const result = await ref.once('value')
+    if (result.exists()) {
+      return result
+    } else {
+      return false
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}

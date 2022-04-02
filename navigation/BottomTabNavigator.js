@@ -19,6 +19,7 @@ import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
 import AddSupplyPage from '../screens/AddSupply/AddSupplyPage'
 import UserProfileHomePage from '../screens/UserProfile/UserProfileHomePage'
 import PdfViewer from '../screens/PdfViewer/PdfView'
+import OrderSuccessPage from '../screens/OrderSuccess/OrderSuccessPage'
 import { HeaderTitleOnly } from './HeaderOptions'
 
 const BottomTabNavigator = (props) => {
@@ -40,6 +41,11 @@ const BottomTabNavigator = (props) => {
           component={OrderHomeScreen}
           options={tabOptions('shopping-cart', 'Orders', 'Feather')}
         />
+        <Stack.Screen
+          name="OrderSuccessPage"
+          component={OrderSuccessPage}
+          options={tabOptions('shopping-cart', 'Orders', 'Feather')}
+        />
         {/* {props.user.userType === 'supplier' && (
         <Stack.Screen
           name="AddSupplyPageScreen"
@@ -47,6 +53,7 @@ const BottomTabNavigator = (props) => {
           options={tabOptions('ios-add', 'Add Supply', 'Ionicons')}
         />
       )} */}
+
         <Stack.Screen
           name="OrderHistoryScreen"
           component={OrderHistoryScreen}

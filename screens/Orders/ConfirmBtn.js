@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { View, TouchableWithoutFeedback, StyleSheet, Text } from 'react-native'
+import {
+  View,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  Text,
+  Alert,
+} from 'react-native'
 import { Badge } from 'react-native-paper'
 import AppIcons from '../../components/AppIcons'
 
@@ -20,8 +26,18 @@ const ConfirmBtn = ({ confirmOrder, order }) => {
       setOrderNum(count)
     }
   }, [order])
+  const handleConfirm = () => {
+    if (orderNum === 0) {
+      Alert.alert(
+        'Oops',
+        'Your cart seems empty, please add more to your order'
+      )
+    } else {
+      confirmOrder()
+    }
+  }
   return (
-    <TouchableWithoutFeedback onPress={confirmOrder}>
+    <TouchableWithoutFeedback onPress={handleConfirm}>
       <View style={styles.confirmButton}>
         <View
           style={{
