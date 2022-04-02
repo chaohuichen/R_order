@@ -7,6 +7,7 @@ import {
   Alert,
   View,
   Text,
+  ScrollView,
 } from 'react-native'
 import { connect } from 'react-redux'
 import ComfirmationPicker from './ComfirmationPicker'
@@ -26,7 +27,32 @@ import { StackActions } from '@react-navigation/native'
 import { getOrderHistory } from '../../redux'
 import ProduceSingleItem from '../../components/ProduceSingleItem'
 import * as Haptics from 'expo-haptics'
+import AppButton from '../../components/AppButton'
 
+const locations = [
+  'CHAIRMAN',
+  'SECRETARY',
+  'DIRECTOR',
+  'CONFERENCE',
+  'LEGAL',
+  'MEETING',
+  'CEO',
+  'CONSULTANT',
+  'IT',
+  'ACCOUNTANT',
+]
+
+const locations1 = ['CHAIRMAN', 'SECRETARY', 'DIRECTOR']
+const locations2 = [
+  'CONFERENCE',
+  'LEGAL',
+  'MEETING',
+  'CEO',
+  'CONSULTANT',
+  'IT',
+  'ACCOUNTANT',
+]
+const locations3 = ['CONSULTANT', 'IT', 'ACCOUNTANT']
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [selectedToValue, setSelectedToValue] = useState('FDM Logistics')
@@ -211,14 +237,10 @@ const ConfirmationPage = (props) => {
         />
       )
     }
-    return (
-      <View>
-        <Text>{JSON.stringify(allOrder)}</Text>
-      </View>
-    )
+    return <View></View>
   }
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {loading && (
         <Spinner
           color="black"
@@ -238,43 +260,53 @@ const ConfirmationPage = (props) => {
           }
         />
       )}
-      {/* 
-      <Text
+      <View
         style={{
-          fontWeight: '500',
-          marginLeft: 20,
-          fontSize: 20,
-          marginTop: 10,
-          color: 'white',
-        }}
-      >
-        From:
-      </Text>
-      <TouchableWithoutFeedback onPress={() => openPickerItem()}>
-        <View style={styles.selectionButtonView}>
-          <Text style={{ fontWeight: '900', fontSize: 20 }}>
-            {selectedToValue ? selectedToValue : 'To'}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <Text
-        style={{
-          fontWeight: '500',
-          fontSize: 20,
-          marginLeft: 20,
-          color: 'white',
-        }}
-      >
-        To:
-      </Text>
-      <TouchableWithoutFeedback onPress={() => openPickerStore()}>
-        <View style={styles.selectionButtonView}>
-          <Text style={{ fontWeight: '900', fontSize: 20 }}>
-            {selectedFromValue ? selectedFromValue : 'From'}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback> */}
+          padding: 10,
 
+          justifyContent: 'space-between',
+          // alignItems: 'center',
+        }}
+      >
+        <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
+          Room Location:
+        </Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {locations.map((singleLocation, index) => {
+            return (
+              <AppButton
+                key={index}
+                onPress={() => {
+                  // if (moreSelection) {
+                  //   handleChangeMoreSelection(singleChocies)
+                  // } else {
+                  //   handleChangeOneSelection(singleChocies)
+                  // }
+                }}
+                style={{
+                  marginHorizontal: 5,
+                  marginVertical: 7,
+                  // backgroundColor: changeBtnColor(
+                  //   singleChocies.modifierChoiceTitle
+                  // ),
+                  backgroundColor: '#ebecf0',
+                }}
+              >
+                <Text
+                  style={{
+                    // color: changeTextColor(singleChocies.modifierChoiceTitle),
+                    // textTransform: 'capitalize',
+                    fontWeight: 'bold',
+                    fontSize: 14,
+                  }}
+                >
+                  {singleLocation}
+                </Text>
+              </AppButton>
+            )
+          })}
+        </View>
+      </View>
       <View
         style={{
           padding: 10,
@@ -296,14 +328,27 @@ const ConfirmationPage = (props) => {
           <Text style={{ color: 'red' }}>Clear All</Text>
         </TouchableOpacity>
       </View>
-      <SectionList
-        style={{ flex: 1 }}
-        sections={allOrder}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => item + index}
-        stickySectionHeadersEnabled={false}
-        showsVerticalScrollIndicator={false}
-      />
+      {allOrder.map((section) => {
+        return section.data.map((item, index) => {
+          if (item.count > 0) {
+            return (
+              <ProduceSingleItem
+                key={index}
+                order={item}
+                removeItem={() => {
+                  removeItem(item, index, section.title)
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                }}
+                addItem={() => {
+                  addItem(item, index, section.title)
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                }}
+                sectionTitle={section.title}
+              />
+            )
+          }
+        })
+      })}
 
       <TouchableOpacity
         style={styles.loginButton}
@@ -311,63 +356,25 @@ const ConfirmationPage = (props) => {
       >
         <Text style={styles.loginText}>Place Order</Text>
       </TouchableOpacity>
-      <RBSheet
-        ref={rbsheetRef}
-        height={300}
-        openDuration={250}
-        customStyles={{
-          container: {
-            justifyContent: 'center',
-            alignItems: 'center',
-          },
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          onPress={() => rbsheetRef.current.close()}
-        >
-          <Text
-            style={{
-              flex: 1,
-              textAlign: 'left',
-              fontSize: 20,
-              marginLeft: 20,
-              color: '#006ee6',
-            }}
-          >
-            Done
-          </Text>
-        </TouchableOpacity>
-        {/** Need to Optimize to a better solution */}
-        <ComfirmationPicker
-          selectedFromValue={selectedFromValue}
-          setSelectedFromValue={updateSelectedValue}
-          selectedToValue={selectedToValue}
-          setSelectedToValue={updateSelectedValue}
-          isPicker={isPicker}
-          pickerItems={isPicker ? pickerStores : pickerItems}
-        />
-      </RBSheet>
-    </SafeAreaView>
+    </ScrollView>
   )
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: 'black',
   },
   loginButton: {
+    position: 'absolute',
+
+    bottom: 20,
+    zIndex: 99,
     justifyContent: 'center',
-    alignItems: 'center',
     height: 70,
     alignSelf: 'center',
     width: '90%',
     backgroundColor: '#BEAC74',
     borderRadius: 25,
-    marginBottom: 0,
   },
   loginText: {
     color: 'white',

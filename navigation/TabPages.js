@@ -47,7 +47,7 @@ export default ({ navigation, tabName }, props) => {
       <Stack.Screen
         name="ConfirmationPage"
         component={ConfirmationPage}
-        options={HeaderTitleOnly('Invoice')}
+        options={HeaderTitleOnly('')}
       />
 
       <Stack.Screen
