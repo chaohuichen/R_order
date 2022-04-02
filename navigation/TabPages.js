@@ -26,9 +26,7 @@ export default ({ navigation, tabName }, props) => {
         <Stack.Screen
           name="OrderPage"
           component={OrderPage}
-          options={({ navigation }) =>
-            HeaderTitleAndIcon('Flor De Mayo', navigation)
-          }
+          options={({ navigation }) => HeaderTitleAndIcon('TG GHQ', navigation)}
         />
       )}
       {tabName === 'OrderHistoryPage' && (

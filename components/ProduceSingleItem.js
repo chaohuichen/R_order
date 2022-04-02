@@ -6,6 +6,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 const Item = memo(
   ({ order, removeItem, addItem }) => {
+    console.log(order)
     return (
       <Box style={styles.box}>
         <View
@@ -16,13 +17,7 @@ const Item = memo(
             paddingRight: 15,
           }}
         >
-          <Text style={{ color: 'white', fontSize: 25 }}>
-            {order.name}
-            {'\n'}
-            <Text sub={true} style={{ color: 'white', fontSize: 12 }}>
-              Unit: {order.size}
-            </Text>
-          </Text>
+          <Text style={{ color: 'white', fontSize: 25 }}>{order.name}</Text>
         </View>
         <View style={styles.actionBox}>
           <TouchableWithoutFeedback

@@ -14,7 +14,6 @@ import LottieView from 'lottie-react-native'
 const AppStart = ({ user }) => {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
   const [styleStatusBar, setStyleStatusBar] = useState('default')
-  const [animationLoading, setAnimationLoading] = useState(true)
   // Load any resources or data that we need prior to rendering the app
   // React.useEffect(() => {
   const animation = useRef(null)
@@ -35,17 +34,7 @@ const AppStart = ({ user }) => {
       setStyleStatusBar('dark-content')
     }
   }
-  const onPress = () => {
-    animation.current.play()
-  }
-  useEffect(() => {
-    if (isLoadingComplete) {
-      animation.current.play()
-      setTimeout(() => {
-        setAnimationLoading(false)
-      }, 4000)
-    }
-  }, [isLoadingComplete])
+
   if (!isLoadingComplete) {
     return (
       <AppLoading
@@ -56,27 +45,6 @@ const AppStart = ({ user }) => {
         }}
         onError={(error) => console.log(error)}
       />
-    )
-  }
-  if (isLoadingComplete && animationLoading) {
-    return (
-      <View style={styles.animationContainer}>
-        <LottieView
-          ref={animation}
-          style={{
-            width: '90%',
-            height: '100%',
-            backgroundColor: '#eee',
-          }}
-          source={require('./assets/FDM.json')}
-          loop={false}
-          // OR find more Lottie files @ https://lottiefiles.com/featured
-          // Just click the one you like, place that file in the 'assets' folder to the left, and replace the above 'require' statement
-        />
-        {/* <View style={styles.buttonContainer}>
-        <Button title="Restart Animation" onPress={this.resetAnimation} />
-      </View> */}
-      </View>
     )
   }
 
