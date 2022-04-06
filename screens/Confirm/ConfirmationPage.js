@@ -8,25 +8,22 @@ import {
   ScrollView,
 } from 'react-native'
 import { connect } from 'react-redux'
-
 import {
   clearOrder,
   addOrder,
   removeOrder,
 } from '../../redux/Reducers/orderReducer'
-import * as FileSystem from 'expo-file-system'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
-import moment from 'moment'
 import Api from '../../API'
 import { StackActions } from '@react-navigation/native'
 import { getOrderHistory, editLocation, editInstruction } from '../../redux'
-import ProduceSingleItem from '../../components/ProduceSingleItem'
+import ProduceSingleItem from '../../components/CartSingleItem'
 import * as Haptics from 'expo-haptics'
 import AppButton from '../../components/AppButton'
 import InstructionInput from './InstructionInput'
-
 import DismissKeyboard from '../../components/DismissKeyboard'
+
 const locations = [
   'CHAIRMAN',
   'SECRETARY',
@@ -42,8 +39,6 @@ const locations = [
 
 const ConfirmationPage = (props) => {
   const { allOrder } = props
-
-  const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {

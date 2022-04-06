@@ -1,55 +1,80 @@
 import React, { memo } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { Box } from 'native-base'
 import AppIcons from './AppIcons'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import { Badge } from 'react-native-paper'
 
 const Item = memo(
   ({ order, removeItem, addItem }) => {
     return (
-      <TouchableWithoutFeedback onPress={addItem}>
-        <Box style={styles.box}>
+      <Box style={styles.box}>
+        <View
+          style={{
+            flex: 1.5,
+            // flexWrap: 'wrap',
+            flexDirection: 'row',
+            paddingRight: 15,
+            justifyContent: 'space-between',
+            // alignContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}>
+            {order.name}
+          </Text>
+        </View>
+        <View style={styles.actionBox}>
+          <TouchableWithoutFeedback
+            onPress={removeItem}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: 50 / 2,
+              width: 50,
+              height: 50,
+              justifyContent: 'center',
+            }}
+          >
+            <AppIcons
+              type="AntDesign"
+              name="minus"
+              size={25}
+              color="black"
+              style={{ alignSelf: 'center' }}
+            />
+          </TouchableWithoutFeedback>
           <View
             style={{
-              flex: 1.5,
-              // flexWrap: 'wrap',
-              flexDirection: 'row',
-              paddingRight: 15,
-              justifyContent: 'space-between',
-              // alignContent: 'center',
+              width: '30%',
               alignItems: 'center',
             }}
           >
-            {order.count !== 0 && (
-              <Badge
-                size={45}
-                style={{
-                  position: 'absolute',
-                  top: -10,
-                  left: -10,
-                  fontWeight: 'bold',
-                  fontSize: 25,
-                  zIndex: 99,
-                }}
-              >
-                {order.count}
-              </Badge>
-            )}
-            <Image
-              source={{
-                uri: order.url
-                  ? order.url
-                  : 'https://fillupstore.s3.amazonaws.com/default_coffee_2.jpg',
-              }}
-              style={{ height: 120, width: 120, borderRadius: 5 }}
-            />
-            <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}>
-              {order.name}
+            <Text
+              bold
+              style={{ color: 'white', fontSize: 20, letterSpacing: 0.5 }}
+            >
+              {order.count}
             </Text>
           </View>
-        </Box>
-      </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={addItem}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: 50 / 2,
+              width: 50,
+              height: 50,
+              justifyContent: 'center',
+            }}
+          >
+            <AppIcons
+              type="AntDesign"
+              name="plus"
+              size={25}
+              color="black"
+              style={{ alignSelf: 'center' }}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+      </Box>
     )
   },
   (prev, next) => {
@@ -69,7 +94,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(211,211,211,0.5)',
     paddingLeft: 15,
     width: '100%',
-    height: 150,
+    height: 100,
   },
   actionBox: {
     marginRight: 10,

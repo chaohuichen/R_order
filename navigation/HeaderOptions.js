@@ -12,7 +12,7 @@ export const HeaderTitleOnly = (title) => {
     title,
     headerTitleStyle: {
       fontSize: 25,
-      fontFamily: 'CrimsonText-Bold',
+      fontFamily: 'Arial-BoldMT',
       color: 'white',
     },
 
@@ -27,7 +27,7 @@ export const HeaderTitleAndIcon = (title, navigation) => {
     title,
     headerTitleStyle: {
       fontSize: 25,
-      fontFamily: 'CrimsonText-Bold',
+      fontFamily: 'Arial-BoldMT',
       color: 'white',
     },
     headerRight: () => {
