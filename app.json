@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "fdmsupply",
-    "slug": "fdmsupply",
+    "name": "TGGHQ Order",
+    "slug": "TGGHQOrder",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/img/FdmappIcon.png",
+    "icon": "./assets/app_2.png",
     "splash": {
-      "image": "./assets/img/splash.png",
+      "image": "./assets/img/40wall.png",
       "backgroundColor": "#000000"
     },
     "updates": {
@@ -14,8 +14,8 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.classait.client.fdmsupply"
+      "bundleIdentifier": "com.classait.client.tgghq",
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
