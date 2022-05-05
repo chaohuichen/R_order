@@ -44,7 +44,14 @@ const Item = memo(
               }}
               style={{ height: 120, width: 120, borderRadius: 5 }}
             />
-            <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 25,
+                fontWeight: 'bold',
+                flexWrap: 'wrap',
+              }}
+            >
               {order.name}
             </Text>
           </View>
