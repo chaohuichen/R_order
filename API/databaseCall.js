@@ -59,16 +59,21 @@ export const fetchData = (setDataFun, offset) => {
     .once('value', (snapshot) => {
       if (snapshot.exists()) {
         let productsData = []
-        for (let key in snapshot.val()) {
-          let title = key
-          let data = Object.values(snapshot.val()[`${title}`])
-          if (title && data) {
-            let payload = {
-              title,
-              data,
-            }
-            productsData.push(payload)
-          }
+        const data = snapshot.val()
+        for (let item in data) {
+          productsData.push({
+            category: item,
+            data: Object.values(data[`${item}`]).sort((a, b) => {
+              if (a.rank > b.rank) {
+                return 1
+              } else if (a.rank < b.rank) {
+                return -1
+              } else {
+                return 0
+              }
+              return 0
+            }),
+          })
         }
 
         setDataFun(productsData)

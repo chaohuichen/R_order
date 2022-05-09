@@ -93,7 +93,7 @@ const OrderHomePage = (props) => {
       <SectionList
         onScroll={(event) => actionButtonVisibilityHandler(event)}
         style={{ flex: 1 }}
-        renderTab={({ title, isActive }) => (
+        renderTab={({ category, isActive }) => (
           <View
             style={[
               {
@@ -113,7 +113,7 @@ const OrderHomePage = (props) => {
                 },
               ]}
             >
-              {title}
+              {category}
             </Text>
           </View>
         )}
@@ -123,7 +123,7 @@ const OrderHomePage = (props) => {
         sections={props.order || []}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
-        renderSectionHeader={({ section: { title } }) => (
+        renderSectionHeader={({ section: { category } }) => (
           <View
             style={{
               padding: 12,
@@ -138,7 +138,7 @@ const OrderHomePage = (props) => {
                 textTransform: 'capitalize',
               }}
             >
-              {title}
+              {category}
             </Text>
           </View>
         )}
@@ -154,7 +154,7 @@ const OrderHomePage = (props) => {
             width: '90%',
             alignSelf: 'center',
           },
-          // firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
+          firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
         ]}
       >
         <ConfirmBtn confirmOrder={confirmOrder} />
@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'black',
-    // paddingBottom: '20%',
   },
   titleContainer: {
     flexDirection: 'row',

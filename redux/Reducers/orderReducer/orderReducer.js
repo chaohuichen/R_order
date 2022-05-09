@@ -48,7 +48,7 @@ const orderReducer = produce((draft, action) => {
               return singleOrder
             }
           })
-          return { data: copySingleData, title: singleData.title }
+          return { data: copySingleData, category: singleData.category }
         } else {
           return singleData
         }
@@ -61,7 +61,7 @@ const orderReducer = produce((draft, action) => {
           data: singleOrder.data.map((singleItem) => {
             return { ...singleItem, count: 0 }
           }),
-          title: singleOrder.title,
+          category: singleOrder.category,
         }
       })
 

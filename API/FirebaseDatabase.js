@@ -4,6 +4,7 @@ import 'firebase/database'
 const firebaseConfig = {
   apiKey: 'AIzaSyCzkr4B5pYRliiSCjoVw4SBMWfAayLaC_4',
   authDomain: 'tgghq-orderapp.firebaseapp.com',
+  databaseURL: 'https://tgghq-orderapp-default-rtdb.firebaseio.com',
   projectId: 'tgghq-orderapp',
   storageBucket: 'tgghq-orderapp.appspot.com',
   messagingSenderId: '202819861824',

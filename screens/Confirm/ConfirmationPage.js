@@ -203,7 +203,7 @@ const ConfirmationPage = (props) => {
             <TouchableOpacity
               onPress={() => {
                 props.resetOrder()
-                setOrders([])
+                // setOrders([])
               }}
             >
               <Text style={{ color: 'red' }}>Clear All</Text>

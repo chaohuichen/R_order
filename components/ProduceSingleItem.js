@@ -38,18 +38,26 @@ const Item = memo(
             )}
             <Image
               source={{
-                uri: order.url
-                  ? order.url
-                  : 'https://fillupstore.s3.amazonaws.com/default_coffee_2.jpg',
+                uri:
+                  order.productImageUrl ||
+                  'https://fillupstore.s3.amazonaws.com/default_coffee_2.jpg',
               }}
-              style={{ height: 120, width: 120, borderRadius: 5 }}
+              style={{
+                height: 150,
+                width: 150,
+                borderRadius: 5,
+                resizeMode: 'stretch',
+              }}
             />
+
             <Text
               style={{
                 color: 'white',
                 fontSize: 25,
                 fontWeight: 'bold',
                 flexWrap: 'wrap',
+                width: '70%',
+                textAlign: 'center',
               }}
             >
               {order.name}
@@ -74,9 +82,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(211,211,211,0.5)',
-    paddingLeft: 15,
+    // paddingLeft: 15,
+    paddingHorizontal: 15,
     width: '100%',
-    height: 150,
+    height: 160,
   },
   actionBox: {
     marginRight: 10,
