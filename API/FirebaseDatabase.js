@@ -2,14 +2,14 @@ import firebase from 'firebase'
 import 'firebase/database'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyCzkr4B5pYRliiSCjoVw4SBMWfAayLaC_4',
-  authDomain: 'tgghq-orderapp.firebaseapp.com',
-  databaseURL: 'https://tgghq-orderapp-default-rtdb.firebaseio.com',
-  projectId: 'tgghq-orderapp',
-  storageBucket: 'tgghq-orderapp.appspot.com',
-  messagingSenderId: '202819861824',
-  appId: '1:202819861824:web:f7248ccdd9e9ef09804ea5',
-  measurementId: 'G-HQLQV84RTN',
+  apiKey: 'AIzaSyDISHrqDskVoRk4xNUY2FV2bxS9VHXlG7I',
+  authDomain: 'coffee-app-575a6.firebaseapp.com',
+  databaseURL: 'https://coffee-app-575a6-default-rtdb.firebaseio.com',
+  projectId: 'coffee-app-575a6',
+  storageBucket: 'coffee-app-575a6.appspot.com',
+  messagingSenderId: '307141550296',
+  appId: '1:307141550296:web:5dbbacaea107d99163b7ad',
+  measurementId: 'G-H24RX3REPS',
 }
 
 firebase.initializeApp(firebaseConfig)
