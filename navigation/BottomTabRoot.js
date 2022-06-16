@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { tabOptions } from './tabOptions'
-import { StyleSheet } from 'react-native'
 import OrderHomeScreen from '../screens/Orders/OrderHomeScreen'
 // PayHome
 

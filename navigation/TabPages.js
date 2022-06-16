@@ -8,11 +8,8 @@ import {
 } from './HeaderOptions'
 // CoffeeHome
 import OrderPage from '../screens/Orders/OrderHomePage'
-import OrderHistoryPage from '../screens/OrdersHistory/OrderHistoryPage'
 import ConfirmationPage from '../screens/Confirm/ConfirmationPage'
-import AddSupplyPage from '../screens/AddSupply/AddSupplyPage'
 import UserProfileHomePage from '../screens/UserProfile/UserProfileHomePage'
-import PdfViewer from '../screens/PdfViewer/PdfView'
 const Stack = createStackNavigator()
 
 export default ({ navigation, tabName }, props) => {
@@ -29,20 +26,6 @@ export default ({ navigation, tabName }, props) => {
           options={({ navigation }) => HeaderTitleAndIcon('TG GHQ', navigation)}
         />
       )}
-      {tabName === 'OrderHistoryPage' && (
-        <Stack.Screen
-          name="OrderHistoryPage"
-          component={OrderHistoryPage}
-          options={HeaderTitleOnly('Order Invoices')}
-        />
-      )}
-      {tabName === 'AddSupplyPage' && (
-        <Stack.Screen
-          name="AddSupplyPage"
-          component={AddSupplyPage}
-          options={HeaderTitleOnly('Flor De Mayo Supply')}
-        />
-      )}
 
       <Stack.Screen
         name="ConfirmationPage"
@@ -54,12 +37,6 @@ export default ({ navigation, tabName }, props) => {
         name="UserProfile"
         component={UserProfileHomePage}
         options={HeaderTitleOnly('Profile')}
-      />
-
-      <Stack.Screen
-        name="PdfView"
-        component={PdfViewer}
-        options={HeaderTitleOnly('PDF View')}
       />
     </Stack.Navigator>
   )

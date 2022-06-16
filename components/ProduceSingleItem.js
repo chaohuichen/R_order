@@ -7,12 +7,13 @@ import { Badge } from 'react-native-paper'
 
 const Item = memo(
   ({ order, removeItem, addItem }) => {
+    console.log(order.address)
     return (
       <TouchableWithoutFeedback onPress={addItem}>
         <Box style={styles.box}>
           <View
             style={{
-              flex: 1.5,
+              flex: 1,
               // flexWrap: 'wrap',
               flexDirection: 'row',
               paddingRight: 15,
@@ -39,29 +40,40 @@ const Item = memo(
             <Image
               source={{
                 uri:
-                  order.productImageUrl ||
+                  order.locationImgUrl ||
                   'https://fillupstore.s3.amazonaws.com/default_coffee_2.jpg',
               }}
               style={{
-                height: 150,
+                height: 130,
                 width: 150,
                 borderRadius: 5,
                 resizeMode: 'stretch',
               }}
             />
-
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 25,
-                fontWeight: 'bold',
-                flexWrap: 'wrap',
-                width: '70%',
-                textAlign: 'center',
-              }}
-            >
-              {order.name}
-            </Text>
+            <View style={{ width: '70%' }}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                  flexWrap: 'wrap',
+                  textAlign: 'center',
+                }}
+              >
+                {order.name}
+              </Text>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 12,
+                  flexWrap: 'wrap',
+                  textAlign: 'center',
+                  lineHeight: 30,
+                }}
+              >
+                {order.address}
+              </Text>
+            </View>
           </View>
         </Box>
       </TouchableWithoutFeedback>

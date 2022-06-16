@@ -21,7 +21,7 @@ const orderReducer = produce((draft, action) => {
       return action.order || []
     case REMOVE_ORDER: {
       const copyOrder = draft.map((singleData) => {
-        if (singleData.title === action.sectionTitle) {
+        if (singleData.category === action.sectionTitle) {
           const copySingleData = singleData.data.map((singleOrder) => {
             if (singleOrder.name === action.order.name) {
               const count =
@@ -31,7 +31,7 @@ const orderReducer = produce((draft, action) => {
               return singleOrder
             }
           })
-          return { data: copySingleData, title: singleData.title }
+          return { data: copySingleData, category: singleData.category }
         } else {
           return singleData
         }
@@ -40,7 +40,7 @@ const orderReducer = produce((draft, action) => {
     }
     case ADD_ORDER: {
       const copyOrder = draft.map((singleData) => {
-        if (singleData.title === action.sectionTitle) {
+        if (singleData.category === action.sectionTitle) {
           const copySingleData = singleData.data.map((singleOrder) => {
             if (singleOrder.name === action.order.name) {
               return { ...singleOrder, count: singleOrder.count + 1 }

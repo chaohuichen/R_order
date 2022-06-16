@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   StyleSheet,
   TouchableOpacity,
@@ -23,7 +23,9 @@ import * as Haptics from 'expo-haptics'
 import AppButton from '../../components/AppButton'
 import InstructionInput from './InstructionInput'
 import DismissKeyboard from '../../components/DismissKeyboard'
-
+import DateTimePicker from '@react-native-community/datetimepicker'
+import moment from 'moment'
+import { width } from 'styled-system'
 const locations = [
   'CHAIRMAN',
   'SECRETARY',
@@ -41,24 +43,31 @@ const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    // // map all the data from redux
-    // const copyData = []
-    // allOrder.forEach((singleOrder) => {
-    //   let copySingleOrder = []
-    //   // filter out / push in if any item count >0
-    //   singleOrder.data.forEach((singleItem) => {
-    //     if (singleItem.count > 0) {
-    //       copySingleOrder.push(singleItem)
-    //     }
-    //   })
-    //   //check the size of the items
-    //   if (copySingleOrder.length > 0) {
-    //     copyData.push({ data: copySingleOrder, title: singleOrder.title })
-    //   }
-    // })
-    // setOrders(copyData)
-  }, [])
+  useEffect(() => {}, [])
+  const [date, setDate] = useState(new Date())
+  const [mode, setMode] = useState('datetime')
+  const [show, setShow] = useState(false)
+
+  const onChange = (event, selectedDate) => {
+    // console.log(selectedDate)
+    const currentDate = selectedDate
+    console.log(moment(selectedDate).format('MM-DD-yy hh:mm'))
+    setShow(false)
+    setDate(currentDate)
+  }
+
+  const showMode = (currentMode) => {
+    setShow(true)
+    setMode(currentMode)
+  }
+
+  const showDatepicker = () => {
+    showMode('date')
+  }
+
+  const showTimepicker = () => {
+    showMode('time')
+  }
 
   const removeItem = (order, index, sectionTitle) => {
     props.removeOnOrder(order, index, sectionTitle)
@@ -130,6 +139,43 @@ const ConfirmationPage = (props) => {
       <DismissKeyboard>
         <ScrollView contentContainerStyle={styles.container}>
           <InstructionInput />
+          <View
+            style={{
+              backgroundColor: 'white',
+              flexDirection: 'row',
+              height: '10%',
+              width: '95%',
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+            }}
+          >
+            <Text
+              style={{
+                color: 'black',
+                fontWeight: 'bold',
+                fontSize: 20,
+                marginLeft: 15,
+              }}
+            >
+              Time:
+            </Text>
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              // modal
+              is24Hour={true}
+              onChange={onChange}
+              style={{
+                flex: 1,
+                marginRight: 15,
+              }}
+              textColor="red"
+              theme="light"
+            />
+          </View>
           {loading && (
             <Spinner
               color="black"
@@ -149,45 +195,7 @@ const ConfirmationPage = (props) => {
               }
             />
           )}
-          <View
-            style={{
-              padding: 10,
-              justifyContent: 'space-between',
-            }}
-          >
-            <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
-              Room Location:
-            </Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-              {locations.map((singleLocation, index) => {
-                return (
-                  <AppButton
-                    key={index}
-                    onPress={() => {
-                      props.changeLocation(singleLocation)
-                    }}
-                    style={{
-                      marginHorizontal: 5,
-                      marginVertical: 7,
-                      backgroundColor:
-                        props.location === singleLocation ? 'green' : '#ebecf0',
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color:
-                          props.location === singleLocation ? 'white' : 'black',
-                        fontWeight: 'bold',
-                        fontSize: 14,
-                      }}
-                    >
-                      {singleLocation}
-                    </Text>
-                  </AppButton>
-                )
-              })}
-            </View>
-          </View>
+
           <View
             style={{
               padding: 10,
@@ -217,14 +225,14 @@ const ConfirmationPage = (props) => {
                     key={index}
                     order={item}
                     removeItem={() => {
-                      removeItem(item, index, section.title)
+                      removeItem(item, index, section.category)
                       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
                     }}
                     addItem={() => {
-                      addItem(item, index, section.title)
+                      addItem(item, index, section.category)
                       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
                     }}
-                    sectionTitle={section.title}
+                    sectionTitle={section.category}
                   />
                 )
               }

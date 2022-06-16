@@ -79,12 +79,12 @@ const OrderHomePage = (props) => {
         key={index}
         order={item}
         removeItem={() => {
-          removeItem(item, index, section.title)
+          removeItem(item, index, section.category)
         }}
         addItem={() => {
-          addItem(item, index, section.title)
+          addItem(item, index, section.category)
         }}
-        sectionTitle={section.title}
+        sectionTitle={section.category}
       />
     )
   }
