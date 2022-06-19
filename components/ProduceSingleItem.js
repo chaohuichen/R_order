@@ -7,7 +7,6 @@ import { Badge } from 'react-native-paper'
 
 const Item = memo(
   ({ order, removeItem, addItem }) => {
-    console.log(order.address)
     return (
       <TouchableWithoutFeedback onPress={addItem}>
         <Box style={styles.box}>
@@ -50,11 +49,17 @@ const Item = memo(
                 resizeMode: 'stretch',
               }}
             />
-            <View style={{ width: '70%' }}>
+            <View
+              style={{
+                width: '60%',
+
+                marginHorizontal: 10,
+              }}
+            >
               <Text
                 style={{
                   color: 'white',
-                  fontSize: 25,
+                  fontSize: 22,
                   fontWeight: 'bold',
                   flexWrap: 'wrap',
                   textAlign: 'center',
@@ -68,7 +73,7 @@ const Item = memo(
                   fontSize: 12,
                   flexWrap: 'wrap',
                   textAlign: 'center',
-                  lineHeight: 30,
+                  // lineHeight: 0,
                 }}
               >
                 {order.address}

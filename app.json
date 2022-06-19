@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "TGGHQ Order",
-    "slug": "TGGHQOrder",
-    "version": "1.0.2",
+    "name": "ding table",
+    "slug": "ding",
+    "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/app_2.png",
+    "icon": "./assets/logo.png",
     "splash": {
-      "image": "./assets/img/40wall_1.png",
+      "image": "./assets/background.png",
       "backgroundColor": "#000000",
       "resizeMode": "cover"
     },
@@ -15,7 +15,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.classait.client.tgghq",
+      "bundleIdentifier": "com.classait.client.ding",
       "supportsTablet": false
     },
     "android": {

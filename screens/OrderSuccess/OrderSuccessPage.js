@@ -16,7 +16,7 @@ const OrderSuccessPage = ({ navigation }) => {
           backgroundColor: 'white',
         }}
       >
-        <Text style={{ fontSize: 200 }}>🎉</Text>
+        <Text style={{ fontSize: 200 }}>👌</Text>
       </View>
       <Text
         style={{
@@ -24,9 +24,10 @@ const OrderSuccessPage = ({ navigation }) => {
           color: 'white',
           fontWeight: 'bold',
           fontSize: 40,
+          textAlign: 'center',
         }}
       >
-        Order Successful
+        We received your reservation
       </Text>
 
       <View style={{ alignItems: 'center', marginTop: 50 }}>
@@ -42,7 +43,7 @@ const OrderSuccessPage = ({ navigation }) => {
             fontSize: 20,
           }}
         >
-          On my way to your room!
+          We are making the reservation now!
         </Text>
       </View>
       <Button
@@ -64,7 +65,7 @@ const OrderSuccessPage = ({ navigation }) => {
           })
         }
       >
-        Order More
+        Reserve More
       </Button>
     </SafeAreaView>
   )

@@ -43,7 +43,6 @@ const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {}, [])
   const [date, setDate] = useState(new Date())
   const [mode, setMode] = useState('datetime')
   const [show, setShow] = useState(false)
@@ -51,7 +50,6 @@ const ConfirmationPage = (props) => {
   const onChange = (event, selectedDate) => {
     // console.log(selectedDate)
     const currentDate = selectedDate
-    console.log(moment(selectedDate).format('MM-DD-yy hh:mm'))
     setShow(false)
     setDate(currentDate)
   }
@@ -76,8 +74,9 @@ const ConfirmationPage = (props) => {
     props.addToOrder(order, index, sectionTitle)
   }
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     const copyData = []
+
     allOrder.forEach((singleOrder) => {
       let copySingleOrder = []
       // filter out / push in if any item count >0
@@ -88,9 +87,11 @@ const ConfirmationPage = (props) => {
       })
       //check the size of the items
       if (copySingleOrder.length > 0) {
-        copyData.push({ data: copySingleOrder, title: singleOrder.title })
+        copyData.push({ data: copySingleOrder, title: singleOrder.category })
       }
     })
+    // finish fiter
+    // .....................................................................
     if (copyData.length === 0) {
       Alert.alert(
         'Oops',
@@ -102,12 +103,14 @@ const ConfirmationPage = (props) => {
           },
         ]
       )
+    } else if (moment().isAfter(moment(date))) {
+      Alert.alert('Wrong time frame', 'Please select a time is in the future')
     } else {
       setLoading(true)
-      Api.post('/tgghqOrder/messages', {
+      Api.post('/twilios/restaurantbooking', {
         cart: copyData,
-        location: props.location,
         userNotes: props.userInsturction,
+        bookingTime: moment(date).format('MM/DD/yy hh:mm A'),
       })
         .then((res) => {
           //reset cart and reset note, location?
@@ -159,7 +162,7 @@ const ConfirmationPage = (props) => {
                 marginLeft: 15,
               }}
             >
-              Time:
+              Reserve Time:
             </Text>
             <DateTimePicker
               testID="dateTimePicker"
@@ -174,6 +177,7 @@ const ConfirmationPage = (props) => {
               }}
               textColor="red"
               theme="light"
+              minuteInterval={15}
             />
           </View>
           {loading && (
@@ -198,6 +202,7 @@ const ConfirmationPage = (props) => {
 
           <View
             style={{
+              marginTop: 10,
               padding: 10,
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -206,7 +211,7 @@ const ConfirmationPage = (props) => {
           >
             <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
               {' '}
-              Your Orders:{' '}
+              Your Reservations:{' '}
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -241,7 +246,7 @@ const ConfirmationPage = (props) => {
         </ScrollView>
       </DismissKeyboard>
       <TouchableOpacity style={styles.loginButton} onPress={handlePlaceOrder}>
-        <Text style={styles.loginText}>Place Order</Text>
+        <Text style={styles.loginText}>Confirm</Text>
       </TouchableOpacity>
     </>
   )
@@ -267,7 +272,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
   },
   selectionButtonView: {

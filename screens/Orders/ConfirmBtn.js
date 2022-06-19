@@ -47,7 +47,7 @@ const ConfirmBtn = ({ confirmOrder, order }) => {
             top: 20,
           }}
         >
-          {orderNum !== 0 && (
+          {/* {orderNum !== 0 && (
             <Badge
               size={45}
               style={{
@@ -69,10 +69,10 @@ const ConfirmBtn = ({ confirmOrder, order }) => {
             style={{
               color: 'white',
             }}
-          />
+          /> */}
         </View>
 
-        <Text style={styles.orderConfirmText}>Confirm Order</Text>
+        <Text style={styles.orderConfirmText}>Make Reservation</Text>
       </View>
     </TouchableWithoutFeedback>
   )

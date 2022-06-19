@@ -23,7 +23,7 @@ export default ({ navigation, tabName }, props) => {
         <Stack.Screen
           name="OrderPage"
           component={OrderPage}
-          options={({ navigation }) => HeaderTitleAndIcon('TG GHQ', navigation)}
+          options={({ navigation }) => HeaderTitleAndIcon('订边度', navigation)}
         />
       )}
 
