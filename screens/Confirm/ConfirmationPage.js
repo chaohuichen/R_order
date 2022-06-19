@@ -25,19 +25,7 @@ import InstructionInput from './InstructionInput'
 import DismissKeyboard from '../../components/DismissKeyboard'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
-import { width } from 'styled-system'
-const locations = [
-  'CHAIRMAN',
-  'SECRETARY',
-  'DIRECTOR',
-  'CONFERENCE',
-  'LEGAL',
-  'MEETING',
-  'CEO',
-  'CONSULTANT',
-  'IT',
-  'ACCOUNTANT',
-]
+import { fetchReceviers } from '../../API/databaseCall'
 
 const ConfirmationPage = (props) => {
   const { allOrder } = props
@@ -46,9 +34,13 @@ const ConfirmationPage = (props) => {
   const [date, setDate] = useState(new Date())
   const [mode, setMode] = useState('datetime')
   const [show, setShow] = useState(false)
+  const [receivers, setReceivers] = useState([])
+  const [selectedRec, setSelectedRec] = useState([])
+  useEffect(async () => {
+    fetchReceviers(setReceivers)
+  }, [])
 
   const onChange = (event, selectedDate) => {
-    // console.log(selectedDate)
     const currentDate = selectedDate
     setShow(false)
     setDate(currentDate)
@@ -136,12 +128,66 @@ const ConfirmationPage = (props) => {
         })
     }
   }
-
+  const handleReceiverChange = (receiver) => {
+    const isSelectedReceiver = isSelected(receiver.phoneNumber)
+    if (isSelectedReceiver) {
+      setSelectedRec(
+        selectedRec.filter((singleRec) => singleRec !== receiver.phoneNumber)
+      )
+    } else {
+      setSelectedRec([receiver.phoneNumber, ...selectedRec])
+    }
+  }
+  const isSelected = (receiver) =>
+    selectedRec.some((singleReceiver) => singleReceiver === receiver)
   return (
     <>
       <DismissKeyboard>
         <ScrollView contentContainerStyle={styles.container}>
+          <View
+            style={{
+              padding: 10,
+              justifyContent: 'space-between',
+            }}
+          >
+            <Text style={{ fontSize: 25, fontWeight: 'bold', color: 'white' }}>
+              Receivers:
+            </Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              {receivers.map((singleReceiver, index) => {
+                return (
+                  <AppButton
+                    key={index}
+                    onPress={() => {
+                      handleReceiverChange(singleReceiver)
+                    }}
+                    style={{
+                      marginHorizontal: 5,
+                      marginVertical: 7,
+                      backgroundColor: isSelected(singleReceiver.phoneNumber)
+                        ? 'green'
+                        : '#ebecf0',
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: isSelected(singleReceiver.phoneNumber)
+                          ? 'white'
+                          : 'black',
+                        fontWeight: 'bold',
+                        fontSize: 14,
+                        textTransform: 'capitalize',
+                      }}
+                    >
+                      {singleReceiver.name}
+                    </Text>
+                  </AppButton>
+                )
+              })}
+            </View>
+          </View>
           <InstructionInput />
+
           <View
             style={{
               backgroundColor: 'white',

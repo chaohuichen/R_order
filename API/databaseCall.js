@@ -109,3 +109,16 @@ export const getUsers = async () => {
     console.log(err)
   }
 }
+
+export const fetchReceviers = async (setReceivers) => {
+  try {
+    const ref = db.ref('/receivers/')
+    const result = await ref.once('value')
+
+    if (result.exists()) {
+      setReceivers(Array.from(result.val()).filter((val) => val !== undefined))
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
