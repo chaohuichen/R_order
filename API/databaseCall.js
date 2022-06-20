@@ -54,16 +54,22 @@ export const setSupplyToDatabase = (payload, category) => {
 export const fetchData = (setDataFun, offset) => {
   const ting = offset || 1
   db.ref('/locations')
-    // .orderByKey()
-    // .limitToFirst(ting)
     .once('value', (snapshot) => {
       if (snapshot.exists()) {
         let productsData = []
         const data = snapshot.val()
+
         for (let item in data) {
+          // console.log(data[`${item}`])
+
+          let dataObj = data[`${item}`]
+          let dataInObj = Object.values(dataObj.ResData).filter(
+            (singleEle) => singleEle !== undefined
+          )
+
           productsData.push({
             category: item,
-            data: Object.values(data[`${item}`]).sort((a, b) => {
+            data: dataInObj.sort((a, b) => {
               if (a.rank > b.rank) {
                 return 1
               } else if (a.rank < b.rank) {
@@ -71,10 +77,19 @@ export const fetchData = (setDataFun, offset) => {
               } else {
                 return 0
               }
-              return 0
             }),
+            rank: dataObj.rank,
           })
         }
+        productsData.sort((a, b) => {
+          if (a.rank > b.rank) {
+            return 1
+          } else if (a.rank < b.rank) {
+            return -1
+          } else {
+            return 0
+          }
+        })
 
         setDataFun(productsData)
       }
@@ -110,13 +125,21 @@ export const getUsers = async () => {
   }
 }
 
-export const fetchReceviers = async (setReceivers) => {
+export const fetchReceviers = async (setReceivers, handleReceiverChange) => {
   try {
     const ref = db.ref('/receivers/')
     const result = await ref.once('value')
 
     if (result.exists()) {
-      setReceivers(Array.from(result.val()).filter((val) => val !== undefined))
+      const receiversArr = Array.from(result.val()).filter(
+        (val) => val !== undefined
+      )
+      receiversArr.forEach((singleRec) => {
+        if (singleRec.selected) {
+          handleReceiverChange(singleRec)
+        }
+      })
+      setReceivers(receiversArr)
     }
   } catch (err) {
     console.log(err)

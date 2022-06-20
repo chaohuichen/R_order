@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'black',
+    paddingBottom: '20%',
   },
   titleContainer: {
     flexDirection: 'row',

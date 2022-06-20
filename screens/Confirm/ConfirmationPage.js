@@ -37,7 +37,7 @@ const ConfirmationPage = (props) => {
   const [receivers, setReceivers] = useState([])
   const [selectedRec, setSelectedRec] = useState([])
   useEffect(async () => {
-    fetchReceviers(setReceivers)
+    fetchReceviers(setReceivers, handleReceiverChange)
   }, [])
 
   const onChange = (event, selectedDate) => {
@@ -146,7 +146,8 @@ const ConfirmationPage = (props) => {
         <ScrollView contentContainerStyle={styles.container}>
           <View
             style={{
-              padding: 10,
+              paddingHorizontal: 10,
+              paddingTop: 10,
               justifyContent: 'space-between',
             }}
           >
@@ -301,7 +302,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'black',
-    paddingBottom: '25%',
+    paddingBottom: '40%',
   },
   loginButton: {
     position: 'absolute',
