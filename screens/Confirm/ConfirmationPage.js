@@ -95,6 +95,8 @@ const ConfirmationPage = (props) => {
           },
         ]
       )
+    } else if (selectedRec[0] === undefined) {
+      Alert.alert('Empty Receiver', 'Please choose a receiver')
     } else if (moment().isAfter(moment(date))) {
       Alert.alert('Wrong time frame', 'Please select a time is in the future')
     } else {
@@ -103,6 +105,7 @@ const ConfirmationPage = (props) => {
         cart: copyData,
         userNotes: props.userInsturction,
         bookingTime: moment(date).format('MM/DD/yy hh:mm A'),
+        selectedReceivers: selectedRec,
       })
         .then((res) => {
           //reset cart and reset note, location?

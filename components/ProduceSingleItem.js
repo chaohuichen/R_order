@@ -4,7 +4,6 @@ import { Box } from 'native-base'
 import AppIcons from './AppIcons'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { Badge } from 'react-native-paper'
-
 const Item = memo(
   ({ order, removeItem, addItem }) => {
     return (
@@ -53,7 +52,6 @@ const Item = memo(
           <View
             style={{
               width: '60%',
-
               marginHorizontal: 10,
             }}
           >
@@ -80,37 +78,59 @@ const Item = memo(
             </Text>
 
             <View style={styles.actionBox}>
-              <AppIcons
-                type="AntDesign"
-                name="minus"
-                size={25}
-                color="white"
-                style={{ alignSelf: 'center' }}
-                onPress={removeItem}
-              />
-
-              <View
-                style={{
-                  width: '30%',
-                  alignItems: 'center',
-                }}
-              >
-                <Text
-                  bold
-                  style={{ color: 'white', fontSize: 20, letterSpacing: 0.5 }}
+              {order.count === 0 ? (
+                <TouchableWithoutFeedback
+                  style={{ paddingVertical: 4 }}
+                  onPress={addItem}
                 >
-                  {order.count}
-                </Text>
-              </View>
+                  <Text
+                    style={{
+                      color: 'white',
+                      textTransform: 'capitalize',
+                    }}
+                  >
+                    add to reserve
+                  </Text>
+                </TouchableWithoutFeedback>
+              ) : (
+                <>
+                  <AppIcons
+                    type="AntDesign"
+                    name="minus"
+                    size={25}
+                    color="white"
+                    style={{ alignSelf: 'center' }}
+                    onPress={removeItem}
+                  />
 
-              <AppIcons
-                type="AntDesign"
-                name="plus"
-                size={25}
-                color="white"
-                style={{ alignSelf: 'center' }}
-                onPress={addItem}
-              />
+                  <View
+                    style={{
+                      width: '30%',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text
+                      bold
+                      style={{
+                        color: 'white',
+                        fontSize: 20,
+                        letterSpacing: 0.5,
+                      }}
+                    >
+                      {order.count}
+                    </Text>
+                  </View>
+
+                  <AppIcons
+                    type="AntDesign"
+                    name="plus"
+                    size={25}
+                    color="white"
+                    style={{ alignSelf: 'center' }}
+                    onPress={addItem}
+                  />
+                </>
+              )}
             </View>
           </View>
         </View>
@@ -140,12 +160,12 @@ const styles = StyleSheet.create({
   actionBox: {
     marginTop: 20,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     borderColor: 'white',
     borderWidth: 1,
     borderRadius: 10,
-    marginHorizontal: 20,
+    marginHorizontal: 30,
     paddingVertical: 5,
   },
   orderTitle: {
