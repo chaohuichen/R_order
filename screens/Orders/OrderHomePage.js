@@ -127,7 +127,7 @@ const OrderHomePage = (props) => {
         onEndReachedThreshold={0}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: '5%',
+          paddingBottom: '35%',
         }}
         sections={props.order || []}
         keyExtractor={(item, index) => item + index}

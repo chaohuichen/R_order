@@ -17,7 +17,8 @@
     "ios": {
       "bundleIdentifier": "com.classait.client.ding",
       "supportsTablet": false,
-      "backgroundColor": "#000000"
+      "backgroundColor": "#000000",
+      "buildNumber": "1.0.2"
     },
     "android": {
       "adaptiveIcon": {
