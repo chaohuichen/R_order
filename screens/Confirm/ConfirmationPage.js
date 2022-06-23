@@ -30,8 +30,8 @@ import { fetchReceviers } from '../../API/databaseCall'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [loading, setLoading] = useState(false)
-
-  const [date, setDate] = useState(new Date())
+  //set one hour ahead
+  const [date, setDate] = useState(new Date(Date.now() + 1 * (60 * 60 * 1000)))
   const [mode, setMode] = useState('datetime')
   const [show, setShow] = useState(false)
   const [receivers, setReceivers] = useState([])
@@ -49,14 +49,6 @@ const ConfirmationPage = (props) => {
   const showMode = (currentMode) => {
     setShow(true)
     setMode(currentMode)
-  }
-
-  const showDatepicker = () => {
-    showMode('date')
-  }
-
-  const showTimepicker = () => {
-    showMode('time')
   }
 
   const removeItem = (order, index, sectionTitle) => {

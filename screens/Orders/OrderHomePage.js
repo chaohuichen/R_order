@@ -10,7 +10,7 @@ import {
 import { connect } from 'react-redux'
 import ProduceSingleItem from '../../components/ProduceSingleItem'
 import { fetchData } from '../../API/databaseCall'
-import SectionList from 'react-native-tabs-section-list'
+import SectionList from '../../components/AppSectionList'
 import ConfirmBtn from './ConfirmBtn'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
 import * as Haptics from 'expo-haptics'
@@ -33,11 +33,11 @@ const OrderHomePage = (props) => {
   const [firstBoxPosition, setFirstBoxPosition] = useState('down')
   const [offset, setOffset] = useState(0)
 
-  // const onRefresh = useCallback(() => {
-  //   setRefreshing(true)
-  //   fetchData(props.fetchData)
-  //   wait(2000).then(() => setRefreshing(false))
-  // }, [])
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    fetchData(props.fetchData)
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
 
   useEffect(() => {
     fetchData(props.fetchData)
@@ -92,7 +92,14 @@ const OrderHomePage = (props) => {
     <View style={styles.container}>
       <SectionList
         onScroll={(event) => actionButtonVisibilityHandler(event)}
-        style={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#fff"
+            titleColor="#fff"
+          />
+        }
         renderTab={({ category, isActive }) => (
           <View
             style={[
@@ -119,7 +126,9 @@ const OrderHomePage = (props) => {
         )}
         onEndReachedThreshold={0}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: '25%' }}
+        contentContainerStyle={{
+          paddingBottom: '5%',
+        }}
         sections={props.order || []}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
@@ -167,7 +176,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'black',
-    paddingBottom: '20%',
   },
   titleContainer: {
     flexDirection: 'row',
