@@ -128,5 +128,3 @@ export default class TabBar extends React.PureComponent<IProps, any> {
     )
   }
 }
-
-// [{ width: WindowWidth }, tabBarStyle]
