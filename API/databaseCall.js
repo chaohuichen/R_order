@@ -1,5 +1,9 @@
 import { db } from './FirebaseDatabase'
+import axios from 'axios'
+const api_key =
+  'lchB_tLREOYMayRaMKrDlFKQIWgEAg0d1y_Nf5kxCG_B6vuptHAXv2E-OA9G7Mw1KBqZ4ycq8Kv3d2RwMUUXxVToUQXgx625w_WkXSWQf7WHhLX6vhbpPUU8fKlwYHYx'
 
+const yelpUrl = 'https://api.yelp.com/v3/businesses'
 /*
 param: userUid, phone number
 userId:String
@@ -54,7 +58,7 @@ export const setSupplyToDatabase = (payload, category) => {
 export const fetchData = (setDataFun, offset) => {
   const ting = offset || 1
   db.ref('/locations')
-    .once('value', (snapshot) => {
+    .once('value', async (snapshot) => {
       if (snapshot.exists()) {
         let productsData = []
         const data = snapshot.val()
@@ -66,6 +70,28 @@ export const fetchData = (setDataFun, offset) => {
           let dataInObj = Object.values(dataObj.ResData).filter(
             (singleEle) => singleEle !== undefined
           )
+          // console.log(dataObj)
+          //call yelp api
+
+          const config = {
+            headers: {
+              Authorization: `Bearer ${api_key}`,
+            },
+            params: {
+              location: 'NYC',
+            },
+          }
+          // console.log('hello', dataObj)
+          for (let singleData of dataObj.ResData) {
+            if (singleData.yelpID) {
+              const response = await axios.get(
+                `${yelpUrl}/${singleData.yelpID}`,
+                config
+              )
+              singleData.is_closed = response.data.is_closed
+              singleData.hours = response.data.hours
+            }
+          }
 
           productsData.push({
             category: item,
@@ -90,6 +116,7 @@ export const fetchData = (setDataFun, offset) => {
             return 0
           }
         })
+        // call the yelp
 
         setDataFun(productsData)
       }

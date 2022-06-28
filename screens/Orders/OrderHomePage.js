@@ -14,7 +14,7 @@ import SectionList from '../../components/AppSectionList'
 import ConfirmBtn from './ConfirmBtn'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
 import * as Haptics from 'expo-haptics'
-
+import axios from 'axios'
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -32,7 +32,32 @@ const OrderHomePage = (props) => {
   const [loading, setLoading] = useState(false)
   const [firstBoxPosition, setFirstBoxPosition] = useState('down')
   const [offset, setOffset] = useState(0)
+  const api_key =
+    'lchB_tLREOYMayRaMKrDlFKQIWgEAg0d1y_Nf5kxCG_B6vuptHAXv2E-OA9G7Mw1KBqZ4ycq8Kv3d2RwMUUXxVToUQXgx625w_WkXSWQf7WHhLX6vhbpPUU8fKlwYHYx'
 
+  useEffect(() => {
+    d()
+  }, [])
+  const d = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${api_key}`,
+        },
+        params: {
+          term: 'Flor De Mayo',
+          location: 'NYC',
+        },
+      }
+      const response = await axios.get(
+        'https://api.yelp.com/v3/businesses/H1jops1lmuhrq9lP7lEGJQ',
+        config
+      )
+      // console.log(response.data.hours, '......')
+    } catch (err) {
+      console.log(JSON.stringify(err))
+    }
+  }
   const onRefresh = useCallback(() => {
     setRefreshing(true)
     fetchData(props.fetchData)

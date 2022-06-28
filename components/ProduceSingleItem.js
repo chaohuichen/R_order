@@ -76,7 +76,9 @@ const Item = memo(
             >
               {order.address}
             </Text>
-
+            <Text style={{ color: 'white' }}>
+              {JSON.stringify(order.hours)}
+            </Text>
             <View style={styles.actionBox}>
               {order.count === 0 ? (
                 <TouchableWithoutFeedback
