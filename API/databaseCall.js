@@ -82,16 +82,16 @@ export const fetchData = (setDataFun, offset) => {
             },
           }
           // console.log('hello', dataObj)
-          for (let singleData of dataObj.ResData) {
-            if (singleData.yelpID) {
-              const response = await axios.get(
-                `${yelpUrl}/${singleData.yelpID}`,
-                config
-              )
-              singleData.is_closed = response.data.is_closed
-              singleData.hours = response.data.hours
-            }
-          }
+          // for (let singleData of dataObj.ResData) {
+          //   if (singleData.yelpID) {
+          //     const response = await axios.get(
+          //       `${yelpUrl}/${singleData.yelpID}`,
+          //       config
+          //     )
+          //     singleData.is_closed = response.data.is_closed
+          //     singleData.hours = response.data.hours
+          //   }
+          // }
 
           productsData.push({
             category: item,

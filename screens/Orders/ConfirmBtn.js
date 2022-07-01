@@ -38,16 +38,41 @@ const ConfirmBtn = ({ confirmOrder, order }) => {
   }
   return (
     <TouchableWithoutFeedback onPress={handleConfirm}>
-      <View style={styles.confirmButton}>
-        <View
-          style={{
-            color: 'white',
-            position: 'absolute',
-            left: 20,
-            top: 20,
-          }}
-        >
-          {/* {orderNum !== 0 && (
+      {/* <View style={styles.confirmButton}> */}
+      <Text style={styles.orderConfirmText}>OK</Text>
+      {/* </View> */}
+    </TouchableWithoutFeedback>
+  )
+}
+
+const styles = StyleSheet.create({
+  confirmButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 70,
+    flexGrow: 1,
+    flexDirection: 'row',
+    width: 10,
+    backgroundColor: '#BEAC74',
+    borderRadius: 25,
+    marginBottom: 20,
+  },
+  orderConfirmText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 25,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+  },
+})
+const mapState = (state) => {
+  return {
+    order: state.order,
+  }
+}
+export default connect(mapState, null)(ConfirmBtn)
+{
+  /* {orderNum !== 0 && (
             <Badge
               size={45}
               style={{
@@ -69,38 +94,5 @@ const ConfirmBtn = ({ confirmOrder, order }) => {
             style={{
               color: 'white',
             }}
-          /> */}
-        </View>
-
-        <Text style={styles.orderConfirmText}>Make Reservation</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  )
+          /> */
 }
-
-const styles = StyleSheet.create({
-  confirmButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 70,
-    flexGrow: 1,
-    flexDirection: 'row',
-    width: 90,
-    backgroundColor: '#BEAC74',
-    borderRadius: 25,
-    marginBottom: 20,
-  },
-  orderConfirmText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 25,
-    fontWeight: 'bold',
-    textTransform: 'capitalize',
-  },
-})
-const mapState = (state) => {
-  return {
-    order: state.order,
-  }
-}
-export default connect(mapState, null)(ConfirmBtn)

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { StyleSheet, View, Text, RefreshControl } from 'react-native'
 import { removeUser } from '../../redux'
 import {
   getOrder,
@@ -12,9 +11,23 @@ import ProduceSingleItem from '../../components/ProduceSingleItem'
 import { fetchData } from '../../API/databaseCall'
 import SectionList from '../../components/AppSectionList'
 import ConfirmBtn from './ConfirmBtn'
-import { LayoutAnimation, Platform, UIManager } from 'react-native'
+import {
+  LayoutAnimation,
+  Platform,
+  UIManager,
+  StyleSheet,
+  View,
+  Text,
+  RefreshControl,
+  KeyboardAvoidingView,
+  Button,
+} from 'react-native'
 import * as Haptics from 'expo-haptics'
 import axios from 'axios'
+
+import { useHeaderHeight } from '@react-navigation/elements'
+import Constants from 'expo-constants'
+import InstructionInput from '../Confirm/InstructionInput'
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -35,29 +48,31 @@ const OrderHomePage = (props) => {
   const api_key =
     'lchB_tLREOYMayRaMKrDlFKQIWgEAg0d1y_Nf5kxCG_B6vuptHAXv2E-OA9G7Mw1KBqZ4ycq8Kv3d2RwMUUXxVToUQXgx625w_WkXSWQf7WHhLX6vhbpPUU8fKlwYHYx'
 
+  const headerHeight = useHeaderHeight()
+
   useEffect(() => {
-    d()
+    // d()
   }, [])
-  const d = async () => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${api_key}`,
-        },
-        params: {
-          term: 'Flor De Mayo',
-          location: 'NYC',
-        },
-      }
-      const response = await axios.get(
-        'https://api.yelp.com/v3/businesses/H1jops1lmuhrq9lP7lEGJQ',
-        config
-      )
-      // console.log(response.data.hours, '......')
-    } catch (err) {
-      console.log(JSON.stringify(err))
-    }
-  }
+  // const d = async () => {
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         Authorization: `Bearer ${api_key}`,
+  //       },
+  //       params: {
+  //         term: 'Flor De Mayo',
+  //         location: 'NYC',
+  //       },
+  //     }
+  //     const response = await axios.get(
+  //       'https://api.yelp.com/v3/businesses/H1jops1lmuhrq9lP7lEGJQ',
+  //       config
+  //     )
+  //     // console.log(response.data.hours, '......')
+  //   } catch (err) {
+  //     console.log(JSON.stringify(err))
+  //   }
+  // }
   const onRefresh = useCallback(() => {
     setRefreshing(true)
     fetchData(props.fetchData)
@@ -85,6 +100,8 @@ const OrderHomePage = (props) => {
     } else {
       setFirstBoxPosition('down')
     }
+
+    onScroll(event)
   }
 
   const confirmOrder = () => {
@@ -179,20 +196,37 @@ const OrderHomePage = (props) => {
         stickySectionHeadersEnabled={false}
       />
 
-      <View
-        style={[
-          {
-            flexDirection: 'row',
-            position: 'absolute',
-            bottom: 0,
-            width: '90%',
-            alignSelf: 'center',
-          },
-          firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
-        ]}
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={headerHeight - 10}
+        // keyboardVerticalOffset={91}
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          flexGrow: 1,
+        }}
+        behavior="position"
       >
-        <ConfirmBtn confirmOrder={confirmOrder} />
-      </View>
+        <InstructionInput />
+        {/* <View
+          style={[
+            {
+              flexDirection: 'row',
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              width: '20%',
+              alignSelf: 'right',
+            },
+            // firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
+          ]}
+        > */}
+
+        {/* <ConfirmBtn confirmOrder={confirmOrder} /> */}
+        {/* </View> */}
+      </KeyboardAvoidingView>
     </View>
   )
 }
@@ -217,7 +251,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-
+  container: {
+    flexGrow: 1,
+  },
+  fabStyle: {
+    bottom: 16,
+    right: 16,
+    position: 'absolute',
+  },
   moveDown: {
     bottom: -100,
   },
