@@ -1,9 +1,16 @@
 import React, { memo } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from 'react-native'
 import { Box } from 'native-base'
 import AppIcons from './AppIcons'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { Badge } from 'react-native-paper'
+import { Button } from 'react-native-paper'
 const Item = memo(
   ({ order, removeItem, addItem }) => {
     return (
@@ -77,61 +84,61 @@ const Item = memo(
               {order.address}
             </Text>
 
-            <View style={styles.actionBox}>
-              {order.count === 0 ? (
-                <TouchableWithoutFeedback
-                  style={{ paddingVertical: 4 }}
-                  onPress={addItem}
+            {order.count === 0 ? (
+              <Button
+                mode="outlined"
+                style={styles.buttonBox}
+                onPress={addItem}
+                title="add"
+              >
+                <Text
+                  style={{
+                    color: 'white',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  add to reserve
+                </Text>
+              </Button>
+            ) : (
+              <View style={[styles.buttonBox, styles.actionBox]}>
+                <AppIcons
+                  type="AntDesign"
+                  name="minus"
+                  size={25}
+                  color="white"
+                  style={{ alignSelf: 'center' }}
+                  onPress={removeItem}
+                />
+
+                <View
+                  style={{
+                    width: '30%',
+                    alignItems: 'center',
+                  }}
                 >
                   <Text
+                    bold
                     style={{
                       color: 'white',
-                      textTransform: 'capitalize',
+                      fontSize: 20,
+                      letterSpacing: 0.5,
                     }}
                   >
-                    add to reserve
+                    {order.count}
                   </Text>
-                </TouchableWithoutFeedback>
-              ) : (
-                <>
-                  <AppIcons
-                    type="AntDesign"
-                    name="minus"
-                    size={25}
-                    color="white"
-                    style={{ alignSelf: 'center' }}
-                    onPress={removeItem}
-                  />
+                </View>
 
-                  <View
-                    style={{
-                      width: '30%',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text
-                      bold
-                      style={{
-                        color: 'white',
-                        fontSize: 20,
-                        letterSpacing: 0.5,
-                      }}
-                    >
-                      {order.count}
-                    </Text>
-                  </View>
-
-                  <AppIcons
-                    type="AntDesign"
-                    name="plus"
-                    size={25}
-                    color="white"
-                    style={{ alignSelf: 'center' }}
-                    onPress={addItem}
-                  />
-                </>
-              )}
-            </View>
+                <AppIcons
+                  type="AntDesign"
+                  name="plus"
+                  size={25}
+                  color="white"
+                  style={{ alignSelf: 'center' }}
+                  onPress={addItem}
+                />
+              </View>
+            )}
           </View>
         </View>
       </Box>
@@ -152,20 +159,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(211,211,211,0.5)',
-    // paddingLeft: 15,
     paddingHorizontal: 15,
     width: '100%',
     height: 160,
   },
-  actionBox: {
+  buttonBox: {
+    paddingVertical: 0,
     marginTop: 20,
+    borderRadius: 10,
+    marginHorizontal: 30,
+    borderColor: 'white',
+    borderWidth: 1,
+  },
+  actionBox: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 10,
-    marginHorizontal: 30,
     paddingVertical: 5,
   },
   orderTitle: {

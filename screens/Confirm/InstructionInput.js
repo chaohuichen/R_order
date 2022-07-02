@@ -1,21 +1,26 @@
 import * as React from 'react'
 import { TextInput } from 'react-native-paper'
-import { View, Text, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { editInstruction } from '../../redux'
 import { Button } from 'react-native-paper'
-
-const InstructionInput = ({ instruction, changeInstruction }) => {
-  const [text, setText] = React.useState('')
-
+import AppIcons from '../../components/AppIcons'
+const InstructionInput = ({
+  instruction,
+  changeInstruction,
+  handlePlaceOrder,
+}) => {
   return (
     <View
       style={{
         flexDirection: 'row',
-        backgroundColor: '#BEAC74',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 30,
+        backgroundColor: 'black',
+        alignItems: 'space-between',
+        alignContent: 'space-between',
+        // justifyContent: 'space-',
+        flex: 1,
+        width: '100%',
+        paddingBottom: 40,
       }}
     >
       <TextInput
@@ -23,39 +28,55 @@ const InstructionInput = ({ instruction, changeInstruction }) => {
         dense
         activeUnderlineColor="black"
         activeOutlineColor="#BEAC74"
-        style={{
-          marginLeft: 5,
-          borderColor: 'black',
-          // borderRadius: 5,
-          bottom: 0,
-
-          flex: 1,
-          position: 'fixed',
-        }}
+        style={[styles.userInput, { position: 'fixed' }]}
         placeholder="notes"
         value={instruction}
         onChangeText={(text) => changeInstruction(text)}
       />
+      {instruction !== '' && (
+        <AppIcons
+          type="AntDesign"
+          name="closecircle"
+          size={25}
+          color="lightgray"
+          onPress={() => changeInstruction('')}
+          style={{ position: 'absolute', right: '20%', bottom: 48, zIndex: 1 }}
+        />
+      )}
       <Button
         title="OK"
         color="white"
-        style={{
-          borderRadius: 0,
-          alignSelf: 'center',
-          backgroundColor: 'black',
-          height: 40,
-          paddinghorizontal: 20,
-          textColor: 'red',
-          marginRight: 5,
-          marginTop: 5,
-        }}
+        style={styles.okBtn}
+        labelStyle={{ marginTop: 10 }}
+        onPress={handlePlaceOrder}
       >
-        OK
+        Ok
       </Button>
     </View>
   )
 }
 
+const styles = StyleSheet.create({
+  okBtn: {
+    borderRadius: 5,
+    alignSelf: 'center',
+    backgroundColor: '#BEAC74',
+    height: 42,
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 5,
+    borderWidth: 1,
+    borderColor: '#BEAC74',
+    marginRight: 5,
+  },
+  userInput: {
+    borderColor: 'black',
+    bottom: 0,
+    flex: 1,
+    borderWidth: 0,
+    marginRight: 5,
+  },
+})
 const mapState = (state) => {
   return {
     instruction: state.instruction,

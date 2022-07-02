@@ -226,7 +226,6 @@ const ConfirmationPage = (props) => {
             <Spinner
               color="black"
               visible={true}
-              // textContent={'signing in....'}
               customIndicator={
                 <View
                   style={{
