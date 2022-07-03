@@ -389,7 +389,7 @@ const OrderHomePage = (props) => {
       />
 
       <KeyboardAvoidingView
-        keyboardVerticalOffset={headerHeight - 35}
+        keyboardVerticalOffset={headerHeight - 45}
         style={[
           styles.keyboardAvoidInput,
           firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { TextInput } from 'react-native-paper'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
@@ -10,6 +10,7 @@ const InstructionInput = ({
   changeInstruction,
   handlePlaceOrder,
 }) => {
+  const [foucsInput, setFoucs] = useState(false)
   return (
     <View
       style={{
@@ -20,7 +21,7 @@ const InstructionInput = ({
         // justifyContent: 'space-',
         flex: 1,
         width: '100%',
-        paddingBottom: 40,
+        paddingBottom: 50,
       }}
     >
       <TextInput
@@ -32,15 +33,26 @@ const InstructionInput = ({
         placeholder="notes"
         value={instruction}
         onChangeText={(text) => changeInstruction(text)}
+        onFocus={() => {
+          setFoucs(true)
+        }}
+        onBlur={() => {
+          setFoucs(false)
+        }}
       />
-      {instruction !== '' && (
+      {instruction !== '' && foucsInput && (
         <AppIcons
           type="AntDesign"
           name="closecircle"
           size={25}
           color="lightgray"
           onPress={() => changeInstruction('')}
-          style={{ position: 'absolute', right: '20%', bottom: 48, zIndex: 1 }}
+          style={{
+            position: 'absolute',
+            right: '20%',
+            top: '30%',
+            zIndex: 1,
+          }}
         />
       )}
       <Button
@@ -67,7 +79,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderWidth: 1,
     borderColor: '#BEAC74',
-    marginRight: 5,
+    // marginRight: 5,
   },
   userInput: {
     borderColor: 'black',
