@@ -5,7 +5,7 @@ import {
   View,
   Image,
   TouchableWithoutFeedback,
-  TouchableOpacity,
+  Dimensions,
 } from 'react-native'
 import { Box } from 'native-base'
 import AppIcons from './AppIcons'
@@ -94,6 +94,7 @@ const Item = memo(
                 <Text
                   style={{
                     color: 'white',
+                    fontSize: 14,
                     textTransform: 'capitalize',
                   }}
                 >
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     marginTop: 20,
     borderRadius: 10,
-    marginHorizontal: 30,
+    marginHorizontal: '10%',
     borderColor: 'white',
     borderWidth: 1,
   },

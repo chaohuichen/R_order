@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { TextInput } from 'react-native-paper'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { editInstruction } from '../../redux'
 import { Button } from 'react-native-paper'
@@ -49,7 +49,7 @@ const InstructionInput = ({
           onPress={() => changeInstruction('')}
           style={{
             position: 'absolute',
-            right: '20%',
+            right: Dimensions.get('window').width / 3.5,
             top: '30%',
             zIndex: 1,
           }}
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#BEAC74',
     height: 42,
+    width: 100,
     color: 'white',
     textAlign: 'center',
     marginTop: 5,
