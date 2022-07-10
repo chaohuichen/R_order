@@ -30,7 +30,7 @@ const InstructionInput = ({
         activeUnderlineColor="black"
         activeOutlineColor="#BEAC74"
         style={[styles.userInput, { position: 'fixed' }]}
-        placeholder="notes"
+        placeholder="Notes......."
         value={instruction}
         onChangeText={(text) => changeInstruction(text)}
         onFocus={() => {
@@ -40,7 +40,7 @@ const InstructionInput = ({
           setFoucs(false)
         }}
       />
-      {instruction !== '' && foucsInput && (
+      {/* {instruction !== '' && foucsInput && (
         <AppIcons
           type="AntDesign"
           name="closecircle"
@@ -49,17 +49,22 @@ const InstructionInput = ({
           onPress={() => changeInstruction('')}
           style={{
             position: 'absolute',
-            right: Dimensions.get('window').width / 3.5,
+            right: Dimensions.get('window').width / 2 + 10,
+            // right: '55%',
             top: '30%',
             zIndex: 1,
           }}
         />
-      )}
+      )} */}
       <Button
         title="OK"
         color="white"
         style={styles.okBtn}
-        labelStyle={{ marginTop: 10 }}
+        labelStyle={{
+          fontSize: 22,
+          fontWeight: 'bold',
+          marginBottom: 5,
+        }}
         onPress={handlePlaceOrder}
       >
         Ok
@@ -74,13 +79,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#BEAC74',
     height: 42,
-    width: 100,
+    width: 210,
     color: 'white',
     textAlign: 'center',
     marginTop: 5,
     borderWidth: 1,
     borderColor: '#BEAC74',
     // marginRight: 5,
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   userInput: {
     borderColor: 'black',
