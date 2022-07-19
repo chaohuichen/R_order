@@ -325,7 +325,7 @@ const OrderHomePage = (props) => {
         </View>
       </View>
       <SectionList
-        onScroll={(event) => actionButtonVisibilityHandler(event)}
+        // onScroll={(event) => actionButtonVisibilityHandler(event)}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -392,7 +392,7 @@ const OrderHomePage = (props) => {
         keyboardVerticalOffset={headerHeight - 45}
         style={[
           styles.keyboardAvoidInput,
-          firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
+          // firstBoxPosition === 'up' ? styles.moveDown : styles.moveUp,
         ]}
         behavior="position"
       >
