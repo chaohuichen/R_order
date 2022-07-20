@@ -1,41 +1,47 @@
 import React, { memo } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableWithoutFeedback,
+  Dimensions,
+} from 'react-native'
 import { Box } from 'native-base'
 import AppIcons from './AppIcons'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { Badge } from 'react-native-paper'
-
+import { Button } from 'react-native-paper'
 const Item = memo(
   ({ order, removeItem, addItem }) => {
     return (
-      <TouchableWithoutFeedback onPress={addItem}>
-        <Box style={styles.box}>
-          <View
-            style={{
-              flex: 1,
-              // flexWrap: 'wrap',
-              flexDirection: 'row',
-              paddingRight: 15,
-              justifyContent: 'space-between',
-              // alignContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {order.count !== 0 && (
-              <Badge
-                size={45}
-                style={{
-                  position: 'absolute',
-                  top: -10,
-                  left: -10,
-                  fontWeight: 'bold',
-                  fontSize: 25,
-                  zIndex: 99,
-                }}
-              >
-                {order.count}
-              </Badge>
-            )}
+      <Box style={styles.box}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            paddingRight: 15,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          {order.count !== 0 && (
+            <Badge
+              size={45}
+              style={{
+                position: 'absolute',
+                top: -10,
+                left: -10,
+                fontWeight: 'bold',
+                fontSize: 25,
+                zIndex: 99,
+                backgroundColor: '#BEAC74',
+                color: 'white',
+              }}
+            >
+              {order.count}
+            </Badge>
+          )}
+          <TouchableWithoutFeedback onPress={addItem}>
             <Image
               source={{
                 uri:
@@ -49,39 +55,94 @@ const Item = memo(
                 resizeMode: 'stretch',
               }}
             />
-            <View
+          </TouchableWithoutFeedback>
+          <View
+            style={{
+              width: '60%',
+              marginHorizontal: 10,
+            }}
+          >
+            <Text
               style={{
-                width: '60%',
-
-                marginHorizontal: 10,
+                color: 'white',
+                fontSize: 22,
+                fontWeight: 'bold',
+                flexWrap: 'wrap',
+                textAlign: 'center',
               }}
             >
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 22,
-                  fontWeight: 'bold',
-                  flexWrap: 'wrap',
-                  textAlign: 'center',
-                }}
+              {order.name}
+            </Text>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 12,
+                flexWrap: 'wrap',
+                textAlign: 'center',
+              }}
+            >
+              {order.address}
+            </Text>
+
+            {order.count === 0 ? (
+              <Button
+                mode="outlined"
+                style={styles.buttonBox}
+                onPress={addItem}
+                title="add"
               >
-                {order.name}
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 12,
-                  flexWrap: 'wrap',
-                  textAlign: 'center',
-                  // lineHeight: 0,
-                }}
-              >
-                {order.address}
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 14,
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  add to reserve
+                </Text>
+              </Button>
+            ) : (
+              <View style={[styles.buttonBox, styles.actionBox]}>
+                <AppIcons
+                  type="AntDesign"
+                  name="minus"
+                  size={25}
+                  color="white"
+                  style={{ alignSelf: 'center' }}
+                  onPress={removeItem}
+                />
+
+                <View
+                  style={{
+                    width: '30%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text
+                    bold
+                    style={{
+                      color: 'white',
+                      fontSize: 20,
+                      letterSpacing: 0.5,
+                    }}
+                  >
+                    {order.count}
+                  </Text>
+                </View>
+
+                <AppIcons
+                  type="AntDesign"
+                  name="plus"
+                  size={25}
+                  color="white"
+                  style={{ alignSelf: 'center' }}
+                  onPress={addItem}
+                />
+              </View>
+            )}
           </View>
-        </Box>
-      </TouchableWithoutFeedback>
+        </View>
+      </Box>
     )
   },
   (prev, next) => {
@@ -99,17 +160,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(211,211,211,0.5)',
-    // paddingLeft: 15,
     paddingHorizontal: 15,
     width: '100%',
     height: 160,
   },
+  buttonBox: {
+    paddingVertical: 0,
+    marginTop: 20,
+    borderRadius: 10,
+    marginHorizontal: '10%',
+    borderColor: 'white',
+    borderWidth: 1,
+  },
   actionBox: {
-    marginRight: 10,
-    width: '40%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    paddingVertical: 5,
   },
   orderTitle: {
     color: 'white',

@@ -30,14 +30,14 @@ import { fetchReceviers } from '../../API/databaseCall'
 const ConfirmationPage = (props) => {
   const { allOrder } = props
   const [loading, setLoading] = useState(false)
-
-  const [date, setDate] = useState(new Date())
+  //set one hour ahead
+  const [date, setDate] = useState(new Date(Date.now() + 1 * (60 * 60 * 1000)))
   const [mode, setMode] = useState('datetime')
   const [show, setShow] = useState(false)
   const [receivers, setReceivers] = useState([])
   const [selectedRec, setSelectedRec] = useState([])
   useEffect(async () => {
-    fetchReceviers(setReceivers)
+    fetchReceviers(setReceivers, handleReceiverChange)
   }, [])
 
   const onChange = (event, selectedDate) => {
@@ -49,14 +49,6 @@ const ConfirmationPage = (props) => {
   const showMode = (currentMode) => {
     setShow(true)
     setMode(currentMode)
-  }
-
-  const showDatepicker = () => {
-    showMode('date')
-  }
-
-  const showTimepicker = () => {
-    showMode('time')
   }
 
   const removeItem = (order, index, sectionTitle) => {
@@ -95,6 +87,8 @@ const ConfirmationPage = (props) => {
           },
         ]
       )
+    } else if (selectedRec[0] === undefined) {
+      Alert.alert('Empty Receiver', 'Please choose a receiver')
     } else if (moment().isAfter(moment(date))) {
       Alert.alert('Wrong time frame', 'Please select a time is in the future')
     } else {
@@ -103,6 +97,7 @@ const ConfirmationPage = (props) => {
         cart: copyData,
         userNotes: props.userInsturction,
         bookingTime: moment(date).format('MM/DD/yy hh:mm A'),
+        selectedReceivers: selectedRec,
       })
         .then((res) => {
           //reset cart and reset note, location?
@@ -146,7 +141,8 @@ const ConfirmationPage = (props) => {
         <ScrollView contentContainerStyle={styles.container}>
           <View
             style={{
-              padding: 10,
+              paddingHorizontal: 10,
+              paddingTop: 10,
               justifyContent: 'space-between',
             }}
           >
@@ -230,7 +226,6 @@ const ConfirmationPage = (props) => {
             <Spinner
               color="black"
               visible={true}
-              // textContent={'signing in....'}
               customIndicator={
                 <View
                   style={{
@@ -301,7 +296,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'black',
-    paddingBottom: '25%',
+    paddingBottom: '40%',
   },
   loginButton: {
     position: 'absolute',

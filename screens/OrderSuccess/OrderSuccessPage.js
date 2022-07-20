@@ -1,6 +1,5 @@
 import { View, Text, SafeAreaView } from 'react-native'
 import { Button } from 'native-base'
-import * as Haptics from 'expo-haptics'
 const OrderSuccessPage = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flexGrow: 1, alignItems: 'center' }}>
