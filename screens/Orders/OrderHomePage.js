@@ -31,6 +31,7 @@ import moment from 'moment'
 import AppButton from '../../components/AppButton'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
+// import DatePicker from 'react-native-date-picker'
 
 if (
   Platform.OS === 'android' &&
@@ -311,7 +312,9 @@ const OrderHomePage = (props) => {
           <DateTimePicker
             testID="dateTimePicker"
             value={date}
-            mode={mode}
+            // mode={mode}
+            display="spinner"
+            mode="datetime"
             is24Hour={true}
             onChange={onChange}
             style={{
