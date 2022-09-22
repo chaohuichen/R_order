@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { removeUser, editInstruction } from '../../redux'
 import {
   getOrder,
@@ -20,6 +20,7 @@ import {
   RefreshControl,
   KeyboardAvoidingView,
   Alert,
+  TouchableOpacity,
 } from 'react-native'
 import * as Haptics from 'expo-haptics'
 import { useHeaderHeight } from '@react-navigation/elements'
@@ -32,6 +33,7 @@ import AppButton from '../../components/AppButton'
 import Spinner from 'react-native-loading-spinner-overlay'
 import AppLoading from '../../components/AppLoading'
 // import DatePicker from 'react-native-date-picker'
+import RBSheet from 'react-native-raw-bottom-sheet'
 
 if (
   Platform.OS === 'android' &&
@@ -51,7 +53,7 @@ const OrderHomePage = (props) => {
 
   const [date, setDate] = useState(WithoutTime(new Date()))
   const [show, setShow] = useState(false)
-
+  const rbRef = useRef()
   //for receviers
   const [receivers, setReceivers] = useState([])
   const [selectedRec, setSelectedRec] = useState([])
@@ -237,6 +239,8 @@ const OrderHomePage = (props) => {
         style={{
           flexDirection: 'row',
           borderBottomColor: 'white',
+          justifyContent: 'center',
+          alignContent: 'center',
           borderBottomWidth: 0.5,
           paddingBottom: 10,
         }}
@@ -244,6 +248,7 @@ const OrderHomePage = (props) => {
         <View
           style={{
             backgroundColor: 'black',
+
             width: '50%',
             alignSelf: 'flex-start',
           }}
@@ -294,8 +299,9 @@ const OrderHomePage = (props) => {
         <View
           style={{
             backgroundColor: 'black',
+
             width: '50%',
-            alignSelf: 'flex-end',
+            alignSelf: 'flex-start',
           }}
         >
           <Text
@@ -309,6 +315,35 @@ const OrderHomePage = (props) => {
           >
             Time:
           </Text>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'rgba(52, 52, 52, 0.8)',
+              alignItems: 'center',
+              marginHorizontal: 20,
+              borderRadius: 5,
+              marginVertical: 5,
+              paddingVertical: 5,
+              marginTop: 10,
+            }}
+            onPress={() => rbRef.current.open()}
+          >
+            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>
+              {moment(date).format('M/DD/YY h:mm A')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <RBSheet
+          ref={rbRef}
+          height={300}
+          closeOnDragDown
+          openDuration={250}
+          customStyles={{
+            container: {
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+          }}
+        >
           <DateTimePicker
             testID="dateTimePicker"
             value={date}
@@ -322,10 +357,10 @@ const OrderHomePage = (props) => {
               width: '100%',
               textColor: 'red',
             }}
-            themeVariant="dark"
+            themeVariant="light"
             minuteInterval={15}
           />
-        </View>
+        </RBSheet>
       </View>
       <SectionList
         // onScroll={(event) => actionButtonVisibilityHandler(event)}
