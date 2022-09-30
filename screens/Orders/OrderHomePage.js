@@ -336,7 +336,8 @@ const OrderHomePage = (props) => {
           ref={rbRef}
           height={300}
           closeOnDragDown
-          openDuration={250}
+          openDuration={150}
+          closeDuration={100}
           customStyles={{
             container: {
               justifyContent: 'center',
@@ -347,7 +348,6 @@ const OrderHomePage = (props) => {
           <DateTimePicker
             testID="dateTimePicker"
             value={date}
-            // mode={mode}
             display="spinner"
             mode="datetime"
             is24Hour={true}
@@ -355,7 +355,6 @@ const OrderHomePage = (props) => {
             style={{
               flexGrow: 1,
               width: '100%',
-              textColor: 'red',
             }}
             themeVariant="light"
             minuteInterval={15}
@@ -399,30 +398,31 @@ const OrderHomePage = (props) => {
         onEndReachedThreshold={0}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: '35%',
+          paddingBottom: '70%',
+          // height: '120%',
         }}
         sections={props.order || []}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
-        renderSectionHeader={({ section: { category } }) => (
-          <View
-            style={{
-              padding: 12,
-              backgroundColor: 'black',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: '500',
-                color: 'white',
-                textTransform: 'capitalize',
-              }}
-            >
-              {category}
-            </Text>
-          </View>
-        )}
+        // renderSectionHeader={({ section: { category } }) => (
+        //   <View
+        //     style={{
+        //       padding: 12,
+        //       backgroundColor: 'black',
+        //     }}
+        //   >
+        //     <Text
+        //       style={{
+        //         fontSize: 30,
+        //         fontWeight: '500',
+        //         color: 'white',
+        //         textTransform: 'capitalize',
+        //       }}
+        //     >
+        //       {category}
+        //     </Text>
+        //   </View>
+        // )}
         stickySectionHeadersEnabled={false}
       />
 

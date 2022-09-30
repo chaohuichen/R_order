@@ -19,6 +19,7 @@ const InstructionInput = ({
         alignItems: 'space-between',
         alignContent: 'space-between',
         // justifyContent: 'space-',
+        // backgroundColor: '#151515',
         flex: 1,
         width: '100%',
         paddingBottom: 50,
