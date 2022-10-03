@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { Box } from 'native-base'
 import AppIcons from './AppIcons'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
@@ -10,69 +10,110 @@ const Item = memo(
       <Box style={styles.box}>
         <View
           style={{
-            flex: 1.5,
-            // flexWrap: 'wrap',
+            flex: 1,
             flexDirection: 'row',
             paddingRight: 15,
             justifyContent: 'space-between',
-            // alignContent: 'center',
             alignItems: 'center',
           }}
         >
-          <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold' }}>
-            {order.name}
-          </Text>
-        </View>
-        <View style={styles.actionBox}>
-          <TouchableWithoutFeedback
-            onPress={removeItem}
-            style={{
-              backgroundColor: 'white',
-              borderRadius: 50 / 2,
-              width: 50,
-              height: 50,
-              justifyContent: 'center',
+          <Image
+            source={{
+              uri:
+                order.locationImgUrl ||
+                'https://fillupstore.s3.amazonaws.com/default_coffee_2.jpg',
             }}
-          >
-            <AppIcons
-              type="AntDesign"
-              name="minus"
-              size={25}
-              color="black"
-              style={{ alignSelf: 'center' }}
-            />
-          </TouchableWithoutFeedback>
+            style={{
+              height: 130,
+              width: 150,
+              borderRadius: 5,
+              resizeMode: 'stretch',
+            }}
+          />
           <View
             style={{
-              width: '30%',
-              alignItems: 'center',
+              width: '60%',
+              marginHorizontal: 10,
             }}
           >
             <Text
-              bold
-              style={{ color: 'white', fontSize: 20, letterSpacing: 0.5 }}
+              style={{
+                color: 'white',
+                fontSize: 22,
+                fontWeight: 'bold',
+                flexWrap: 'wrap',
+                textAlign: 'center',
+              }}
             >
-              {order.count}
+              {order.name}
             </Text>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 12,
+                flexWrap: 'wrap',
+                textAlign: 'center',
+              }}
+            >
+              {order.address}
+            </Text>
+
+            <View style={styles.actionBox}>
+              {order.count === 0 ? (
+                <TouchableWithoutFeedback
+                  style={{ paddingVertical: 4 }}
+                  onPress={addItem}
+                >
+                  <Text
+                    style={{
+                      color: 'white',
+                      textTransform: 'capitalize',
+                    }}
+                  >
+                    add to reserve
+                  </Text>
+                </TouchableWithoutFeedback>
+              ) : (
+                <>
+                  <AppIcons
+                    type="AntDesign"
+                    name="minus"
+                    size={25}
+                    color="white"
+                    style={{ alignSelf: 'center' }}
+                    onPress={removeItem}
+                  />
+
+                  <View
+                    style={{
+                      width: '30%',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text
+                      bold
+                      style={{
+                        color: 'white',
+                        fontSize: 20,
+                        letterSpacing: 0.5,
+                      }}
+                    >
+                      {order.count}
+                    </Text>
+                  </View>
+
+                  <AppIcons
+                    type="AntDesign"
+                    name="plus"
+                    size={25}
+                    color="white"
+                    style={{ alignSelf: 'center' }}
+                    onPress={addItem}
+                  />
+                </>
+              )}
+            </View>
           </View>
-          <TouchableWithoutFeedback
-            onPress={addItem}
-            style={{
-              backgroundColor: 'white',
-              borderRadius: 50 / 2,
-              width: 50,
-              height: 50,
-              justifyContent: 'center',
-            }}
-          >
-            <AppIcons
-              type="AntDesign"
-              name="plus"
-              size={25}
-              color="black"
-              style={{ alignSelf: 'center' }}
-            />
-          </TouchableWithoutFeedback>
         </View>
       </Box>
     )
@@ -92,16 +133,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(211,211,211,0.5)',
-    paddingLeft: 15,
+    // paddingLeft: 15,
+    paddingHorizontal: 15,
     width: '100%',
-    height: 100,
+    height: 160,
   },
   actionBox: {
-    marginRight: 10,
-    width: '40%',
+    marginTop: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginHorizontal: 30,
+    paddingVertical: 5,
   },
   orderTitle: {
     color: 'white',
