@@ -18,7 +18,7 @@
       "bundleIdentifier": "com.classait.client.ding",
       "supportsTablet": false,
       "backgroundColor": "#000000",
-      "buildNumber": "1.1.1"
+      "buildNumber": "1.1.2"
     },
     "android": {
       "adaptiveIcon": {
