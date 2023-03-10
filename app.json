@@ -28,6 +28,24 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c4aa0ea4-7837-4a93-be44-5e55a7173955"
+      }
+    },
+    "resolutions": {
+      "@expo/config-plugins": "6.0.1"
     }
   }
 }
