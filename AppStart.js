@@ -1,71 +1,76 @@
-import React, { useState, useRef, useEffect } from 'react'
-// import * as SplashScreen from 'expo-splash-screen'
+import React, { useState, useCallback, useEffect } from 'react'
+import * as SplashScreen from 'expo-splash-screen'
 import * as Font from 'expo-font'
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
-// import { HandleError } from './components'
-import { Appearance, StatusBar, StyleSheet, View } from 'react-native'
-import AppLoading from 'expo-app-loading'
+import { Appearance, StatusBar, View } from 'react-native'
 import { NativeBaseProvider } from 'native-base'
-import MainNavigation from './navigation/MainNavigation'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
 import { connect } from 'react-redux'
-import LottieView from 'lottie-react-native'
 
-const AppStart = ({ user }) => {
+const AppStart = () => {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
   const [styleStatusBar, setStyleStatusBar] = useState('default')
   // Load any resources or data that we need prior to rendering the app
   // React.useEffect(() => {
-  const animation = useRef(null)
+  const onLayoutRootView = useCallback(async () => {
+    if (isLoadingComplete) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+
+      await SplashScreen.hideAsync()
+    }
+  }, [isLoadingComplete])
+  useEffect(() => {
+    loadResourcesAndDataAsync()
+  }, [])
   async function loadResourcesAndDataAsync() {
-    // Load fonts
-    await Promise.all([
-      Font.loadAsync({
-        ...Ionicons.font,
-        ...FontAwesome5.font,
+    try {
+      // Load fonts
+      await Promise.all([
+        Font.loadAsync({
+          ...Ionicons.font,
+          ...FontAwesome5.font,
 
-        'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
-        'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
-      }),
-    ])
-    const colorScheme = Appearance.getColorScheme()
+          'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
+          'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
+        }),
+      ])
+      const colorScheme = Appearance.getColorScheme()
 
-    if (colorScheme === 'dark') {
-      setStyleStatusBar('dark-content')
+      if (colorScheme === 'dark') {
+        setStyleStatusBar('dark-content')
+      }
+      return new Promise((resolve) => setTimeout(resolve, 500))
+    } catch (err) {
+      console.log(err)
+    } finally {
+      // Tell the application to render
+      setLoadingComplete(true)
     }
   }
 
   if (!isLoadingComplete) {
-    return (
-      <AppLoading
-        startAsync={loadResourcesAndDataAsync}
-        onFinish={() => {
-          setLoadingComplete(true)
-          //  SplashScreen.hideAsync()
-        }}
-        onError={(error) => console.log(error)}
-      />
-    )
+    return null
   }
 
   return (
     <NativeBaseProvider>
-      <StatusBar barStyle={'light-content'} />
-      <BottomTabNavigator />
+      <View
+        style={{
+          flexGrow: 1,
+        }}
+        onLayout={onLayoutRootView}
+      >
+        <StatusBar barStyle={'light-content'} />
+        <BottomTabNavigator />
+      </View>
     </NativeBaseProvider>
   )
 }
-const styles = StyleSheet.create({
-  animationContainer: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  buttonContainer: {
-    paddingTop: 20,
-  },
-})
+
 const mapState = (state) => {
   return {
     user: state.user,
